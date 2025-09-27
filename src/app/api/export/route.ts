@@ -40,21 +40,44 @@ export async function GET(request: Request) {
         cutoffDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
     }
     
-    // Fetch and filter data based on platforms
+    // Use synchronized fetching for consistent timing
+    let phData: any[] = [];
+    let hnData: any[] = [];
+    let ghData: any[] = [];
+    
+    try {
+      const { synchronizedFetcher } = await import('@/lib/synchronized-fetcher');
+      const result = await synchronizedFetcher.fetchSpecificAPIs(platforms, { timeFilter });
+      
+      phData = result.productHunt?.data || [];
+      hnData = result.hackerNews?.data || [];
+      ghData = result.github?.data || [];
+    } catch (syncError) {
+      console.warn('Synchronized fetching failed, falling back to individual calls:', syncError);
+      // Fallback to individual API calls
+      const [phResult, hnResult, ghResult] = await Promise.allSettled([
+        platforms.includes('producthunt') ? fetchProductHuntPosts() : Promise.resolve([]),
+        platforms.includes('hackernews') ? fetchHackerNewsPosts() : Promise.resolve([]),
+        platforms.includes('github') ? fetchSaaSHubAlternatives() : Promise.resolve([])
+      ]);
+      
+      phData = phResult.status === 'fulfilled' ? phResult.value : [];
+      hnData = hnResult.status === 'fulfilled' ? hnResult.value : [];
+      ghData = ghResult.status === 'fulfilled' ? ghResult.value : [];
+    }
+    
+    // Filter data based on platforms and time
     if (platforms.includes('producthunt')) {
-      const phData = await fetchProductHuntPosts();
       const filteredPH = phData.filter(item => new Date(item.created_at) >= cutoffDate);
       exportData.data.productHunt = filteredPH;
     }
     
     if (platforms.includes('hackernews')) {
-      const hnData = await fetchHackerNewsPosts();
       const filteredHN = hnData.filter(item => new Date(item.time * 1000) >= cutoffDate);
       exportData.data.hackerNews = filteredHN;
     }
     
     if (platforms.includes('github')) {
-      const ghData = await fetchSaaSHubAlternatives();
       exportData.data.github = ghData;
     }
     

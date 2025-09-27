@@ -16,12 +16,13 @@ export async function GET(request: Request) {
       timestamp: new Date().toISOString()
     };
     
-    // Get fresh data
-    const [phData, hnData, ghData] = await Promise.all([
-      platforms.includes('producthunt') ? fetchProductHuntPosts() : Promise.resolve([]),
-      platforms.includes('hackernews') ? fetchHackerNewsPosts() : Promise.resolve([]),
-      platforms.includes('github') ? fetchSaaSHubAlternatives() : Promise.resolve([])
-    ]);
+    // Get fresh data using synchronized fetching
+    const { synchronizedFetcher } = await import('@/lib/synchronized-fetcher');
+    const result = await synchronizedFetcher.fetchSpecificAPIs(platforms, {});
+    
+    const phData = result.productHunt?.data || [];
+    const hnData = result.hackerNews?.data || [];
+    const ghData = result.github?.data || [];
     
     // Filter for recent updates (last 1 hour if no lastUpdate provided)
     const cutoffTime = lastUpdate ? new Date(lastUpdate) : new Date(Date.now() - 60 * 60 * 1000);

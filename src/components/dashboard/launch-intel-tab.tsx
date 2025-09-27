@@ -471,7 +471,7 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
             className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
               selectedMetric === metric.id
                 ? 'bg-blue-600 text-white'
-                : 'bg-gray-100 bg-gray-800 text-foreground hover:bg-gray-200 hover:bg-gray-700'
+                : 'bg-gray-100 dark:bg-gray-800 text-foreground hover:bg-gray-200 dark:hover:bg-gray-700'
             }`}
           >
             <metric.icon className="h-4 w-4" />

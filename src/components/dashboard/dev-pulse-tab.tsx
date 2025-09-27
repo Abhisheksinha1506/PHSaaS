@@ -647,7 +647,7 @@ export function DevPulseTab({ productHuntData, hackerNewsData, saaSHubData }: De
                 </div>
                 <div className="text-sm text-foreground">Viral Posts</div>
                 <div className="text-xs text-foreground mt-1">
-                  {analyticsData.performance.engagementMetrics.avgScore} avg score
+                  {formatNumber(analyticsData.performance.engagementMetrics.avgScore)} avg score
                 </div>
               </div>
               

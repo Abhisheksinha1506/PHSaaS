@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -19,7 +19,6 @@ export const metadata: Metadata = {
   description: "Free public dashboard for tracking Product Hunt trends, Hacker News posts, and GitHub repositories with advanced insights and analytics.",
   keywords: ["SaaS", "Product Hunt", "Hacker News", "GitHub", "Analytics", "Dashboard", "Trends", "Startups"],
   authors: [{ name: "SaaS Dashboard Team" }],
-  viewport: "width=device-width, initial-scale=1, maximum-scale=5",
   robots: "index, follow",
   openGraph: {
     title: "SaaS Dashboard - Advanced Analytics Platform",
@@ -34,6 +33,12 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -46,9 +51,9 @@ export default function RootLayout({
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
-          enableSystem={false}
-          disableTransitionOnChange={true}
+          defaultTheme="system"
+          enableSystem={true}
+          disableTransitionOnChange={false}
         >
           <Navigation />
           {children}

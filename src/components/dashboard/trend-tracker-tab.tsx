@@ -538,7 +538,7 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
                       </div>
                       <span className="text-slate-500 dark:text-slate-300">Avg Discussion Score:</span>
                     </div>
-                    <span className="font-bold text-slate-700 dark:text-white text-lg">{analyticsData.overview.avgScore} points</span>
+                    <span className="font-bold text-slate-700 dark:text-white text-lg">{formatNumber(analyticsData.overview.avgScore)} points</span>
                   </div>
                   <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-700 rounded-xl border border-slate-200 dark:border-slate-600">
                     <div className="flex items-center gap-3">
@@ -561,7 +561,7 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
                   {analyticsData.overview.topCategories.slice(0, 3).map((category, index) => (
                     <div key={category.name} className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-700 rounded-xl border border-slate-200 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors">
                       <span className="text-slate-500 dark:text-slate-300 font-medium">{category.name}</span>
-                      <Badge variant="secondary" className="bg-slate-900 dark:bg-card text-white dark:text-slate-900 border-0">
+                      <Badge variant="secondary" className="bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 border-0">
                         {category.count}
                       </Badge>
                     </div>
@@ -626,7 +626,7 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
                 <div className="text-4xl font-bold text-slate-700 dark:text-white mb-2">{hackerNewsData.length}</div>
                 <div className="text-sm font-semibold text-slate-500 dark:text-slate-300 mb-1">HN Discussions</div>
                 <div className="text-xs text-slate-500 dark:text-slate-400">
-                  {hackerNewsData.length > 0 ? Math.round(hackerNewsData.reduce((sum, item) => sum + item.score, 0) / hackerNewsData.length) : 0} avg score
+                  {hackerNewsData.length > 0 ? formatNumber(hackerNewsData.reduce((sum, item) => sum + item.score, 0) / hackerNewsData.length) : 0} avg score
                 </div>
               </div>
             </div>
@@ -759,19 +759,19 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
                       <div className="flex items-center gap-2 px-3 py-1 bg-orange-100 dark:bg-orange-900/30 rounded-full">
                         <span className="w-2 h-2 bg-orange-500 rounded-full"></span>
                         <span className="text-xs font-medium text-orange-700 dark:text-orange-300">
-                          Growth: {data.momentum > 50 ? '🔥 Hot' : data.momentum > 20 ? '📈 Rising' : data.momentum > 5 ? '📊 Steady' : '📉 Declining'} ({Math.round(data.momentum)})
+                          Growth: {data.momentum > 50 ? '🔥 Hot' : data.momentum > 20 ? '📈 Rising' : data.momentum > 5 ? '📊 Steady' : '📉 Declining'} ({formatNumber(data.momentum)})
                         </span>
                       </div>
                       <div className="flex items-center gap-2 px-3 py-1 bg-pink-100 dark:bg-pink-900/30 rounded-full">
                         <span className="w-2 h-2 bg-pink-500 rounded-full"></span>
                         <span className="text-xs font-medium text-pink-700 dark:text-pink-300">
-                          Engagement: {data.viral > 0.5 ? '💬 High' : data.viral > 0.2 ? '💭 Medium' : '🔇 Low'} ({Math.round(data.viral * 100)}%)
+                          Engagement: {data.viral > 0.5 ? '💬 High' : data.viral > 0.2 ? '💭 Medium' : '🔇 Low'} ({formatNumber(data.viral * 100)}%)
                         </span>
                       </div>
                       <div className="flex items-center gap-2 px-3 py-1 bg-indigo-100 dark:bg-indigo-900/30 rounded-full">
                         <span className="w-2 h-2 bg-indigo-500 rounded-full"></span>
                         <span className="text-xs font-medium text-indigo-700 dark:text-indigo-300">
-                          Market: {data.gap > 0.8 ? '🎯 High Opportunity' : data.gap > 0.5 ? '⚡ Growing' : data.gap > 0.2 ? '📈 Mature' : '🔴 Saturated'} ({Math.round(data.gap * 100)}%)
+                          Market: {data.gap > 0.8 ? '🎯 High Opportunity' : data.gap > 0.5 ? '⚡ Growing' : data.gap > 0.2 ? '📈 Mature' : '🔴 Saturated'} ({formatNumber(data.gap * 100)}%)
                         </span>
                       </div>
                       <div className="flex items-center gap-2 px-3 py-1 bg-emerald-100 dark:bg-emerald-900/30 rounded-full">
@@ -988,7 +988,7 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
                   <div className="bg-orange-50 bg-orange-900/20 p-4 rounded-lg">
                     <h5 className="font-medium text-foreground mb-2">Growth Momentum</h5>
                     <div className="text-2xl font-bold text-orange-600">
-                      {selectedTrend.data?.momentum ? Math.round(selectedTrend.data.momentum) : 'N/A'}
+                      {selectedTrend.data?.momentum ? formatNumber(selectedTrend.data.momentum) : 'N/A'}
                     </div>
                     <div className="text-sm text-foreground">
                       {selectedTrend.data?.momentum > 50 ? '🔥 Hot Growth' : 
@@ -1003,7 +1003,7 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
                   <div className="bg-pink-50 bg-pink-900/20 p-4 rounded-lg">
                     <h5 className="font-medium text-foreground mb-2">Viral Coefficient</h5>
                     <div className="text-2xl font-bold text-pink-600">
-                      {selectedTrend.data?.viral ? Math.round(selectedTrend.data.viral * 100) + '%' : 'N/A'}
+                      {selectedTrend.data?.viral ? formatNumber(selectedTrend.data.viral * 100) + '%' : 'N/A'}
                     </div>
                     <div className="text-sm text-foreground">
                       {selectedTrend.data?.viral > 0.5 ? '💬 High Engagement' : 
@@ -1017,7 +1017,7 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
                   <div className="bg-indigo-50 bg-indigo-900/20 p-4 rounded-lg">
                     <h5 className="font-medium text-foreground mb-2">Market Opportunity</h5>
                     <div className="text-2xl font-bold text-indigo-600">
-                      {selectedTrend.data?.gap ? Math.round(selectedTrend.data.gap * 100) + '%' : 'N/A'}
+                      {selectedTrend.data?.gap ? formatNumber(selectedTrend.data.gap * 100) + '%' : 'N/A'}
                     </div>
                     <div className="text-sm text-foreground">
                       {selectedTrend.data?.gap > 0.8 ? '🎯 High Opportunity' : 

@@ -1,8 +1,18 @@
 import { NextResponse } from 'next/server';
 import { fetchProductHuntPosts, fetchHackerNewsPosts, fetchSaaSHubAlternatives } from '@/lib/api';
 import { roundTo2Decimals } from '@/lib/number-utils';
+import { startTiming, recordMetrics, monitorApiCall } from '@/lib/performance-monitor';
+import { withCache, cacheKeys, cacheTTL } from '@/lib/api-cache';
 
 export async function GET(request: Request) {
+  const overallTimer = startTiming();
+  const timing = {
+    apiCalls: 0,
+    dataProcessing: 0,
+    analyticsCalculation: 0,
+    total: 0
+  };
+  
   try {
     const { searchParams } = new URL(request.url);
     const timeFilter = searchParams.get('timeFilter') || '7d';
@@ -10,11 +20,33 @@ export async function GET(request: Request) {
     
     console.log(`📊 Analytics API called: ${metric} for ${timeFilter}`);
     
-    const [phData, hnData, ghData] = await Promise.all([
-      fetchProductHuntPosts(),
-      fetchHackerNewsPosts(),
-      fetchSaaSHubAlternatives()
-    ]);
+    // Use synchronized fetching for consistent timing with fallback
+    let phData: any[] = [];
+    let hnData: any[] = [];
+    let ghData: any[] = [];
+    
+    const apiTimer = startTiming();
+    try {
+      // Use cached API calls with optimized parallel execution
+      const [phResult, hnResult, ghResult] = await Promise.allSettled([
+        monitorApiCall(() => fetchProductHuntPosts(), 'Product Hunt API (Cached)'),
+        monitorApiCall(() => fetchHackerNewsPosts(), 'Hacker News API (Cached)'),
+        monitorApiCall(() => fetchSaaSHubAlternatives(), 'GitHub API (Cached)')
+      ]);
+      
+      phData = phResult.status === 'fulfilled' ? phResult.value : [];
+      hnData = hnResult.status === 'fulfilled' ? hnResult.value : [];
+      ghData = ghResult.status === 'fulfilled' ? ghResult.value : [];
+      
+      timing.apiCalls = apiTimer.end('API Calls Total (Optimized)');
+      console.log(`📊 Data fetched - PH: ${phData.length}, HN: ${hnData.length}, GH: ${ghData.length}`);
+    } catch (error) {
+      timing.apiCalls = apiTimer.end('API Calls (Failed)');
+      console.warn('API calls failed, using empty data:', error);
+      phData = [];
+      hnData = [];
+      ghData = [];
+    }
     
     // Apply time filtering
     const now = new Date();
@@ -34,53 +66,91 @@ export async function GET(request: Request) {
         cutoffDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
     }
     
-    const filteredPH = phData.filter(item => new Date(item.created_at) >= cutoffDate);
-    const filteredHN = hnData.filter(item => new Date(item.time * 1000) >= cutoffDate);
+    const dataProcessingTimer = startTiming();
+    const filteredPH = phData.filter(item => {
+      try {
+        return new Date(item.created_at) >= cutoffDate;
+      } catch {
+        return true; // Include item if date parsing fails
+      }
+    });
+    const filteredHN = hnData.filter(item => {
+      try {
+        return new Date(item.time * 1000) >= cutoffDate;
+      } catch {
+        return true; // Include item if date parsing fails
+      }
+    });
+    timing.dataProcessing = dataProcessingTimer.end('Data Processing');
     
     let analytics = {};
     
-    switch (metric) {
-      case 'overview':
-        analytics = {
-          totalLaunches: filteredPH.length,
-          totalDiscussions: filteredHN.length,
-          totalRepositories: ghData.length,
-          avgVotes: filteredPH.length > 0 ? roundTo2Decimals(filteredPH.reduce((sum, item) => sum + item.votes_count, 0) / filteredPH.length) : 0,
-          avgScore: filteredHN.length > 0 ? roundTo2Decimals(filteredHN.reduce((sum, item) => sum + item.score, 0) / filteredHN.length) : 0,
-          avgStars: ghData.length > 0 ? roundTo2Decimals(ghData.reduce((sum, item) => sum + item.reviews_count, 0) / ghData.length) : 0,
-          topCategories: getTopCategories(filteredPH),
-          trendingTopics: getTrendingTopics(filteredPH, filteredHN, ghData),
-          engagementTrends: getEngagementTrends(filteredPH, timeFilter)
-        };
-        break;
+    const analyticsTimer = startTiming();
+    try {
+      switch (metric) {
+        case 'overview':
+          analytics = {
+            totalLaunches: filteredPH.length,
+            totalDiscussions: filteredHN.length,
+            totalRepositories: ghData.length,
+            avgVotes: filteredPH.length > 0 ? roundTo2Decimals(filteredPH.reduce((sum, item) => sum + (item.votes_count || 0), 0) / filteredPH.length) : 0,
+            avgScore: filteredHN.length > 0 ? roundTo2Decimals(filteredHN.reduce((sum, item) => sum + (item.score || 0), 0) / filteredHN.length) : 0,
+            avgStars: ghData.length > 0 ? roundTo2Decimals(ghData.reduce((sum, item) => sum + (item.reviews_count || 0), 0) / ghData.length) : 0,
+            topCategories: getTopCategories(filteredPH),
+            trendingTopics: getTrendingTopics(filteredPH, filteredHN, ghData),
+            engagementTrends: getEngagementTrends(filteredPH, timeFilter)
+          };
+          break;
         
-      case 'trends':
-        analytics = {
-          trendingTechnologies: getTrendingTechnologies(filteredPH, filteredHN, ghData),
-          marketGaps: getMarketGaps(filteredPH),
-          crossPlatformCorrelations: getCrossPlatformCorrelations(filteredPH, filteredHN, ghData),
-          momentumAnalysis: getMomentumAnalysis(filteredPH, filteredHN)
-        };
-        break;
-        
-      case 'performance':
-        analytics = {
-          topPerformers: getTopPerformers(filteredPH, filteredHN, ghData),
-          engagementMetrics: getEngagementMetrics(filteredPH, filteredHN),
-          growthRates: getGrowthRates(filteredPH, filteredHN, ghData),
-          successFactors: getSuccessFactors(filteredPH)
-        };
-        break;
-        
-      default:
-        analytics = { error: 'Invalid metric' };
+        case 'trends':
+          analytics = {
+            trendingTechnologies: getTrendingTechnologies(filteredPH, filteredHN, ghData),
+            marketGaps: getMarketGaps(filteredPH),
+            crossPlatformCorrelations: getCrossPlatformCorrelations(filteredPH, filteredHN, ghData),
+            momentumAnalysis: getMomentumAnalysis(filteredPH, filteredHN)
+          };
+          break;
+          
+        case 'performance':
+          analytics = {
+            topPerformers: getTopPerformers(filteredPH, filteredHN, ghData),
+            engagementMetrics: getEngagementMetrics(filteredPH, filteredHN),
+            growthRates: getGrowthRates(filteredPH, filteredHN, ghData),
+            successFactors: getSuccessFactors(filteredPH)
+          };
+          break;
+          
+        default:
+          analytics = { error: 'Invalid metric' };
+      }
+    } catch (analyticsError) {
+      console.error('Analytics calculation error:', analyticsError);
+      analytics = { error: 'Analytics calculation failed' };
     }
+    
+    timing.analyticsCalculation = analyticsTimer.end('Analytics Calculation');
+    timing.total = overallTimer.end('Total Request Time');
+    
+    // Record performance metrics
+    recordMetrics({
+      ...timing,
+      endpoint: '/api/analytics',
+      method: 'GET'
+    });
     
     return NextResponse.json({
       metric,
       timeFilter,
       data: analytics,
-      generatedAt: new Date().toISOString()
+      generatedAt: new Date().toISOString(),
+      performance: {
+        timing,
+        breakdown: {
+          apiCalls: `${timing.apiCalls.toFixed(2)}ms (${((timing.apiCalls / timing.total) * 100).toFixed(1)}%)`,
+          dataProcessing: `${timing.dataProcessing.toFixed(2)}ms (${((timing.dataProcessing / timing.total) * 100).toFixed(1)}%)`,
+          analyticsCalculation: `${timing.analyticsCalculation.toFixed(2)}ms (${((timing.analyticsCalculation / timing.total) * 100).toFixed(1)}%)`
+        }
+      }
     });
   } catch (error) {
     console.error('Analytics API error:', error);
@@ -92,9 +162,13 @@ export async function GET(request: Request) {
 function getTopCategories(data: any[]) {
   const categories: { [key: string]: number } = {};
   data.forEach(item => {
-    item.topics.forEach((topic: any) => {
-      categories[topic.name] = (categories[topic.name] || 0) + 1;
-    });
+    if (item.topics && Array.isArray(item.topics)) {
+      item.topics.forEach((topic: any) => {
+        if (topic && topic.name) {
+          categories[topic.name] = (categories[topic.name] || 0) + 1;
+        }
+      });
+    }
   });
   
   return Object.entries(categories)
@@ -108,23 +182,29 @@ function getTrendingTopics(phData: any[], hnData: any[], ghData: any[]) {
   
   // Product Hunt topics
   phData.forEach(item => {
-    item.topics.forEach((topic: any) => {
-      if (!topics[topic.name]) topics[topic.name] = { ph: 0, hn: 0, gh: 0, total: 0 };
-      topics[topic.name].ph += item.votes_count;
-      topics[topic.name].total += item.votes_count;
-    });
+    if (item.topics && Array.isArray(item.topics)) {
+      item.topics.forEach((topic: any) => {
+        if (topic && topic.name) {
+          if (!topics[topic.name]) topics[topic.name] = { ph: 0, hn: 0, gh: 0, total: 0 };
+          topics[topic.name].ph += item.votes_count || 0;
+          topics[topic.name].total += item.votes_count || 0;
+        }
+      });
+    }
   });
   
   // Hacker News topics (simplified)
   hnData.forEach(item => {
-    const keywords = ['ai', 'javascript', 'python', 'react', 'node', 'typescript', 'vue', 'angular'];
-    keywords.forEach(keyword => {
-      if (item.title.toLowerCase().includes(keyword)) {
-        if (!topics[keyword]) topics[keyword] = { ph: 0, hn: 0, gh: 0, total: 0 };
-        topics[keyword].hn += item.score;
-        topics[keyword].total += item.score;
-      }
-    });
+    if (item.title) {
+      const keywords = ['ai', 'javascript', 'python', 'react', 'node', 'typescript', 'vue', 'angular'];
+      keywords.forEach(keyword => {
+        if (item.title.toLowerCase().includes(keyword)) {
+          if (!topics[keyword]) topics[keyword] = { ph: 0, hn: 0, gh: 0, total: 0 };
+          topics[keyword].hn += item.score || 0;
+          topics[keyword].total += item.score || 0;
+        }
+      });
+    }
   });
   
   return Object.entries(topics)
@@ -135,10 +215,10 @@ function getTrendingTopics(phData: any[], hnData: any[], ghData: any[]) {
 
 function getEngagementTrends(data: any[], timeFilter: string) {
   const trends = data.map(item => ({
-    date: new Date(item.created_at).toISOString().split('T')[0],
-    engagement: item.votes_count + item.comments_count,
-    votes: item.votes_count,
-    comments: item.comments_count
+    date: new Date(item.created_at || new Date()).toISOString().split('T')[0],
+    engagement: (item.votes_count || 0) + (item.comments_count || 0),
+    votes: item.votes_count || 0,
+    comments: item.comments_count || 0
   }));
   
   return trends.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
@@ -174,25 +254,25 @@ function getCrossPlatformCorrelations(phData: any[], hnData: any[], ghData: any[
 function getMomentumAnalysis(phData: any[], hnData: any[]) {
   // Implementation for momentum analysis
   return {
-    phMomentum: phData.length > 0 ? phData.reduce((sum, item) => sum + item.votes_count, 0) / phData.length : 0,
-    hnMomentum: hnData.length > 0 ? hnData.reduce((sum, item) => sum + item.score, 0) / hnData.length : 0
+    phMomentum: phData.length > 0 ? phData.reduce((sum, item) => sum + (item.votes_count || 0), 0) / phData.length : 0,
+    hnMomentum: hnData.length > 0 ? hnData.reduce((sum, item) => sum + (item.score || 0), 0) / hnData.length : 0
   };
 }
 
 function getTopPerformers(phData: any[], hnData: any[], ghData: any[]) {
   return {
-    productHunt: phData.sort((a, b) => b.votes_count - a.votes_count).slice(0, 5),
-    hackerNews: hnData.sort((a, b) => b.score - a.score).slice(0, 5),
-    github: ghData.sort((a, b) => b.reviews_count - a.reviews_count).slice(0, 5)
+    productHunt: phData.sort((a, b) => (b.votes_count || 0) - (a.votes_count || 0)).slice(0, 5),
+    hackerNews: hnData.sort((a, b) => (b.score || 0) - (a.score || 0)).slice(0, 5),
+    github: ghData.sort((a, b) => (b.reviews_count || 0) - (a.reviews_count || 0)).slice(0, 5)
   };
 }
 
 function getEngagementMetrics(phData: any[], hnData: any[]) {
   return {
-    avgEngagement: phData.length > 0 ? phData.reduce((sum, item) => sum + item.votes_count + item.comments_count, 0) / phData.length : 0,
-    avgScore: hnData.length > 0 ? hnData.reduce((sum, item) => sum + item.score, 0) / hnData.length : 0,
-    highEngagement: phData.filter(item => item.votes_count > 500).length,
-    viralPosts: hnData.filter(item => item.score > 200).length
+    avgEngagement: phData.length > 0 ? phData.reduce((sum, item) => sum + (item.votes_count || 0) + (item.comments_count || 0), 0) / phData.length : 0,
+    avgScore: hnData.length > 0 ? hnData.reduce((sum, item) => sum + (item.score || 0), 0) / hnData.length : 0,
+    highEngagement: phData.filter(item => (item.votes_count || 0) > 500).length,
+    viralPosts: hnData.filter(item => (item.score || 0) > 200).length
   };
 }
 

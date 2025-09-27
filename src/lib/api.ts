@@ -1,4 +1,5 @@
 import { ProductHuntPost, HackerNewsPost, SaaSHubAlternative } from '@/types';
+import { withCache, cacheKeys, cacheTTL } from './api-cache';
 
 // Utility function to test API connectivity
 export async function testApiConnectivity(): Promise<{
@@ -51,202 +52,273 @@ export async function testApiConnectivity(): Promise<{
 
 // Product Hunt API - Using direct token authentication with fallback
 export async function fetchProductHuntPosts(): Promise<ProductHuntPost[]> {
-  try {
-    // Use the provided token directly
-    const accessToken = '0VaMMCJ2ILdKkpY52GI7utplq83BtbvzKLDVz_YUHE4';
+  return withCache(
+    cacheKeys.productHunt(),
+    async () => {
+      try {
+        // Use the provided token directly
+        const accessToken = '0VaMMCJ2ILdKkpY52GI7utplq83BtbvzKLDVz_YUHE4';
 
-    // Fetch posts with the access token
-    const response = await fetch('https://api.producthunt.com/v2/api/graphql', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify({
-        query: `
-          query {
-            posts(first: 50, order: VOTES) {
-              edges {
-                node {
-                  id
-                  name
-                  tagline
-                  description
-                  votesCount
-                  commentsCount
-                  createdAt
-                  thumbnail {
-                    url
-                  }
-                  user {
-                    name
-                    username
-                  }
-                  topics {
-                    edges {
-                      node {
+        // Create AbortController for timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
+        // Fetch posts with the access token
+        const response = await fetch('https://api.producthunt.com/v2/api/graphql', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({
+            query: `
+              query {
+                posts(first: 50, order: VOTES) {
+                  edges {
+                    node {
+                      id
+                      name
+                      tagline
+                      description
+                      votesCount
+                      commentsCount
+                      createdAt
+                      thumbnail {
+                        url
+                      }
+                      user {
                         name
+                        username
+                      }
+                      topics {
+                        edges {
+                          node {
+                            name
+                          }
+                        }
                       }
                     }
                   }
                 }
               }
-            }
-          }
-        `
-      })
-    });
+            `
+          }),
+          signal: controller.signal
+        });
 
-    console.log('Product Hunt API response status:', response.status);
-    console.log('Product Hunt API response headers:', Object.fromEntries(response.headers.entries()));
+        clearTimeout(timeoutId);
 
-    if (!response.ok) {
-      console.log('Product Hunt API failed:', response.status, response.statusText);
-      const errorText = await response.text();
-      console.log('Product Hunt API error response:', errorText);
-      console.log('🔄 Falling back to mock data for Product Hunt');
-      return getEnhancedMockProductHuntData();
-    }
+        console.log('Product Hunt API response status:', response.status);
+        console.log('Product Hunt API response headers:', Object.fromEntries(response.headers.entries()));
 
-    const data = await response.json();
-    console.log('Product Hunt API response data:', data);
-    
-    if (data.errors) {
-      console.log('Product Hunt API errors:', data.errors);
-      console.log('🔄 Falling back to mock data for Product Hunt');
-      return getEnhancedMockProductHuntData();
-    }
+        if (!response.ok) {
+          console.log('Product Hunt API failed:', response.status, response.statusText);
+          const errorText = await response.text();
+          console.log('Product Hunt API error response:', errorText);
+          console.log('🔄 Falling back to mock data for Product Hunt');
+          return getEnhancedMockProductHuntData();
+        }
 
-    const posts = data.data?.posts?.edges || [];
-    
-    if (posts.length === 0) {
-      console.log('No posts returned from Product Hunt API, using fallback data');
-      return getEnhancedMockProductHuntData();
-    }
+        const data = await response.json();
+        console.log('Product Hunt API response data:', data);
+        
+        if (data.errors) {
+          console.log('Product Hunt API errors:', data.errors);
+          console.log('🔄 Falling back to mock data for Product Hunt');
+          return getEnhancedMockProductHuntData();
+        }
 
-    console.log(`Successfully fetched ${posts.length} Product Hunt posts`);
+        const posts = data.data?.posts?.edges || [];
+        
+        if (posts.length === 0) {
+          console.log('No posts returned from Product Hunt API, using fallback data');
+          return getEnhancedMockProductHuntData();
+        }
 
-    return posts.map((edge: { node: Record<string, unknown> }) => ({
-      id: edge.node.id as number,
-      name: edge.node.name as string,
-      tagline: edge.node.tagline as string,
-      description: edge.node.description as string,
-      votes_count: edge.node.votesCount as number,
-      comments_count: edge.node.commentsCount as number,
-      created_at: edge.node.createdAt as string,
-      thumbnail: {
-        image_url: (edge.node.thumbnail as { url?: string })?.url || ''
-      },
-      user: {
-        name: (edge.node.user as { name: string }).name === "[REDACTED]" ? "Anonymous User" : (edge.node.user as { name: string }).name,
-        username: (edge.node.user as { username: string }).username === "[REDACTED]" ? "anonymous" : (edge.node.user as { username: string }).username
-      },
-      topics: (edge.node.topics as { edges: Array<{ node: { name: string } }> })?.edges?.map((topicEdge: { node: { name: string } }) => ({ name: topicEdge.node.name })) || []
-    }));
-  } catch (error) {
-    console.error('Error fetching Product Hunt data:', error);
-    console.log('🔄 Falling back to mock data for Product Hunt');
-    return getEnhancedMockProductHuntData();
-  }
+        console.log(`Successfully fetched ${posts.length} Product Hunt posts`);
+
+        return posts.map((edge: { node: Record<string, unknown> }) => ({
+          id: edge.node.id as number,
+          name: edge.node.name as string,
+          tagline: edge.node.tagline as string,
+          description: edge.node.description as string,
+          votes_count: edge.node.votesCount as number,
+          comments_count: edge.node.commentsCount as number,
+          created_at: edge.node.createdAt as string,
+          thumbnail: {
+            image_url: (edge.node.thumbnail as { url?: string })?.url || ''
+          },
+          user: {
+            name: (edge.node.user as { name: string }).name === "[REDACTED]" ? "Anonymous User" : (edge.node.user as { name: string }).name,
+            username: (edge.node.user as { username: string }).username === "[REDACTED]" ? "anonymous" : (edge.node.user as { username: string }).username
+          },
+          topics: (edge.node.topics as { edges: Array<{ node: { name: string } }> })?.edges?.map((topicEdge: { node: { name: string } }) => ({ name: topicEdge.node.name })) || []
+        }));
+      } catch (error) {
+        if (error.name === 'AbortError') {
+          console.error('Product Hunt API timeout:', error);
+        } else {
+          console.error('Error fetching Product Hunt data:', error);
+        }
+        console.log('🔄 Falling back to mock data for Product Hunt');
+        return getEnhancedMockProductHuntData();
+      }
+    },
+    cacheTTL.productHunt
+  );
 }
 
 // Hacker News API with fallback
 export async function fetchHackerNewsPosts(type: 'top' | 'new' | 'show' = 'top'): Promise<HackerNewsPost[]> {
-  try {
-    const response = await fetch(`https://hacker-news.firebaseio.com/v0/${type}stories.json`);
-    
-    console.log('Hacker News API response status:', response.status);
-    
-    if (!response.ok) {
-      console.log('Hacker News API failed:', response.status, response.statusText);
-      console.log('🔄 Falling back to mock data for Hacker News');
-      return getMockHackerNewsData();
-    }
-    
-    const storyIds = await response.json();
-    console.log('Hacker News story IDs:', storyIds?.length || 0);
-    
-    if (!Array.isArray(storyIds) || storyIds.length === 0) {
-      console.log('No story IDs returned from Hacker News API, using fallback data');
-      return getMockHackerNewsData();
-    }
-    
-    const stories = await Promise.all(
-      storyIds.slice(0, 50).map(async (id: number) => {
-        try {
-          const storyResponse = await fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`);
-          if (!storyResponse.ok) return null;
-          return storyResponse.json();
-        } catch (error) {
-          console.error(`Error fetching story ${id}:`, error);
-          return null;
+  return withCache(
+    cacheKeys.hackerNews(),
+    async () => {
+      try {
+        // Create AbortController for timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 second timeout
+
+        const response = await fetch(`https://hacker-news.firebaseio.com/v0/${type}stories.json`, {
+          signal: controller.signal
+        });
+        
+        clearTimeout(timeoutId);
+        
+        console.log('Hacker News API response status:', response.status);
+        
+        if (!response.ok) {
+          console.log('Hacker News API failed:', response.status, response.statusText);
+          console.log('🔄 Falling back to mock data for Hacker News');
+          return getMockHackerNewsData();
         }
-      })
-    );
+        
+        const storyIds = await response.json();
+        console.log('Hacker News story IDs:', storyIds?.length || 0);
+        
+        if (!Array.isArray(storyIds) || storyIds.length === 0) {
+          console.log('No story IDs returned from Hacker News API, using fallback data');
+          return getMockHackerNewsData();
+        }
+        
+        // Fetch stories with individual timeouts
+        const stories = await Promise.all(
+          storyIds.slice(0, 50).map(async (id: number) => {
+            try {
+              const storyController = new AbortController();
+              const storyTimeoutId = setTimeout(() => storyController.abort(), 5000); // 5 second timeout per story
+              
+              const storyResponse = await fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`, {
+                signal: storyController.signal
+              });
+              
+              clearTimeout(storyTimeoutId);
+              
+              if (!storyResponse.ok) return null;
+              return storyResponse.json();
+            } catch (error) {
+              if (error.name === 'AbortError') {
+                console.error(`Timeout fetching story ${id}`);
+              } else {
+                console.error(`Error fetching story ${id}:`, error);
+              }
+              return null;
+            }
+          })
+        );
 
-    const validStories = stories.filter(story => story && story.type === 'story');
-    console.log('Hacker News valid stories:', validStories.length);
-    
-    if (validStories.length === 0) {
-      console.log('No valid stories returned from Hacker News API, using fallback data');
-      return getMockHackerNewsData();
-    }
+        const validStories = stories.filter(story => story && story.type === 'story');
+        console.log('Hacker News valid stories:', validStories.length);
+        
+        if (validStories.length === 0) {
+          console.log('No valid stories returned from Hacker News API, using fallback data');
+          return getMockHackerNewsData();
+        }
 
-    console.log(`Successfully fetched ${validStories.length} Hacker News stories`);
-    return validStories;
-  } catch (error) {
-    console.error('Error fetching Hacker News data:', error);
-    console.log('🔄 Falling back to mock data for Hacker News');
-    return getMockHackerNewsData();
-  }
+        console.log(`Successfully fetched ${validStories.length} Hacker News stories`);
+        return validStories;
+      } catch (error) {
+        if (error.name === 'AbortError') {
+          console.error('Hacker News API timeout:', error);
+        } else {
+          console.error('Error fetching Hacker News data:', error);
+        }
+        console.log('🔄 Falling back to mock data for Hacker News');
+        return getMockHackerNewsData();
+      }
+    },
+    cacheTTL.hackerNews
+  );
 }
 
 // SaaSHub API (GitHub implementation with fallback)
 export async function fetchSaaSHubAlternatives(category?: string): Promise<SaaSHubAlternative[]> {
-  try {
-    // Since SaaSHub doesn't have a public API, we'll use GitHub API
-    // to get trending open source tools and SaaS alternatives
-    const response = await fetch('https://api.github.com/search/repositories?q=stars:>1000+language:javascript+language:typescript+language:python&sort=stars&order=desc&per_page=60');
-    
-    console.log('GitHub API response status:', response.status);
-    
-    if (!response.ok) {
-      console.log('GitHub API failed:', response.status, response.statusText);
-      console.log('🔄 Falling back to mock data for SaaSHub');
-      return getMockSaaSHubData(category);
-    }
+  return withCache(
+    cacheKeys.saashub(),
+    async () => {
+      try {
+        // Since SaaSHub doesn't have a public API, we'll use GitHub API
+        // to get trending open source tools and SaaS alternatives
+        
+        // Create AbortController for timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 12000); // 12 second timeout
 
-    const data = await response.json();
-    const repositories = data.items || [];
-    console.log('GitHub repositories:', repositories.length);
-    
-    if (repositories.length === 0) {
-      console.log('No repositories returned from GitHub API, using fallback data');
-      return getMockSaaSHubData(category);
-    }
+        const response = await fetch('https://api.github.com/search/repositories?q=stars:>1000+language:javascript+language:typescript+language:python&sort=stars&order=desc&per_page=60', {
+          signal: controller.signal,
+          headers: {
+            'Accept': 'application/vnd.github.v3+json',
+            'User-Agent': 'SaaS-Dashboard/1.0'
+          }
+        });
+        
+        clearTimeout(timeoutId);
+        
+        console.log('GitHub API response status:', response.status);
+        
+        if (!response.ok) {
+          console.log('GitHub API failed:', response.status, response.statusText);
+          console.log('🔄 Falling back to mock data for SaaSHub');
+          return getMockSaaSHubData(category);
+        }
 
-    console.log(`Successfully fetched ${repositories.length} GitHub repositories`);
+        const data = await response.json();
+        const repositories = data.items || [];
+        console.log('GitHub repositories:', repositories.length);
+        
+        if (repositories.length === 0) {
+          console.log('No repositories returned from GitHub API, using fallback data');
+          return getMockSaaSHubData(category);
+        }
 
-    return repositories.map((repo: any) => ({
-      id: repo.id.toString(),
-      name: repo.name,
-      description: repo.description || 'No description available',
-      website_url: repo.html_url,
-      logo_url: repo.owner.avatar_url,
-      pricing: "Open Source",
-      category: "Open Source Tools",
-      features: repo.topics || [],
-      pros: ["Open Source", "Active Development", "Community Driven"],
-      cons: ["Requires Technical Knowledge", "Self-hosted"],
-      rating: Math.min(5, (repo.stargazers_count / 1000) * 0.5 + 3), // Convert stars to rating
-      reviews_count: repo.stargazers_count
-    }));
-  } catch (error) {
-    console.error('Error fetching GitHub data:', error);
-    console.log('🔄 Falling back to mock data for SaaSHub');
-    return getMockSaaSHubData(category);
-  }
+        console.log(`Successfully fetched ${repositories.length} GitHub repositories`);
+
+        return repositories.map((repo: any) => ({
+          id: repo.id.toString(),
+          name: repo.name,
+          description: repo.description || 'No description available',
+          website_url: repo.html_url,
+          logo_url: repo.owner.avatar_url,
+          pricing: "Open Source",
+          category: "Open Source Tools",
+          features: repo.topics || [],
+          pros: ["Open Source", "Active Development", "Community Driven"],
+          cons: ["Requires Technical Knowledge", "Self-hosted"],
+          rating: Math.min(5, (repo.stargazers_count / 1000) * 0.5 + 3), // Convert stars to rating
+          reviews_count: repo.stargazers_count
+        }));
+      } catch (error) {
+        if (error.name === 'AbortError') {
+          console.error('GitHub API timeout:', error);
+        } else {
+          console.error('Error fetching GitHub data:', error);
+        }
+        console.log('🔄 Falling back to mock data for SaaSHub');
+        return getMockSaaSHubData(category);
+      }
+    },
+    cacheTTL.saashub
+  );
 }
 
 // Enhanced mock data with more items and time-aware data

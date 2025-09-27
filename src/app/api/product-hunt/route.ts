@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { fetchProductHuntPosts } from '@/lib/api';
+import { apiManager } from '@/lib/api-manager';
+import { rateLimiter } from '@/lib/rate-limiter';
 
 export async function GET(request: Request) {
   try {
@@ -16,7 +17,23 @@ export async function GET(request: Request) {
       timeFilter, page, limit, sortBy, sortOrder, category, minVotes
     });
     
-    const data = await fetchProductHuntPosts();
+    // Check rate limits before making the call
+    const canCall = rateLimiter.canMakeCall('producthunt');
+    if (!canCall.allowed) {
+      console.warn(`🚨 Rate limit exceeded for Product Hunt: ${canCall.reason}`);
+      return NextResponse.json({
+        error: 'Rate limit exceeded',
+        message: canCall.reason,
+        retryAfter: canCall.retryAfter,
+        rateLimitStatus: rateLimiter.getStatus('producthunt')
+      }, { status: 429 });
+    }
+    
+    const response = await apiManager.fetchProductHuntPosts({
+      timeFilter, page, limit, sortBy, sortOrder, category, minVotes
+    });
+    
+    const data = response.data;
     
     // Ensure we have an array
     const safeData = Array.isArray(data) ? data : [];
