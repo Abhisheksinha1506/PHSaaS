@@ -20,14 +20,14 @@ export async function testApiConnectivity(): Promise<{
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Authorization': 'Bearer 0VaMMCJ2ILdKkpY52GI7utplq83BtbvzKLDVz_YUHE4',
+        'Authorization': `Bearer ${process.env.PRODUCT_HUNT_API_TOKEN || '0VaMMCJ2ILdKkpY52GI7utplq83BtbvzKLDVz_YUHE4'}`,
       },
       body: JSON.stringify({
         query: 'query { posts(first: 1) { edges { node { id name } } } }'
       })
     });
     results.productHunt = response.ok;
-  } catch (error) {
+  } catch (error: unknown) {
     console.log('Product Hunt API test failed:', error);
   }
 
@@ -35,7 +35,7 @@ export async function testApiConnectivity(): Promise<{
   try {
     const response = await fetch('https://hacker-news.firebaseio.com/v0/topstories.json');
     results.hackerNews = response.ok;
-  } catch (error) {
+  } catch (error: unknown) {
     console.log('Hacker News API test failed:', error);
   }
 
@@ -43,7 +43,7 @@ export async function testApiConnectivity(): Promise<{
   try {
     const response = await fetch('https://api.github.com/search/repositories?q=stars:>1000&per_page=1');
     results.github = response.ok;
-  } catch (error) {
+  } catch (error: unknown) {
     console.log('GitHub API test failed:', error);
   }
 
@@ -56,8 +56,12 @@ export async function fetchProductHuntPosts(): Promise<ProductHuntPost[]> {
     cacheKeys.productHunt(),
     async () => {
       try {
-        // Use the provided token directly
-        const accessToken = '0VaMMCJ2ILdKkpY52GI7utplq83BtbvzKLDVz_YUHE4';
+        // Use environment variable for API token
+        const accessToken = process.env.PRODUCT_HUNT_API_TOKEN;
+
+        if (!accessToken) {
+          throw new Error('PRODUCT_HUNT_API_TOKEN environment variable is not set');
+        }
 
         // Create AbortController for timeout
         const controller = new AbortController();
@@ -155,8 +159,8 @@ export async function fetchProductHuntPosts(): Promise<ProductHuntPost[]> {
           },
           topics: (edge.node.topics as { edges: Array<{ node: { name: string } }> })?.edges?.map((topicEdge: { node: { name: string } }) => ({ name: topicEdge.node.name })) || []
         }));
-      } catch (error) {
-        if (error.name === 'AbortError') {
+      } catch (error: unknown) {
+        if (error instanceof Error && error.name === 'AbortError') {
           console.error('Product Hunt API timeout:', error);
         } else {
           console.error('Error fetching Product Hunt data:', error);
@@ -217,7 +221,7 @@ export async function fetchHackerNewsPosts(type: 'top' | 'new' | 'show' = 'top')
               if (!storyResponse.ok) return null;
               return storyResponse.json();
             } catch (error) {
-              if (error.name === 'AbortError') {
+              if (error instanceof Error && error.name === 'AbortError') {
                 console.error(`Timeout fetching story ${id}`);
               } else {
                 console.error(`Error fetching story ${id}:`, error);
@@ -237,8 +241,8 @@ export async function fetchHackerNewsPosts(type: 'top' | 'new' | 'show' = 'top')
 
         console.log(`Successfully fetched ${validStories.length} Hacker News stories`);
         return validStories;
-      } catch (error) {
-        if (error.name === 'AbortError') {
+      } catch (error: unknown) {
+        if (error instanceof Error && error.name === 'AbortError') {
           console.error('Hacker News API timeout:', error);
         } else {
           console.error('Error fetching Hacker News data:', error);
@@ -293,7 +297,21 @@ export async function fetchSaaSHubAlternatives(category?: string): Promise<SaaSH
 
         console.log(`Successfully fetched ${repositories.length} GitHub repositories`);
 
-        return repositories.map((repo: any) => ({
+        return repositories.map((repo: {
+          id: number;
+          name: string;
+          description: string | null;
+          html_url: string;
+          stargazers_count: number;
+          language: string | null;
+          created_at: string;
+          updated_at: string;
+          topics?: string[];
+          owner: {
+            login: string;
+            avatar_url: string;
+          };
+        }) => ({
           id: repo.id.toString(),
           name: repo.name,
           description: repo.description || 'No description available',
@@ -307,8 +325,8 @@ export async function fetchSaaSHubAlternatives(category?: string): Promise<SaaSH
           rating: Math.min(5, (repo.stargazers_count / 1000) * 0.5 + 3), // Convert stars to rating
           reviews_count: repo.stargazers_count
         }));
-      } catch (error) {
-        if (error.name === 'AbortError') {
+      } catch (error: unknown) {
+        if (error instanceof Error && error.name === 'AbortError') {
           console.error('GitHub API timeout:', error);
         } else {
           console.error('Error fetching GitHub data:', error);
@@ -494,7 +512,7 @@ function getEnhancedMockProductHuntData(): ProductHuntPost[] {
 }
 
 // Mock data functions
-function getMockProductHuntData(): ProductHuntPost[] {
+export function getMockProductHuntData(): ProductHuntPost[] {
   return [
     {
       id: 1,
