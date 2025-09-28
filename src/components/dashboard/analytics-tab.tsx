@@ -442,18 +442,18 @@ export function AnalyticsTab({ timeFilter, setTimeFilter }: AnalyticsTabProps) {
                   <div className="grid gap-4 md:grid-cols-3">
                     {Object.entries(analyticsData.trends.trendingTechnologies).map(([tech, data]) => (
                       <div key={tech} className="p-4 border rounded-lg">
-                        <h4 className="font-medium text-foreground capitalize">{tech}</h4>
+                        <h4 className="font-medium text-card-foreground capitalize">{tech}</h4>
                         <div className="mt-2 space-y-1">
                           <div className="flex justify-between text-sm">
-                            <span className="text-foreground">Momentum:</span>
+                            <span className="text-card-foreground">Momentum:</span>
                             <span className="font-medium">{data.momentum}%</span>
                           </div>
                           <div className="flex justify-between text-sm">
-                            <span className="text-foreground">Growth:</span>
+                            <span className="text-card-foreground">Growth:</span>
                             <span className="font-medium">{data.growth}%</span>
                           </div>
                           <div className="flex justify-between text-sm">
-                            <span className="text-foreground">Cross-Platform:</span>
+                            <span className="text-card-foreground">Cross-Platform:</span>
                             <Badge variant={data.crossPlatform ? 'default' : 'secondary'}>
                               {data.crossPlatform ? 'Yes' : 'No'}
                             </Badge>
@@ -478,8 +478,8 @@ export function AnalyticsTab({ timeFilter, setTimeFilter }: AnalyticsTabProps) {
                     {analyticsData.trends.marketGaps.map((gap, index) => (
                       <div key={gap.category} className="flex items-center justify-between p-3 border rounded-lg">
                         <div>
-                          <h4 className="font-medium text-foreground">{gap.category}</h4>
-                          <div className="flex gap-4 text-sm text-foreground">
+                          <h4 className="font-medium text-card-foreground">{gap.category}</h4>
+                          <div className="flex gap-4 text-sm text-card-foreground">
                             <span>Opportunity: {gap.opportunity}%</span>
                             <span>Competition: {gap.competition}%</span>
                           </div>
@@ -507,19 +507,19 @@ export function AnalyticsTab({ timeFilter, setTimeFilter }: AnalyticsTabProps) {
                       <div className="text-2xl font-bold text-blue-600">
                         {formatPercentage(analyticsData.trends.crossPlatformCorrelations.correlation * 100)}
                       </div>
-                      <div className="text-sm text-foreground">Correlation</div>
+                      <div className="text-sm text-card-foreground">Correlation</div>
                     </div>
                     <div className="text-center p-4 border rounded-lg">
                       <div className="text-2xl font-bold text-green-600">
                         {analyticsData.trends.crossPlatformCorrelations.sharedTopics}
                       </div>
-                      <div className="text-sm text-foreground">Shared Topics</div>
+                      <div className="text-sm text-card-foreground">Shared Topics</div>
                     </div>
                     <div className="text-center p-4 border rounded-lg">
                       <div className="text-2xl font-bold text-purple-600">
                         {analyticsData.trends.crossPlatformCorrelations.crossPlatformTrends}
                       </div>
-                      <div className="text-sm text-foreground">Cross-Platform Trends</div>
+                      <div className="text-sm text-card-foreground">Cross-Platform Trends</div>
                     </div>
                   </div>
                 </CardContent>
@@ -544,19 +544,19 @@ export function AnalyticsTab({ timeFilter, setTimeFilter }: AnalyticsTabProps) {
                   <CardContent>
                     <div className="space-y-3">
                       <div className="flex justify-between">
-                        <span className="text-foreground">Avg Engagement:</span>
+                        <span className="text-card-foreground">Avg Engagement:</span>
                         <span className="font-medium">{formatNumber(analyticsData.performance.engagementMetrics.avgEngagement)}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-foreground">Avg Score:</span>
+                        <span className="text-card-foreground">Avg Score:</span>
                         <span className="font-medium">{formatNumber(analyticsData.performance.engagementMetrics.avgScore)}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-foreground">High Engagement:</span>
+                        <span className="text-card-foreground">High Engagement:</span>
                         <span className="font-medium">{analyticsData.performance.engagementMetrics.highEngagement}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-foreground">Viral Posts:</span>
+                        <span className="text-card-foreground">Viral Posts:</span>
                         <span className="font-medium">{analyticsData.performance.engagementMetrics.viralPosts}</span>
                       </div>
                     </div>
@@ -573,15 +573,15 @@ export function AnalyticsTab({ timeFilter, setTimeFilter }: AnalyticsTabProps) {
                   <CardContent>
                     <div className="space-y-3">
                       <div className="flex justify-between">
-                        <span className="text-foreground">Product Hunt:</span>
+                        <span className="text-card-foreground">Product Hunt:</span>
                         <span className="font-medium text-green-600">+{analyticsData.performance.growthRates.phGrowth}%</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-foreground">Hacker News:</span>
+                        <span className="text-card-foreground">Hacker News:</span>
                         <span className="font-medium text-green-600">+{analyticsData.performance.growthRates.hnGrowth}%</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-foreground">GitHub:</span>
+                        <span className="text-card-foreground">GitHub:</span>
                         <span className="font-medium text-green-600">+{analyticsData.performance.growthRates.ghGrowth}%</span>
                       </div>
                     </div>
@@ -600,11 +600,11 @@ export function AnalyticsTab({ timeFilter, setTimeFilter }: AnalyticsTabProps) {
                 <CardContent>
                   <div className="grid gap-4 md:grid-cols-2">
                     <div>
-                      <h4 className="font-medium text-foreground mb-2">Optimal Timing</h4>
-                      <p className="text-sm text-foreground">{analyticsData.performance.successFactors.timing}</p>
+                      <h4 className="font-medium text-card-foreground mb-2">Optimal Timing</h4>
+                      <p className="text-sm text-card-foreground">{analyticsData.performance.successFactors.timing}</p>
                     </div>
                     <div>
-                      <h4 className="font-medium text-foreground mb-2">Top Categories</h4>
+                      <h4 className="font-medium text-card-foreground mb-2">Top Categories</h4>
                       <div className="flex flex-wrap gap-1">
                         {analyticsData.performance.successFactors.categories.map(category => (
                           <Badge key={category} variant="secondary" className="text-xs">{category}</Badge>
@@ -612,12 +612,12 @@ export function AnalyticsTab({ timeFilter, setTimeFilter }: AnalyticsTabProps) {
                       </div>
                     </div>
                     <div>
-                      <h4 className="font-medium text-foreground mb-2">Engagement Strategy</h4>
-                      <p className="text-sm text-foreground">{analyticsData.performance.successFactors.engagement}</p>
+                      <h4 className="font-medium text-card-foreground mb-2">Engagement Strategy</h4>
+                      <p className="text-sm text-card-foreground">{analyticsData.performance.successFactors.engagement}</p>
                     </div>
                     <div>
-                      <h4 className="font-medium text-foreground mb-2">Trending Topics</h4>
-                      <p className="text-sm text-foreground">{analyticsData.performance.successFactors.topics}</p>
+                      <h4 className="font-medium text-card-foreground mb-2">Trending Topics</h4>
+                      <p className="text-sm text-card-foreground">{analyticsData.performance.successFactors.topics}</p>
                     </div>
                   </div>
                 </CardContent>

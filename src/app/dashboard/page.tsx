@@ -12,7 +12,6 @@ import { DevPulseTab } from "@/components/dashboard/dev-pulse-tab";
 import { LaunchIntelTab } from "@/components/dashboard/launch-intel-tab";
 import { TimeFilter } from "@/components/dashboard/time-filter";
 import { EnhancedDashboard } from "@/components/dashboard/enhanced-dashboard";
-import { OptimizationDashboard } from "@/components/dashboard/optimization-dashboard";
 
 export default function DashboardPage() {
   const [productHuntData, setProductHuntData] = useState<ProductHuntPost[]>([]);
@@ -223,7 +222,7 @@ export default function DashboardPage() {
         <TimeFilter timeFilter={timeFilter} setTimeFilter={setTimeFilter} />
 
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-5 h-14 bg-white dark:bg-slate-800 p-1 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
+              <TabsList className="grid w-full grid-cols-4 h-14 bg-white dark:bg-slate-800 p-1 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
                 <TabsTrigger value="trend-tracker" className="flex-1 h-12 rounded-xl bg-transparent hover:bg-slate-50 dark:hover:bg-slate-700 transition-all duration-300 data-[state=active]:bg-slate-900 data-[state=active]:text-white dark:data-[state=active]:bg-white dark:data-[state=active]:text-slate-900 font-medium text-slate-500 dark:text-slate-400">
                   <TrendingUp className="h-4 w-4 mr-2" />
                   TrendTracker Pro
@@ -239,10 +238,6 @@ export default function DashboardPage() {
                 <TabsTrigger value="enhanced" className="flex-1 h-12 rounded-xl bg-transparent hover:bg-slate-50 dark:hover:bg-slate-700 transition-all duration-300 data-[state=active]:bg-slate-900 data-[state=active]:text-white dark:data-[state=active]:bg-white dark:data-[state=active]:text-slate-900 font-medium text-slate-500 dark:text-slate-400">
                   <Sparkles className="h-4 w-4 mr-2" />
                   Enhanced
-                </TabsTrigger>
-                <TabsTrigger value="optimization" className="flex-1 h-12 rounded-xl bg-transparent hover:bg-slate-50 dark:hover:bg-slate-700 transition-all duration-300 data-[state=active]:bg-slate-900 data-[state=active]:text-white dark:data-[state=active]:bg-white dark:data-[state=active]:text-slate-900 font-medium text-slate-500 dark:text-slate-400">
-                  <Settings className="h-4 w-4 mr-2" />
-                  Optimization
                 </TabsTrigger>
               </TabsList>
 
@@ -282,9 +277,6 @@ export default function DashboardPage() {
                 />
               </TabsContent>
 
-              <TabsContent value="optimization" className="mt-6">
-                <OptimizationDashboard />
-              </TabsContent>
             </Tabs>
       </div>
     </div>

@@ -396,8 +396,8 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
     <div className="space-y-6">
       {/* Header */}
       <div className="mb-6">
-          <h2 className="text-2xl font-bold text-foreground">LaunchIntel</h2>
-          <p className="text-foreground">Product launch intelligence and market timing</p>
+          <h2 className="text-2xl font-bold text-card-foreground">LaunchIntel</h2>
+          <p className="text-muted-foreground">Product launch intelligence and market timing</p>
       </div>
 
       {/* Analytics Launch Insights */}
@@ -412,29 +412,29 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
           <CardContent>
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-3">
-                <h4 className="font-semibold text-foreground">Launch Performance</h4>
+                <h4 className="font-semibold text-card-foreground">Launch Performance</h4>
                 <div className="space-y-2">
                   <div className="flex justify-between">
-                    <span className="text-foreground">Total Launches:</span>
+                    <span className="text-card-foreground">Total Launches:</span>
                     <span className="font-medium text-blue-600">{analyticsData.overview.totalLaunches}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-foreground">Avg Engagement:</span>
+                    <span className="text-card-foreground">Avg Engagement:</span>
                     <span className="font-medium text-green-600">{analyticsData.overview.avgVotes} votes</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-foreground">Avg Comments:</span>
+                    <span className="text-card-foreground">Avg Comments:</span>
                     <span className="font-medium text-purple-600">{Math.round(analyticsData.overview.avgVotes * 0.1)} comments</span>
                   </div>
                 </div>
               </div>
               
               <div className="space-y-3">
-                <h4 className="font-semibold text-foreground">Market Trends</h4>
+                <h4 className="font-semibold text-card-foreground">Market Trends</h4>
                 <div className="space-y-1">
                   {analyticsData.overview.topCategories.slice(0, 3).map((category, index) => (
                     <div key={category.name} className="flex items-center justify-between">
-                      <span className="text-sm text-foreground">{category.name}</span>
+                      <span className="text-sm text-card-foreground">{category.name}</span>
                       <Badge variant="secondary" className="text-xs">{category.count} launches</Badge>
                     </div>
                   ))}
@@ -456,7 +456,7 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-foreground">{rec.description}</p>
+              <p className="text-sm text-card-foreground">{rec.description}</p>
             </CardContent>
           </Card>
         ))}
@@ -471,7 +471,7 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
             className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
               selectedMetric === metric.id
                 ? 'bg-blue-600 text-white'
-                : 'bg-gray-100 dark:bg-gray-800 text-foreground hover:bg-gray-200 dark:hover:bg-gray-700'
+                : 'bg-gray-100 dark:bg-gray-800 text-card-foreground hover:bg-gray-200 dark:hover:bg-gray-700'
             }`}
           >
             <metric.icon className="h-4 w-4" />
@@ -490,7 +490,7 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
                 <TrendingUp className="h-5 w-5" />
                 All Product Hunt Launches
               </CardTitle>
-              <p className="text-sm text-foreground">Recent launches sorted by engagement</p>
+              <p className="text-sm text-muted-foreground">Recent launches sorted by engagement</p>
             </CardHeader>
             <CardContent>
               <div className="space-y-3 max-h-96 overflow-y-auto">
@@ -504,23 +504,23 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
                           href={`https://www.producthunt.com/posts/${item.name.toLowerCase().replace(/[^a-z0-9\s]+/g, '').replace(/\s+/g, '-').replace(/^-+|-+$/g, '')}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="block hover:bg-gray-50 hover:bg-gray-800 rounded p-2 -m-2 transition-colors"
+                          className="block hover:bg-accent rounded p-2 -m-2 transition-colors"
                         >
-                          <h3 className="font-semibold text-foreground hover:text-blue-600 transition-colors cursor-pointer">
+                            <h3 className="font-semibold text-card-foreground hover:text-primary transition-colors cursor-pointer">
                             {item.name}
-                            <span className="ml-2 text-xs text-foreground">↗</span>
+                            <span className="ml-2 text-xs text-card-foreground">↗</span>
                           </h3>
-                          <p className="text-sm text-foreground">{item.tagline}</p>
+                          <p className="text-sm text-muted-foreground">{item.tagline}</p>
                         </a>
                         <div className="flex gap-3 mt-1 text-xs">
                           <span className="text-blue-600">{item.votes_count} votes</span>
                           <span className="text-green-600">{item.comments_count} comments</span>
-                          <span className="text-foreground">by {item.user.name}</span>
+                          <span className="text-card-foreground">by {item.user.name}</span>
                         </div>
                         {item.topics.length > 0 && (
                           <div className="flex gap-1 mt-2">
                             {item.topics.slice(0, 3).map((topic, idx) => (
-                              <span key={idx} className="text-xs bg-gray-100 bg-gray-700 px-2 py-1 rounded">
+                              <span key={idx} className="text-xs bg-muted px-2 py-1 rounded">
                                 {topic.name}
                               </span>
                             ))}
@@ -528,15 +528,15 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
                         )}
                       </div>
                       <div className="text-right">
-                        <div className="text-lg font-bold text-foreground">
+                        <div className="text-lg font-bold text-card-foreground">
                           {item.votes_count + item.comments_count}
                         </div>
-                        <div className="text-sm text-foreground">total engagement</div>
+                        <div className="text-sm text-muted-foreground">total engagement</div>
                       </div>
                     </div>
                   ))}
                 {productHuntData.length === 0 && (
-                  <div className="text-center py-8 text-foreground">
+                  <div className="text-center py-8 text-card-foreground">
                     <p>No Product Hunt data available</p>
                   </div>
                 )}
@@ -567,13 +567,13 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
                           href={`https://www.producthunt.com/posts/${item.name.toLowerCase().replace(/[^a-z0-9\s]+/g, '').replace(/\s+/g, '-').replace(/^-+|-+$/g, '')}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="block hover:bg-gray-50 hover:bg-gray-800 rounded p-2 -m-2 transition-colors"
+                          className="block hover:bg-accent rounded p-2 -m-2 transition-colors"
                         >
-                          <h3 className="font-semibold text-foreground hover:text-blue-600 transition-colors cursor-pointer">
+                            <h3 className="font-semibold text-card-foreground hover:text-primary transition-colors cursor-pointer">
                             {item.name}
-                            <span className="ml-2 text-xs text-foreground">↗</span>
+                            <span className="ml-2 text-xs text-card-foreground">↗</span>
                           </h3>
-                          <p className="text-sm text-foreground">{item.tagline}</p>
+                          <p className="text-sm text-muted-foreground">{item.tagline}</p>
                         </a>
                         <div className="flex gap-2 mt-1">
                           <span className="text-xs text-blue-600">{item.votes_count} votes</span>
@@ -581,8 +581,8 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="text-lg font-bold text-foreground">{item.votes_count}</div>
-                        <div className="text-sm text-foreground">votes</div>
+                        <div className="text-lg font-bold text-card-foreground">{item.votes_count}</div>
+                        <div className="text-sm text-card-foreground">votes</div>
                       </div>
                     </div>
                   ))}
@@ -590,7 +590,7 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
                 {/* If no high engagement products, show top products by votes */}
                 {productHuntData.filter(item => item.votes_count > (successPredictors.thresholds?.votes || 20) && item.comments_count > (successPredictors.thresholds?.comments || 2)).length === 0 && (
                   <>
-                    <div className="text-center py-2 text-foreground text-sm">
+                    <div className="text-center py-2 text-card-foreground text-sm">
                       <p>No products meet both vote and comment thresholds</p>
                       <p className="text-xs">Showing top products by votes instead:</p>
                     </div>
@@ -600,16 +600,16 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
                       .map((item, index) => (
                         <div key={item.id} className="flex items-center justify-between p-3 border rounded-lg hover:shadow-sm transition-shadow bg-gray-50 bg-gray-800">
                       <div>
-                        <h3 className="font-semibold text-foreground">{item.name}</h3>
-                        <p className="text-sm text-foreground">{item.tagline}</p>
+                        <h3 className="font-semibold text-card-foreground">{item.name}</h3>
+                        <p className="text-sm text-card-foreground">{item.tagline}</p>
                             <div className="flex gap-2 mt-1">
                               <span className="text-xs text-blue-600">{item.votes_count} votes</span>
                               <span className="text-xs text-green-600">{item.comments_count} comments</span>
                             </div>
                       </div>
                       <div className="text-right">
-                        <div className="text-lg font-bold text-foreground">{item.votes_count}</div>
-                        <div className="text-sm text-foreground">votes</div>
+                        <div className="text-lg font-bold text-card-foreground">{item.votes_count}</div>
+                        <div className="text-sm text-card-foreground">votes</div>
                       </div>
                     </div>
                   ))}
@@ -618,7 +618,7 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
                 
                 {/* Final fallback if no data at all */}
                 {productHuntData.length === 0 && (
-                  <div className="text-center py-4 text-foreground">
+                  <div className="text-center py-4 text-card-foreground">
                     <p>No Product Hunt data available</p>
                     <p className="text-sm">Check back later for new launches</p>
                   </div>
@@ -643,18 +643,18 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
                   .map((item, index) => (
                     <div key={item.id} className="flex items-center justify-between p-3 border rounded-lg hover:shadow-sm transition-shadow">
                       <div className="flex-1">
-                        <div className="hover:bg-gray-50 hover:bg-gray-800 rounded p-2 -m-2">
+                        <div className="hover:bg-accent rounded p-2 -m-2">
                           <a 
                             href={`https://news.ycombinator.com/item?id=${item.id}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="block"
                           >
-                            <h3 className="font-semibold text-foreground line-clamp-2 hover:text-blue-600 transition-colors">
+                            <h3 className="font-semibold text-card-foreground line-clamp-2 hover:text-primary transition-colors">
                               {item.title}
                             </h3>
                           </a>
-                          <div className="flex items-center gap-3 mt-1 text-sm text-foreground">
+                          <div className="flex items-center gap-3 mt-1 text-sm text-card-foreground">
                             <span>Score: {item.score}</span>
                             <span>•</span>
                             <span>by {item.by}</span>
@@ -665,7 +665,7 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
                                   href={item.url}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="text-blue-600 hover:text-blue-800 text-blue-400 hover:text-blue-300"
+                                  className="text-primary hover:text-primary/80"
                                 >
                                   View Article
                                 </a>
@@ -675,13 +675,13 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="text-lg font-bold text-foreground">{item.descendants || 0}</div>
-                        <div className="text-sm text-foreground">comments</div>
+                        <div className="text-lg font-bold text-card-foreground">{item.descendants || 0}</div>
+                        <div className="text-sm text-card-foreground">comments</div>
                       </div>
                     </div>
                   ))}
                 {hackerNewsData.filter(item => (item.descendants || 0) > 5).length === 0 && (
-                  <div className="text-center py-4 text-foreground">
+                  <div className="text-center py-4 text-card-foreground">
                     <p>No high discussion posts found</p>
                     <p className="text-sm">Threshold: 5+ comments</p>
                   </div>
@@ -704,38 +704,26 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
                 <Calendar className="h-5 w-5" />
                 Best Launch Days
               </CardTitle>
-                <p className="text-sm text-foreground">Based on {productHuntData.length} total launches, {productHuntData.filter(item => (item.votes_count + item.comments_count) >= 500).length} high engagement (500+)</p>
+                <p className="text-sm text-card-foreground">Based on {productHuntData.length} total launches, {productHuntData.filter(item => (item.votes_count + item.comments_count) >= 500).length} high engagement (500+)</p>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
                   {launchTiming.bestDays.map((dayData, index) => (
-                    <div key={dayData.day} className="flex items-center justify-between p-3 border rounded-lg relative">
-                      {/* Info Icon */}
-                      <button
-                        onClick={() => {
-                          setSelectedTimingData({type: 'day', data: dayData});
-                          setShowTimingDetailsModal(true);
-                        }}
-                        className="absolute top-2 right-2 p-1 hover:bg-gray-100 hover:bg-gray-700 rounded-full transition-colors z-10"
-                        title="View detailed timing information"
-                      >
-                        <Info className="h-3 w-3 text-foreground hover:text-foreground" />
-                      </button>
-                      
-                    <div className="flex items-center gap-3 pr-6">
+                    <div key={dayData.day} className="flex items-center justify-between p-3 border rounded-lg">
+                    <div className="flex items-center gap-3">
                       <div className="w-8 h-8 bg-blue-100 bg-blue-900 rounded-full flex items-center justify-center">
                         <span className="text-sm font-bold text-blue-600 text-blue-300">{index + 1}</span>
                       </div>
                         <div>
-                          <span className="font-semibold text-foreground">{dayData.day}</span>
-                          <div className="text-xs text-foreground">
+                          <span className="font-semibold text-card-foreground">{dayData.day}</span>
+                          <div className="text-xs text-card-foreground">
                             {dayData.count} launches • {dayData.avgVotes} avg votes
                     </div>
                         </div>
                       </div>
                       <div className="text-right">
                     <Badge variant="default">Optimal</Badge>
-                        <div className="text-xs text-foreground mt-1">{dayData.score} total engagement</div>
+                        <div className="text-xs text-card-foreground mt-1">{dayData.score} total engagement</div>
                       </div>
                   </div>
                 ))}
@@ -749,25 +737,13 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
                 <Clock className="h-5 w-5" />
                 Best Launch Times
               </CardTitle>
-                <p className="text-sm text-foreground">Peak engagement time slots</p>
+                <p className="text-sm text-card-foreground">Peak engagement time slots</p>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
                   {launchTiming.bestTimes.map((timeData, index) => (
-                    <div key={timeData.time} className="flex items-center justify-between p-3 border rounded-lg relative">
-                      {/* Info Icon */}
-                      <button
-                        onClick={() => {
-                          setSelectedTimingData({type: 'time', data: timeData});
-                          setShowTimingDetailsModal(true);
-                        }}
-                        className="absolute top-2 right-2 p-1 hover:bg-gray-100 hover:bg-gray-700 rounded-full transition-colors z-10"
-                        title="View detailed timing information"
-                      >
-                        <Info className="h-3 w-3 text-foreground hover:text-foreground" />
-                      </button>
-                      
-                    <div className="flex items-center gap-3 pr-6">
+                    <div key={timeData.time} className="flex items-center justify-between p-3 border rounded-lg">
+                    <div className="flex items-center gap-3">
                         <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
                           timeData.count > 0 
                             ? 'bg-green-100 bg-green-900' 
@@ -776,12 +752,12 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
                           <span className={`text-sm font-bold ${
                             timeData.count > 0 
                               ? 'text-green-600 text-green-300' 
-                              : 'text-foreground'
+                              : 'text-card-foreground'
                           }`}>{index + 1}</span>
                       </div>
                         <div>
-                          <span className="font-semibold text-foreground">{timeData.time}</span>
-                          <div className="text-xs text-foreground">
+                          <span className="font-semibold text-card-foreground">{timeData.time}</span>
+                          <div className="text-xs text-card-foreground">
                             {timeData.count > 0 
                               ? `${timeData.count} launches • ${timeData.avgVotes} avg votes`
                               : 'No launches in this time slot'
@@ -793,7 +769,7 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
                         <Badge variant={timeData.count > 0 ? "secondary" : "outline"}>
                           {timeData.count > 0 ? 'Recommended' : 'No Data'}
                         </Badge>
-                        <div className="text-xs text-foreground mt-1">
+                        <div className="text-xs text-card-foreground mt-1">
                           {timeData.count > 0 ? `${timeData.score} total engagement` : 'No activity'}
                         </div>
                       </div>
@@ -805,41 +781,51 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
         </div>
 
           {/* Weekly Pattern */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <TrendingUp className="h-5 w-5" />
-                Weekly Launch Pattern
+          <Card className="bg-gradient-to-r from-slate-50 to-blue-50 dark:from-slate-900 dark:to-blue-900/20 border-0 shadow-lg">
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center gap-3 text-xl">
+                <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                  <TrendingUp className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                </div>
+                <span className="text-card-foreground">Weekly Launch Pattern</span>
               </CardTitle>
-              <p className="text-sm text-foreground">
+              <p className="text-sm text-muted-foreground mt-2">
                 Launch activity across the week • 
-                <span className="ml-1 font-medium">
+                <span className="ml-1 font-semibold text-blue-600 dark:text-blue-400">
                   {launchTiming.weeklyPattern.filter(day => day.launches > 0).length} active days
                 </span>
               </p>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-7 gap-2">
+              <div className="grid grid-cols-7 gap-3">
                 {launchTiming.weeklyPattern.map((dayData, index) => (
-                  <div key={dayData.day} className={`text-center p-3 border rounded-lg transition-colors ${
+                  <div key={dayData.day} className={`text-center p-4 rounded-xl transition-all duration-300 hover:scale-105 ${
                     dayData.launches > 0 
-                      ? 'bg-blue-50 bg-blue-900/20 border-blue-200 border-blue-800' 
-                      : 'bg-gray-50 bg-gray-800 border-gray-200 border-gray-700'
+                      ? 'bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/20 border-2 border-blue-200 dark:border-blue-700 shadow-lg hover:shadow-xl' 
+                      : 'bg-gradient-to-br from-gray-50 to-slate-100 dark:from-gray-800/50 dark:to-slate-800/30 border border-gray-200 dark:border-gray-700 hover:shadow-md'
                   }`}>
-                    <div className="text-sm font-medium text-foreground">{dayData.day.slice(0, 3)}</div>
-                    <div className={`text-lg font-bold ${
-                      dayData.launches > 0 ? 'text-blue-600' : 'text-foreground'
+                    <div className="text-sm font-semibold text-card-foreground mb-2">{dayData.day.slice(0, 3)}</div>
+                    <div className={`text-2xl font-bold mb-1 ${
+                      dayData.launches > 0 
+                        ? 'text-blue-600 dark:text-blue-400' 
+                        : 'text-gray-400 dark:text-gray-500'
                     }`}>
                       {dayData.launches}
                     </div>
-                    <div className="text-xs text-foreground">launches</div>
+                    <div className="text-xs font-medium text-muted-foreground mb-2">launches</div>
                     {dayData.launches > 0 ? (
-                      <>
-                        <div className="text-xs text-foreground">{dayData.avgEngagement} avg engagement</div>
-                        <div className="text-xs text-foreground">{dayData.avgVotes} avg votes</div>
-                      </>
+                      <div className="space-y-1">
+                        <div className="text-xs font-medium text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 px-2 py-1 rounded-full">
+                          {dayData.avgEngagement} avg engagement
+                        </div>
+                        <div className="text-xs font-medium text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/20 px-2 py-1 rounded-full">
+                          {dayData.avgVotes} avg votes
+                        </div>
+                      </div>
                     ) : (
-                      <div className="text-xs text-foreground">No activity</div>
+                      <div className="text-xs font-medium text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded-full">
+                        No activity
+                      </div>
                     )}
                   </div>
                 ))}
@@ -854,7 +840,7 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
                 <Clock className="h-5 w-5" />
                 Hourly Launch Activity
               </CardTitle>
-              <p className="text-sm text-foreground">
+              <p className="text-sm text-card-foreground">
                 Best hours for launching (24h format) • 
                 <span className="ml-1 font-medium">
                   {launchTiming.hourlyBreakdown.length} active hours
@@ -866,20 +852,20 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
                 <div className="grid grid-cols-4 gap-2">
                   {launchTiming.hourlyBreakdown.map((hourData, index) => (
                     <div key={hourData.hour} className="text-center p-3 border rounded-lg bg-green-50 bg-green-900/20 border-green-200 border-green-800">
-                      <div className="text-sm font-medium text-foreground">
+                      <div className="text-sm font-medium text-card-foreground">
                         {hourData.hour.toString().padStart(2, '0')}:00
                       </div>
                       <div className="text-lg font-bold text-green-600">
                         {hourData.count}
                       </div>
-                      <div className="text-xs text-foreground">launches</div>
-                      <div className="text-xs text-foreground">{hourData.score} total engagement</div>
-                      <div className="text-xs text-foreground">{hourData.avgEngagement} avg engagement</div>
+                      <div className="text-xs text-card-foreground">launches</div>
+                      <div className="text-xs text-card-foreground">{hourData.score} total engagement</div>
+                      <div className="text-xs text-card-foreground">{hourData.avgEngagement} avg engagement</div>
                     </div>
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-8 text-foreground">
+                <div className="text-center py-8 text-card-foreground">
                   <Clock className="h-12 w-12 mx-auto mb-4 opacity-50" />
                   <p className="text-lg font-medium">No hourly launch data available</p>
                   <p className="text-sm">No launches found in the selected time period</p>
@@ -895,7 +881,7 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
                 <Calendar className="h-5 w-5" />
                 Seasonal Launch Trends
               </CardTitle>
-              <p className="text-sm text-foreground">
+              <p className="text-sm text-card-foreground">
                 Monthly launch activity • 
                 <span className="ml-1 font-medium">
                   {launchTiming.seasonalTrends.length} active months
@@ -907,16 +893,16 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
                 <div className="grid grid-cols-3 gap-3">
                   {launchTiming.seasonalTrends.map((monthData, index) => (
                     <div key={monthData.month} className="text-center p-3 border rounded-lg bg-purple-50 bg-purple-900/20 border-purple-200 border-purple-800">
-                      <div className="text-sm font-medium text-foreground">{monthData.month}</div>
+                      <div className="text-sm font-medium text-card-foreground">{monthData.month}</div>
                       <div className="text-lg font-bold text-purple-600">{monthData.count}</div>
-                      <div className="text-xs text-foreground">launches</div>
-                      <div className="text-xs text-foreground">{monthData.score} total engagement</div>
-                      <div className="text-xs text-foreground">{monthData.avgEngagement} avg engagement</div>
+                      <div className="text-xs text-card-foreground">launches</div>
+                      <div className="text-xs text-card-foreground">{monthData.score} total engagement</div>
+                      <div className="text-xs text-card-foreground">{monthData.avgEngagement} avg engagement</div>
                     </div>
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-8 text-foreground">
+                <div className="text-center py-8 text-card-foreground">
                   <Calendar className="h-12 w-12 mx-auto mb-4 opacity-50" />
                   <p className="text-lg font-medium">No seasonal launch data available</p>
                   <p className="text-sm">No launches found in the selected time period</p>
@@ -930,26 +916,26 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
       {/* Launch Timing Details Modal */}
       {showTimingDetailsModal && selectedTimingData && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-card rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between p-6 border-b border-gray-200 border-gray-700">
-              <h2 className="text-2xl font-bold text-foreground">
+          <div className="bg-card text-card-foreground rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between p-6 border-b border-border">
+              <h2 className="text-2xl font-bold text-card-foreground">
                 Launch Timing Analysis - {selectedTimingData.type === 'day' ? 'Day' : 'Time'} Details
               </h2>
               <button
                 onClick={() => setShowTimingDetailsModal(false)}
-                className="p-2 hover:bg-gray-100 hover:bg-gray-700 rounded-full transition-colors"
+                className="p-2 hover:bg-accent rounded-full transition-colors"
               >
-                <X className="h-5 w-5 text-foreground" />
+                <X className="h-5 w-5 text-card-foreground" />
               </button>
             </div>
             
             <div className="p-6 space-y-6">
               {/* Timing Overview */}
               <div>
-                <h3 className="text-2xl font-bold text-foreground mb-4">
+                <h3 className="text-2xl font-bold text-card-foreground mb-4">
                   {selectedTimingData.type === 'day' ? selectedTimingData.data.day : selectedTimingData.data.time}
                 </h3>
-                <p className="text-lg text-foreground mb-6">
+                <p className="text-lg text-card-foreground mb-6">
                   {selectedTimingData.type === 'day' 
                     ? 'Optimal launch day analysis based on historical data and engagement patterns'
                     : 'Optimal launch time analysis based on peak engagement periods'
@@ -962,46 +948,46 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
                 <div className="bg-blue-50 bg-blue-900/20 p-4 rounded-lg text-center">
                   <Calendar className="h-8 w-8 text-blue-600 mx-auto mb-2" />
                   <div className="text-2xl font-bold text-blue-600">{selectedTimingData.data.count}</div>
-                  <div className="text-sm text-foreground">Total Launches</div>
+                  <div className="text-sm text-card-foreground">Total Launches</div>
                 </div>
                 <div className="bg-green-50 bg-green-900/20 p-4 rounded-lg text-center">
                   <TrendingUp className="h-8 w-8 text-green-600 mx-auto mb-2" />
                   <div className="text-2xl font-bold text-green-600">{selectedTimingData.data.score}</div>
-                  <div className="text-sm text-foreground">Total Engagement</div>
+                  <div className="text-sm text-card-foreground">Total Engagement</div>
                 </div>
                 <div className="bg-purple-50 bg-purple-900/20 p-4 rounded-lg text-center">
                   <Star className="h-8 w-8 text-purple-600 mx-auto mb-2" />
                   <div className="text-2xl font-bold text-purple-600">{selectedTimingData.data.avgVotes || Math.round(selectedTimingData.data.score / selectedTimingData.data.count)}</div>
-                  <div className="text-sm text-foreground">Avg Votes</div>
+                  <div className="text-sm text-card-foreground">Avg Votes</div>
                 </div>
                 <div className="bg-orange-50 bg-orange-900/20 p-4 rounded-lg text-center">
                   <Target className="h-8 w-8 text-orange-600 mx-auto mb-2" />
                   <div className="text-2xl font-bold text-orange-600">
                     {selectedTimingData.data.count > 0 ? formatNumber(selectedTimingData.data.score / selectedTimingData.data.count) : 0}
                   </div>
-                  <div className="text-sm text-foreground">Engagement/Launch</div>
+                  <div className="text-sm text-card-foreground">Engagement/Launch</div>
                 </div>
               </div>
 
               {/* Detailed Analysis */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="bg-gray-50 bg-gray-700 p-4 rounded-lg">
-                  <h4 className="font-semibold text-foreground mb-3">Performance Metrics</h4>
+                  <h4 className="font-semibold text-card-foreground mb-3">Performance Metrics</h4>
                   <div className="space-y-2">
                     <div className="flex justify-between">
-                      <span className="text-foreground">Launch Count:</span>
+                      <span className="text-card-foreground">Launch Count:</span>
                       <span className="font-medium">{selectedTimingData.data.count} launches</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-foreground">Total Engagement:</span>
+                      <span className="text-card-foreground">Total Engagement:</span>
                       <span className="font-medium">{selectedTimingData.data.score.toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-foreground">Average Votes:</span>
+                      <span className="text-card-foreground">Average Votes:</span>
                       <span className="font-medium">{selectedTimingData.data.avgVotes || formatNumber(selectedTimingData.data.score / selectedTimingData.data.count)}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-foreground">Success Rate:</span>
+                      <span className="text-card-foreground">Success Rate:</span>
                       <span className="font-medium">
                         {selectedTimingData.data.count > 0 
                           ? `${Math.round((selectedTimingData.data.count / productHuntData.length) * 100)}%`
@@ -1013,16 +999,16 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
                 </div>
 
                 <div className="bg-gray-50 bg-gray-700 p-4 rounded-lg">
-                  <h4 className="font-semibold text-foreground mb-3">Timing Insights</h4>
+                  <h4 className="font-semibold text-card-foreground mb-3">Timing Insights</h4>
                   <div className="space-y-2">
                     <div className="flex justify-between">
-                      <span className="text-foreground">Optimal Status:</span>
+                      <span className="text-card-foreground">Optimal Status:</span>
                       <span className="font-medium text-green-600">
                         {selectedTimingData.data.count > 0 ? '✅ Optimal' : '⚠️ Limited Data'}
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-foreground">Engagement Quality:</span>
+                      <span className="text-card-foreground">Engagement Quality:</span>
                       <span className="font-medium">
                         {selectedTimingData.data.count > 0 && (selectedTimingData.data.avgVotes || Math.round(selectedTimingData.data.score / selectedTimingData.data.count)) > 100 
                           ? '🔥 High Quality' 
@@ -1033,7 +1019,7 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-foreground">Recommendation:</span>
+                      <span className="text-card-foreground">Recommendation:</span>
                       <span className="font-medium">
                         {selectedTimingData.data.count > 0 
                           ? '✅ Recommended for launches'
@@ -1042,7 +1028,7 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-foreground">Data Reliability:</span>
+                      <span className="text-card-foreground">Data Reliability:</span>
                       <span className="font-medium">
                         {selectedTimingData.data.count >= 5 
                           ? '🟢 High Reliability' 
@@ -1058,7 +1044,7 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
 
               {/* Comparison with Other Timing */}
               <div>
-                <h4 className="text-lg font-semibold text-foreground mb-4">Comparison with Other {selectedTimingData.type === 'day' ? 'Days' : 'Times'}</h4>
+                <h4 className="text-lg font-semibold text-card-foreground mb-4">Comparison with Other {selectedTimingData.type === 'day' ? 'Days' : 'Times'}</h4>
                 <div className="bg-gray-50 bg-gray-700 p-4 rounded-lg">
                   <div className="space-y-3">
                     {selectedTimingData.type === 'day' ? (
@@ -1076,7 +1062,7 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
                           </div>
                           <div className="text-right">
                             <div className="font-bold">{day.score}</div>
-                            <div className="text-xs text-foreground">{day.count} launches</div>
+                            <div className="text-xs text-card-foreground">{day.count} launches</div>
                           </div>
                         </div>
                       ))
@@ -1095,7 +1081,7 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
                           </div>
                           <div className="text-right">
                             <div className="font-bold">{time.score}</div>
-                            <div className="text-xs text-foreground">{time.count} launches</div>
+                            <div className="text-xs text-card-foreground">{time.count} launches</div>
                           </div>
                         </div>
                       ))
@@ -1106,12 +1092,12 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
 
               {/* Launch Strategy */}
               <div>
-                <h4 className="text-lg font-semibold text-foreground mb-4">Launch Strategy</h4>
+                <h4 className="text-lg font-semibold text-card-foreground mb-4">Launch Strategy</h4>
                 <div className="bg-gray-50 bg-gray-700 p-4 rounded-lg">
                   <div className="space-y-3">
                     <div className="flex items-start gap-3">
                       <div className="w-6 h-6 bg-blue-100 bg-blue-900 rounded-full flex items-center justify-center text-xs font-bold">1</div>
-                      <span className="text-foreground">
+                      <span className="text-card-foreground">
                         {selectedTimingData.type === 'day' 
                           ? `Schedule your launch for ${selectedTimingData.data.day} to maximize engagement`
                           : `Launch during ${selectedTimingData.data.time} for optimal visibility`
@@ -1120,19 +1106,19 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
                     </div>
                     <div className="flex items-start gap-3">
                       <div className="w-6 h-6 bg-blue-100 bg-blue-900 rounded-full flex items-center justify-center text-xs font-bold">2</div>
-                      <span className="text-foreground">
+                      <span className="text-card-foreground">
                         Prepare your launch materials and community outreach in advance
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
                       <div className="w-6 h-6 bg-blue-100 bg-blue-900 rounded-full flex items-center justify-center text-xs font-bold">3</div>
-                      <span className="text-foreground">
+                      <span className="text-card-foreground">
                         Monitor engagement and respond to comments quickly during peak hours
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
                       <div className="w-6 h-6 bg-blue-100 bg-blue-900 rounded-full flex items-center justify-center text-xs font-bold">4</div>
-                      <span className="text-foreground">
+                      <span className="text-card-foreground">
                         Track performance and adjust strategy based on results
                       </span>
                     </div>

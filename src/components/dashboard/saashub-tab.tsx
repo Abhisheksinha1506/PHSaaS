@@ -118,8 +118,8 @@ export function SaaSHubTab({ data }: SaaSHubTabProps) {
             <div className="flex items-center">
               <Users className="h-8 w-8 text-blue-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-foreground">Total Alternatives</p>
-                <p className="text-2xl font-bold text-foreground">{filteredData.length}</p>
+                <p className="text-sm font-medium text-card-foreground">Total Alternatives</p>
+                <p className="text-2xl font-bold text-card-foreground">{filteredData.length}</p>
               </div>
             </div>
           </CardContent>
@@ -129,8 +129,8 @@ export function SaaSHubTab({ data }: SaaSHubTabProps) {
             <div className="flex items-center">
               <Star className="h-8 w-8 text-yellow-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-foreground">Average Rating</p>
-                <p className="text-2xl font-bold text-foreground">
+                <p className="text-sm font-medium text-card-foreground">Average Rating</p>
+                <p className="text-2xl font-bold text-card-foreground">
                   {(filteredData.reduce((sum, item) => sum + item.rating, 0) / filteredData.length).toFixed(1)}
                 </p>
               </div>
@@ -142,8 +142,8 @@ export function SaaSHubTab({ data }: SaaSHubTabProps) {
             <div className="flex items-center">
               <DollarSign className="h-8 w-8 text-green-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-foreground">Total Reviews</p>
-                <p className="text-2xl font-bold text-foreground">
+                <p className="text-sm font-medium text-card-foreground">Total Reviews</p>
+                <p className="text-2xl font-bold text-card-foreground">
                   {filteredData.reduce((sum, item) => sum + item.reviews_count, 0)}
                 </p>
               </div>
@@ -163,10 +163,10 @@ export function SaaSHubTab({ data }: SaaSHubTabProps) {
                   setSelectedAlternative(alternative);
                   setShowDetailsModal(true);
                 }}
-                className="absolute top-4 right-4 p-2 hover:bg-gray-100 hover:bg-gray-700 rounded-full transition-colors z-10"
+                className="absolute top-4 right-4 p-2 hover:bg-accent rounded-full transition-colors z-10"
                 title="View detailed information"
               >
-                <Info className="h-4 w-4 text-foreground hover:text-foreground" />
+                <Info className="h-4 w-4 text-muted-foreground" />
               </button>
               
               <div className="flex flex-col sm:flex-row gap-4">
@@ -184,32 +184,32 @@ export function SaaSHubTab({ data }: SaaSHubTabProps) {
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
-                        <h3 className="text-xl font-semibold text-foreground">
+                        <h3 className="text-xl font-semibold text-card-foreground">
                           {alternative.name}
                         </h3>
                         <span className="px-2 py-1 bg-blue-100 bg-blue-900 text-blue-800 text-blue-200 text-xs rounded-full">
                           {alternative.category}
                         </span>
                       </div>
-                      <p className="text-foreground mb-3">
+                      <p className="text-card-foreground mb-3">
                         {alternative.description}
                       </p>
                       <div className="flex flex-wrap gap-2 mb-3">
                         {alternative.features.slice(0, 3).map((feature, index) => (
                           <span
                             key={index}
-                            className="px-2 py-1 bg-gray-100 bg-gray-700 text-foreground text-xs rounded-full"
+                            className="px-2 py-1 bg-gray-100 bg-gray-700 text-card-foreground text-xs rounded-full"
                           >
                             {feature}
                           </span>
                         ))}
                         {alternative.features.length > 3 && (
-                          <span className="px-2 py-1 bg-gray-100 bg-gray-700 text-foreground text-xs rounded-full">
+                          <span className="px-2 py-1 bg-gray-100 bg-gray-700 text-card-foreground text-xs rounded-full">
                             +{alternative.features.length - 3} more
                           </span>
                         )}
                       </div>
-                      <div className="flex items-center gap-4 text-sm text-foreground">
+                      <div className="flex items-center gap-4 text-sm text-card-foreground">
                         <div className="flex items-center gap-1">
                           <Star className="h-4 w-4 text-yellow-500" />
                           {alternative.rating}/5
@@ -229,7 +229,7 @@ export function SaaSHubTab({ data }: SaaSHubTabProps) {
                         href={alternative.website_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1 text-blue-600 text-blue-400 hover:underline"
+                        className="flex items-center gap-1 text-primary hover:text-primary/80 hover:underline"
                       >
                         <ExternalLink className="h-4 w-4" />
                         Visit Website
@@ -247,15 +247,15 @@ export function SaaSHubTab({ data }: SaaSHubTabProps) {
       {showDetailsModal && selectedAlternative && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-card rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between p-6 border-b border-gray-200 border-gray-700">
-              <h2 className="text-2xl font-bold text-foreground">
+            <div className="flex items-center justify-between p-6 border-b">
+              <h2 className="text-2xl font-bold text-card-foreground">
                 {selectedAlternative.name} - Detailed Information
               </h2>
               <button
                 onClick={() => setShowDetailsModal(false)}
-                className="p-2 hover:bg-gray-100 hover:bg-gray-700 rounded-full transition-colors"
+                className="p-2 hover:bg-accent rounded-full transition-colors"
               >
-                <X className="h-5 w-5 text-foreground" />
+                <X className="h-5 w-5 text-card-foreground" />
               </button>
             </div>
             
@@ -274,14 +274,14 @@ export function SaaSHubTab({ data }: SaaSHubTabProps) {
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-4">
-                    <h3 className="text-2xl font-bold text-foreground">
+                    <h3 className="text-2xl font-bold text-card-foreground">
                       {selectedAlternative.name}
                     </h3>
                     <span className="px-3 py-1 bg-blue-100 bg-blue-900 text-blue-800 text-blue-200 text-sm rounded-full">
                       {selectedAlternative.category}
                     </span>
                   </div>
-                  <p className="text-lg text-foreground mb-4">
+                  <p className="text-lg text-card-foreground mb-4">
                     {selectedAlternative.description}
                   </p>
                   <div className="flex items-center gap-4 text-lg">
@@ -306,32 +306,32 @@ export function SaaSHubTab({ data }: SaaSHubTabProps) {
                 <div className="bg-yellow-50 bg-yellow-900/20 p-4 rounded-lg text-center">
                   <Star className="h-8 w-8 text-yellow-600 mx-auto mb-2" />
                   <div className="text-2xl font-bold text-yellow-600">{selectedAlternative.rating}</div>
-                  <div className="text-sm text-foreground">Rating</div>
+                  <div className="text-sm text-card-foreground">Rating</div>
                 </div>
                 <div className="bg-blue-50 bg-blue-900/20 p-4 rounded-lg text-center">
                   <Users className="h-8 w-8 text-blue-600 mx-auto mb-2" />
                   <div className="text-2xl font-bold text-blue-600">{selectedAlternative.reviews_count}</div>
-                  <div className="text-sm text-foreground">Reviews</div>
+                  <div className="text-sm text-card-foreground">Reviews</div>
                 </div>
                 <div className="bg-green-50 bg-green-900/20 p-4 rounded-lg text-center">
                   <DollarSign className="h-8 w-8 text-green-600 mx-auto mb-2" />
                   <div className="text-lg font-bold text-green-600">{selectedAlternative.pricing}</div>
-                  <div className="text-sm text-foreground">Pricing</div>
+                  <div className="text-sm text-card-foreground">Pricing</div>
                 </div>
                 <div className="bg-purple-50 bg-purple-900/20 p-4 rounded-lg text-center">
                   <div className="text-lg font-bold text-purple-600">{selectedAlternative.category}</div>
-                  <div className="text-sm text-foreground">Category</div>
+                  <div className="text-sm text-card-foreground">Category</div>
                 </div>
               </div>
 
               {/* Features */}
               <div>
-                <h4 className="text-lg font-semibold text-foreground mb-3">Features</h4>
+                <h4 className="text-lg font-semibold text-card-foreground mb-3">Features</h4>
                 <div className="flex flex-wrap gap-2">
                   {selectedAlternative.features.map((feature, index) => (
                     <span
                       key={index}
-                      className="px-3 py-1 bg-gray-100 bg-gray-700 text-foreground text-sm rounded-full"
+                      className="px-3 py-1 bg-gray-100 bg-gray-700 text-card-foreground text-sm rounded-full"
                     >
                       {feature}
                     </span>
@@ -342,12 +342,12 @@ export function SaaSHubTab({ data }: SaaSHubTabProps) {
               {/* Pros and Cons */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <h4 className="text-lg font-semibold text-green-600 text-green-400 mb-3">Pros</h4>
+                  <h4 className="text-lg font-semibold text-green-600 dark:text-green-400 mb-3">Pros</h4>
                   <ul className="space-y-2">
                     {selectedAlternative.pros.map((pro, index) => (
                       <li key={index} className="flex items-start gap-2">
                         <span className="text-green-500 mt-1">✓</span>
-                        <span className="text-foreground">{pro}</span>
+                        <span className="text-card-foreground">{pro}</span>
                       </li>
                     ))}
                   </ul>
@@ -358,7 +358,7 @@ export function SaaSHubTab({ data }: SaaSHubTabProps) {
                     {selectedAlternative.cons.map((con, index) => (
                       <li key={index} className="flex items-start gap-2">
                         <span className="text-red-500 mt-1">✗</span>
-                        <span className="text-foreground">{con}</span>
+                        <span className="text-card-foreground">{con}</span>
                       </li>
                     ))}
                   </ul>
@@ -367,7 +367,7 @@ export function SaaSHubTab({ data }: SaaSHubTabProps) {
 
               {/* Links */}
               <div>
-                <h4 className="text-lg font-semibold text-foreground mb-3">Links</h4>
+                <h4 className="text-lg font-semibold text-card-foreground mb-3">Links</h4>
                 <div className="space-y-2">
                   <a
                     href={selectedAlternative.website_url}
@@ -383,30 +383,30 @@ export function SaaSHubTab({ data }: SaaSHubTabProps) {
 
               {/* Additional Information */}
               <div>
-                <h4 className="text-lg font-semibold text-foreground mb-3">Additional Information</h4>
+                <h4 className="text-lg font-semibold text-card-foreground mb-3">Additional Information</h4>
                 <div className="bg-gray-50 bg-gray-700 p-4 rounded-lg">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <div className="text-sm text-foreground">Alternative ID</div>
-                      <div className="font-medium text-foreground font-mono text-sm">
+                      <div className="text-sm text-card-foreground">Alternative ID</div>
+                      <div className="font-medium text-card-foreground font-mono text-sm">
                         {selectedAlternative.id}
                       </div>
                     </div>
                     <div>
-                      <div className="text-sm text-foreground">Total Features</div>
-                      <div className="font-medium text-foreground">
+                      <div className="text-sm text-card-foreground">Total Features</div>
+                      <div className="font-medium text-card-foreground">
                         {selectedAlternative.features.length} features
                       </div>
                     </div>
                     <div>
-                      <div className="text-sm text-foreground">Pros Count</div>
-                      <div className="font-medium text-foreground">
+                      <div className="text-sm text-card-foreground">Pros Count</div>
+                      <div className="font-medium text-card-foreground">
                         {selectedAlternative.pros.length} advantages
                       </div>
                     </div>
                     <div>
-                      <div className="text-sm text-foreground">Cons Count</div>
-                      <div className="font-medium text-foreground">
+                      <div className="text-sm text-card-foreground">Cons Count</div>
+                      <div className="font-medium text-card-foreground">
                         {selectedAlternative.cons.length} limitations
                       </div>
                     </div>

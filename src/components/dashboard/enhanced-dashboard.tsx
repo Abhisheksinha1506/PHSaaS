@@ -191,7 +191,7 @@ export function EnhancedDashboard({ initialData }: EnhancedDashboardProps) {
       {/* Header */}
       <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
         <div className="flex-1">
-          <h1 className="text-3xl font-bold text-foreground">Enhanced SaaS Dashboard</h1>
+          <h1 className="text-3xl font-bold text-card-foreground">Enhanced SaaS Dashboard</h1>
           <p className="text-muted-foreground">
             Advanced analytics with pagination and real-time data
           </p>
@@ -236,7 +236,7 @@ export function EnhancedDashboard({ initialData }: EnhancedDashboardProps) {
                 {data.productHunt.map((item, index) => (
                   <div key={item.id || index} className="flex items-center justify-between p-4 border rounded-lg">
                     <div className="flex-1">
-                      <h3 className="font-semibold text-foreground">{item.name}</h3>
+                      <h3 className="font-semibold text-card-foreground">{item.name}</h3>
                       <p className="text-sm text-muted-foreground">{item.tagline}</p>
                       <div className="flex gap-4 mt-2 text-sm text-muted-foreground">
                         <span>{item.votes_count} votes</span>
@@ -245,7 +245,7 @@ export function EnhancedDashboard({ initialData }: EnhancedDashboardProps) {
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-lg font-bold text-foreground">
+                      <div className="text-lg font-bold text-card-foreground">
                         {item.votes_count + item.comments_count}
                       </div>
                       <div className="text-sm text-muted-foreground">engagement</div>
@@ -280,7 +280,7 @@ export function EnhancedDashboard({ initialData }: EnhancedDashboardProps) {
                 {data.hackerNews.map((item, index) => (
                   <div key={item.id || index} className="flex items-center justify-between p-4 border rounded-lg">
                     <div className="flex-1">
-                      <h3 className="font-semibold text-foreground line-clamp-2">{item.title}</h3>
+                      <h3 className="font-semibold text-card-foreground line-clamp-2">{item.title}</h3>
                       <div className="flex gap-4 mt-2 text-sm text-muted-foreground">
                         <span>{item.score} points</span>
                         <span>{item.descendants || 0} comments</span>
@@ -288,7 +288,7 @@ export function EnhancedDashboard({ initialData }: EnhancedDashboardProps) {
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-lg font-bold text-foreground">{item.score}</div>
+                      <div className="text-lg font-bold text-card-foreground">{item.score}</div>
                       <div className="text-sm text-muted-foreground">score</div>
                     </div>
                   </div>

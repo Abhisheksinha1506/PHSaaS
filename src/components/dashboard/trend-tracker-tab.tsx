@@ -441,14 +441,14 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
     <div className="space-y-8">
       {/* Enhanced Header */}
       <div className="text-center mb-8">
-        <div className="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-full text-sm font-medium mb-4">
+        <div className="inline-flex items-center gap-2 px-4 py-2 bg-secondary text-secondary-foreground rounded-full text-sm font-medium mb-4">
           <TrendingUp className="h-4 w-4" />
           Advanced Analytics
         </div>
-        <h2 className="text-4xl md:text-5xl font-bold text-slate-700 dark:text-white mb-4">
+        <h2 className="text-4xl md:text-5xl font-bold text-card-foreground mb-4">
           TrendTracker Pro
         </h2>
-        <p className="text-xl text-slate-500 dark:text-slate-300 max-w-3xl mx-auto">
+        <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
           Cross-platform market intelligence and trend analysis powered by AI
         </p>
       </div>
@@ -456,7 +456,7 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
       {/* Market Signals */}
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {marketSignals.map((signal, index) => (
-          <Card key={index} className="group relative overflow-hidden border-0 shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 bg-card dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+          <Card key={index} className="group relative overflow-hidden border-0 shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
             {/* Background Pattern */}
             <div className="absolute inset-0 opacity-30">
               <div className="w-full h-full" style={{
@@ -472,26 +472,26 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
                   setSelectedTrend({topic: signal.title, data: signal.metrics});
                   setShowDetailsModal(true);
                 }}
-                className="absolute top-4 right-4 p-2 hover:bg-card/50 dark:hover:bg-slate-800/50 rounded-full transition-all duration-300 z-10 group-hover:scale-110"
+                className="absolute top-4 right-4 p-2 hover:bg-accent rounded-full transition-all duration-300 z-10 group-hover:scale-110"
                 title="View detailed information"
               >
-                <Info className="h-4 w-4 text-slate-600 dark:text-slate-300" />
+                <Info className="h-4 w-4 text-muted-foreground" />
               </button>
             )}
             
             <CardHeader className="pb-3 relative z-10">
               <CardTitle className="text-lg font-semibold flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-slate-100 dark:bg-slate-700">
-                  <TrendingUp className="h-5 w-5 text-slate-600 dark:text-slate-300" />
+                <div className="p-2 rounded-lg bg-secondary">
+                  <TrendingUp className="h-5 w-5 text-secondary-foreground" />
                 </div>
-                <span className="text-slate-700 dark:text-white">{signal.title}</span>
+                <span className="text-card-foreground">{signal.title}</span>
               </CardTitle>
             </CardHeader>
             <CardContent className="relative z-10">
-              <p className="text-slate-500 dark:text-slate-300 mb-4 leading-relaxed">{signal.description}</p>
+              <p className="text-muted-foreground mb-4 leading-relaxed">{signal.description}</p>
               <div className="flex flex-wrap gap-2">
                 {signal.items.map((item, idx) => (
-                  <Badge key={idx} variant="secondary" className="text-xs bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-600">
+                  <Badge key={idx} variant="secondary" className="text-xs">
                     {item}
                   </Badge>
                 ))}
@@ -503,13 +503,13 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
 
       {/* Analytics Insights */}
       {analyticsData.overview && (
-        <Card className="bg-card dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm">
+        <Card className="shadow-sm">
           <CardHeader className="pb-4">
             <CardTitle className="flex items-center gap-3 text-2xl">
-              <div className="p-2 bg-slate-100 dark:bg-slate-700 rounded-lg">
-                <BarChart3 className="h-6 w-6 text-slate-600 dark:text-slate-300" />
+              <div className="p-2 bg-secondary rounded-lg">
+                <BarChart3 className="h-6 w-6 text-secondary-foreground" />
               </div>
-              <span className="text-slate-700 dark:text-white">
+              <span className="text-card-foreground">
                 Analytics Insights ({timeFilter})
               </span>
             </CardTitle>
@@ -517,51 +517,51 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
           <CardContent>
             <div className="grid gap-8 md:grid-cols-2">
               <div className="space-y-6">
-                <h4 className="text-lg font-semibold text-slate-700 dark:text-white flex items-center gap-2">
-                  <Target className="h-5 w-5 text-slate-600 dark:text-slate-300" />
+                <h4 className="text-lg font-semibold text-card-foreground flex items-center gap-2">
+                  <Target className="h-5 w-5 text-muted-foreground" />
                   Market Performance
                 </h4>
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-700 rounded-xl border border-slate-200 dark:border-slate-600">
+                  <div className="flex items-center justify-between p-4 bg-muted rounded-xl border">
                     <div className="flex items-center gap-3">
-                      <div className="p-2 bg-slate-100 dark:bg-slate-600 rounded-lg">
-                        <TrendingUp className="h-4 w-4 text-slate-600 dark:text-slate-300" />
+                      <div className="p-2 bg-secondary rounded-lg">
+                        <TrendingUp className="h-4 w-4 text-secondary-foreground" />
                       </div>
-                      <span className="text-slate-500 dark:text-slate-300">Avg Engagement:</span>
+                      <span className="text-muted-foreground">Avg Engagement:</span>
                     </div>
-                    <span className="font-bold text-slate-700 dark:text-white text-lg">{analyticsData.overview.avgVotes} votes</span>
+                    <span className="font-bold text-card-foreground text-lg">{analyticsData.overview.avgVotes} votes</span>
                   </div>
-                  <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-700 rounded-xl border border-slate-200 dark:border-slate-600">
+                  <div className="flex items-center justify-between p-4 bg-muted rounded-xl border">
                     <div className="flex items-center gap-3">
-                      <div className="p-2 bg-slate-100 dark:bg-slate-600 rounded-lg">
-                        <MessageCircle className="h-4 w-4 text-slate-600 dark:text-slate-300" />
+                      <div className="p-2 bg-secondary rounded-lg">
+                        <MessageCircle className="h-4 w-4 text-secondary-foreground" />
                       </div>
-                      <span className="text-slate-500 dark:text-slate-300">Avg Discussion Score:</span>
+                      <span className="text-muted-foreground">Avg Discussion Score:</span>
                     </div>
-                    <span className="font-bold text-slate-700 dark:text-white text-lg">{formatNumber(analyticsData.overview.avgScore)} points</span>
+                    <span className="font-bold text-card-foreground text-lg">{formatNumber(analyticsData.overview.avgScore)} points</span>
                   </div>
-                  <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-700 rounded-xl border border-slate-200 dark:border-slate-600">
+                  <div className="flex items-center justify-between p-4 bg-muted rounded-xl border">
                     <div className="flex items-center gap-3">
-                      <div className="p-2 bg-slate-100 dark:bg-slate-600 rounded-lg">
-                        <Star className="h-4 w-4 text-slate-600 dark:text-slate-300" />
+                      <div className="p-2 bg-secondary rounded-lg">
+                        <Star className="h-4 w-4 text-secondary-foreground" />
                       </div>
-                      <span className="text-slate-500 dark:text-slate-300">Avg Repository Stars:</span>
+                      <span className="text-muted-foreground">Avg Repository Stars:</span>
                     </div>
-                    <span className="font-bold text-slate-700 dark:text-white text-lg">{analyticsData.overview.avgStars} stars</span>
+                    <span className="font-bold text-card-foreground text-lg">{analyticsData.overview.avgStars} stars</span>
                   </div>
                 </div>
               </div>
               
               <div className="space-y-6">
-                <h4 className="text-lg font-semibold text-slate-700 dark:text-white flex items-center gap-2">
-                  <Users className="h-5 w-5 text-slate-600 dark:text-slate-300" />
+                <h4 className="text-lg font-semibold text-card-foreground flex items-center gap-2">
+                  <Users className="h-5 w-5 text-muted-foreground" />
                   Top Categories
                 </h4>
                 <div className="space-y-3">
                   {analyticsData.overview.topCategories.slice(0, 3).map((category, index) => (
-                    <div key={category.name} className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-700 rounded-xl border border-slate-200 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors">
-                      <span className="text-slate-500 dark:text-slate-300 font-medium">{category.name}</span>
-                      <Badge variant="secondary" className="bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 border-0">
+                    <div key={category.name} className="flex items-center justify-between p-4 bg-muted rounded-xl border hover:bg-accent transition-colors">
+                      <span className="text-muted-foreground font-medium">{category.name}</span>
+                      <Badge variant="secondary">
                         {category.count}
                       </Badge>
                     </div>
@@ -574,102 +574,102 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
       )}
 
       {/* Summary Statistics */}
-        <Card className="bg-card dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm">
+        <Card className="shadow-sm">
           <CardHeader className="pb-6">
             <CardTitle className="flex items-center gap-3 text-2xl">
-              <div className="p-2 bg-slate-100 dark:bg-slate-700 rounded-lg">
-                <TrendingUp className="h-6 w-6 text-slate-600 dark:text-slate-300" />
+              <div className="p-2 bg-secondary rounded-lg">
+                <TrendingUp className="h-6 w-6 text-secondary-foreground" />
               </div>
-              <span className="text-slate-700 dark:text-white">
+              <span className="text-card-foreground">
                 Market Overview ({timeFilter})
               </span>
             </CardTitle>
           </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="group text-center p-6 bg-card dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 relative">
+            <div className="group text-center p-6 bg-card rounded-2xl border hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 relative">
               {/* Info Icon */}
               <button
                 onClick={() => {
                   setSelectedTrend({topic: 'Product Launches', data: {ph: productHuntData.length, hn: 0, gh: 0, total: productHuntData.length, momentum: 0, viral: 0, gap: 0}});
                   setShowDetailsModal(true);
                 }}
-                className="absolute top-3 right-3 p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-full transition-all duration-300 z-10 group-hover:scale-105"
+                className="absolute top-3 right-3 p-2 hover:bg-accent rounded-full transition-all duration-300 z-10 group-hover:scale-105"
                 title="View detailed information"
               >
-                <Info className="h-4 w-4 text-slate-600 dark:text-slate-300" />
+                <Info className="h-4 w-4 text-muted-foreground" />
               </button>
               
               <div className="relative z-10">
-                <div className="text-4xl font-bold text-slate-700 dark:text-white mb-2">{productHuntData.length}</div>
-                <div className="text-sm font-semibold text-slate-500 dark:text-slate-300 mb-1">Product Launches</div>
-                <div className="text-xs text-slate-500 dark:text-slate-400">
+                <div className="text-4xl font-bold text-card-foreground mb-2">{productHuntData.length}</div>
+                <div className="text-sm font-semibold text-muted-foreground mb-1">Product Launches</div>
+                <div className="text-xs text-muted-foreground">
                   {productHuntData.length > 0 ? formatNumber(productHuntData.reduce((sum, item) => sum + item.votes_count, 0) / productHuntData.length) : 0} avg votes
                 </div>
               </div>
             </div>
             
-            <div className="group text-center p-6 bg-card dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 relative">
+            <div className="group text-center p-6 bg-card rounded-2xl border hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 relative">
               {/* Info Icon */}
               <button
                 onClick={() => {
                   setSelectedTrend({topic: 'HN Discussions', data: {ph: 0, hn: hackerNewsData.length, gh: 0, total: hackerNewsData.length, momentum: 0, viral: 0, gap: 0}});
                   setShowDetailsModal(true);
                 }}
-                className="absolute top-3 right-3 p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-full transition-all duration-300 z-10 group-hover:scale-105"
+                className="absolute top-3 right-3 p-2 hover:bg-accent rounded-full transition-all duration-300 z-10 group-hover:scale-105"
                 title="View detailed information"
               >
-                <Info className="h-4 w-4 text-slate-600 dark:text-slate-300" />
+                <Info className="h-4 w-4 text-muted-foreground" />
               </button>
               
               <div className="relative z-10">
-                <div className="text-4xl font-bold text-slate-700 dark:text-white mb-2">{hackerNewsData.length}</div>
-                <div className="text-sm font-semibold text-slate-500 dark:text-slate-300 mb-1">HN Discussions</div>
-                <div className="text-xs text-slate-500 dark:text-slate-400">
+                <div className="text-4xl font-bold text-card-foreground mb-2">{hackerNewsData.length}</div>
+                <div className="text-sm font-semibold text-muted-foreground mb-1">HN Discussions</div>
+                <div className="text-xs text-muted-foreground">
                   {hackerNewsData.length > 0 ? formatNumber(hackerNewsData.reduce((sum, item) => sum + item.score, 0) / hackerNewsData.length) : 0} avg score
                 </div>
               </div>
             </div>
             
-            <div className="group text-center p-6 bg-card dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 relative">
+            <div className="group text-center p-6 bg-card rounded-2xl border hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 relative">
               {/* Info Icon */}
               <button
                 onClick={() => {
                   setSelectedTrend({topic: 'Open Source Tools', data: {ph: 0, hn: 0, gh: saaSHubData.length, total: saaSHubData.length, momentum: 0, viral: 0, gap: 0}});
                   setShowDetailsModal(true);
                 }}
-                className="absolute top-3 right-3 p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-full transition-all duration-300 z-10 group-hover:scale-105"
+                className="absolute top-3 right-3 p-2 hover:bg-accent rounded-full transition-all duration-300 z-10 group-hover:scale-105"
                 title="View detailed information"
               >
-                <Info className="h-4 w-4 text-slate-600 dark:text-slate-300" />
+                <Info className="h-4 w-4 text-muted-foreground" />
               </button>
               
               <div className="relative z-10">
-                <div className="text-4xl font-bold text-slate-700 dark:text-white mb-2">{saaSHubData.length}</div>
-                <div className="text-sm font-semibold text-slate-500 dark:text-slate-300 mb-1">Open Source Tools</div>
-                <div className="text-xs text-slate-500 dark:text-slate-400">
+                <div className="text-4xl font-bold text-card-foreground mb-2">{saaSHubData.length}</div>
+                <div className="text-sm font-semibold text-muted-foreground mb-1">Open Source Tools</div>
+                <div className="text-xs text-muted-foreground">
                   {saaSHubData.length > 0 ? Math.round(saaSHubData.reduce((sum, item) => sum + item.reviews_count, 0) / saaSHubData.length / 1000) : 0}k avg stars
                 </div>
               </div>
             </div>
             
-            <div className="group text-center p-6 bg-card dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 relative">
+            <div className="group text-center p-6 bg-card rounded-2xl border hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 relative">
               {/* Info Icon */}
               <button
                 onClick={() => {
                   setSelectedTrend({topic: 'Active Trends', data: {ph: 0, hn: 0, gh: 0, total: crossPlatformTrends.length, momentum: 0, viral: 0, gap: 0}});
                   setShowDetailsModal(true);
                 }}
-                className="absolute top-3 right-3 p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-full transition-all duration-300 z-10 group-hover:scale-105"
+                className="absolute top-3 right-3 p-2 hover:bg-accent rounded-full transition-all duration-300 z-10 group-hover:scale-105"
                 title="View detailed information"
               >
-                <Info className="h-4 w-4 text-slate-600 dark:text-slate-300" />
+                <Info className="h-4 w-4 text-muted-foreground" />
               </button>
               
               <div className="relative z-10">
-                <div className="text-4xl font-bold text-slate-700 dark:text-white mb-2">{crossPlatformTrends.length}</div>
-                <div className="text-sm font-semibold text-slate-500 dark:text-slate-300 mb-1">Active Trends</div>
-                <div className="text-xs text-slate-500 dark:text-slate-400">
+                <div className="text-4xl font-bold text-card-foreground mb-2">{crossPlatformTrends.length}</div>
+                <div className="text-sm font-semibold text-muted-foreground mb-1">Active Trends</div>
+                <div className="text-xs text-muted-foreground">
                   {crossPlatformTrends.filter(([_, data]) => data.ph > 0 && data.hn > 0).length} cross-platform
                 </div>
               </div>
@@ -679,14 +679,14 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
       </Card>
 
       {/* Cross-Platform Trends */}
-      <Card className="bg-gradient-to-br from-slate-50 to-purple-50 dark:from-slate-800 dark:to-slate-900 border-0 shadow-xl">
+      <Card className="bg-gradient-to-br from-background to-muted border-0 shadow-xl">
         <CardHeader className="pb-6">
           <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-6">
             <CardTitle className="flex items-center gap-3 text-2xl">
-              <div className="p-2 bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-lg">
-                <TrendingUp className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+              <div className="p-2 bg-secondary rounded-lg">
+                <TrendingUp className="h-6 w-6 text-secondary-foreground" />
               </div>
-              <span className="text-slate-700 dark:text-white">
+              <span className="text-card-foreground">
                 Cross-Platform Trends
               </span>
             </CardTitle>
@@ -694,7 +694,7 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
               <select
                 value={trendFilter}
                 onChange={(e) => setTrendFilter(e.target.value as any)}
-                className="px-4 py-3 text-sm border border-purple-200 dark:border-purple-700 rounded-xl bg-card/70 dark:bg-slate-800/70 backdrop-blur-sm text-slate-700 dark:text-slate-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 shadow-lg"
+                className="px-4 py-3 text-sm border border-input rounded-xl bg-background/70 backdrop-blur-sm text-card-foreground focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-300 shadow-lg"
               >
                 <option value="all">All Trends</option>
                 <option value="hot">🔥 Hot Growth</option>
@@ -710,7 +710,7 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
           {filteredCrossPlatformTrends.length > 0 ? (
             <div className="max-h-96 overflow-y-auto space-y-4 pr-2">
               {filteredCrossPlatformTrends.map(([topic, data], index) => (
-                <div key={topic} className="group flex flex-col sm:flex-row sm:items-center sm:justify-between p-6 bg-card/50 dark:bg-slate-800/50 backdrop-blur-sm border border-white/20 dark:border-slate-700/50 rounded-2xl hover:bg-card/70 dark:hover:bg-slate-700/50 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg relative overflow-hidden">
+                <div key={topic} className="group flex flex-col sm:flex-row sm:items-center sm:justify-between p-6 bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl hover:bg-card/70 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg relative overflow-hidden">
                   {/* Background Pattern */}
                   <div className="absolute inset-0 opacity-30">
                     <div className="w-full h-full" style={{
@@ -721,13 +721,13 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
                   
                   
                   <div className="flex-1 mb-4 sm:mb-0 relative z-10">
-                    <h3 className="text-lg font-bold text-slate-900 dark:text-white capitalize mb-3">{topic}</h3>
+                    <h3 className="text-lg font-bold text-card-foreground capitalize mb-3">{topic}</h3>
                     <div className="flex flex-wrap gap-4 mt-3">
                       <div className="flex items-center gap-2 text-sm">
                         <div className="flex items-center gap-2 px-3 py-1 bg-blue-100 dark:bg-blue-900/30 rounded-full">
                           <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                          <span className="hidden sm:inline text-slate-700 dark:text-slate-300">Launch Activity:</span>
-                          <span className="sm:hidden text-slate-700 dark:text-slate-300">Launch:</span>
+                          <span className="hidden sm:inline text-card-foreground">Launch Activity:</span>
+                          <span className="sm:hidden text-card-foreground">Launch:</span>
                           <span className="font-semibold text-blue-600 dark:text-blue-400">
                             {data.ph > 0 ? `${data.ph.toLocaleString()} votes` : 'No launches'}
                           </span>
@@ -736,8 +736,8 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
                       <div className="flex items-center gap-2 text-sm">
                         <div className="flex items-center gap-2 px-3 py-1 bg-green-100 dark:bg-green-900/30 rounded-full">
                           <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                          <span className="hidden sm:inline text-slate-700 dark:text-slate-300">Developer Buzz:</span>
-                          <span className="sm:hidden text-slate-700 dark:text-slate-300">Dev:</span>
+                          <span className="hidden sm:inline text-card-foreground">Developer Buzz:</span>
+                          <span className="sm:hidden text-card-foreground">Dev:</span>
                           <span className="font-semibold text-green-600 dark:text-green-400">
                             {data.hn > 0 ? `${data.hn.toLocaleString()} score` : 'No buzz'}
                           </span>
@@ -746,8 +746,8 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
                       <div className="flex items-center gap-2 text-sm">
                         <div className="flex items-center gap-2 px-3 py-1 bg-purple-100 dark:bg-purple-900/30 rounded-full">
                           <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
-                          <span className="hidden sm:inline text-slate-700 dark:text-slate-300">Open Source:</span>
-                          <span className="sm:hidden text-slate-700 dark:text-slate-300">OSS:</span>
+                          <span className="hidden sm:inline text-card-foreground">Open Source:</span>
+                          <span className="sm:hidden text-card-foreground">OSS:</span>
                           <span className="font-semibold text-purple-600 dark:text-purple-400">
                             {data.gh > 0 ? `${Math.round(data.gh / 1000)}k stars` : 'No activity'}
                           </span>
@@ -784,7 +784,7 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
                     </div>
                   </div>
                   <div className="text-left sm:text-right relative z-10">
-                    <div className="text-2xl sm:text-3xl font-bold text-slate-700 dark:text-white mb-2">
+                    <div className="text-2xl sm:text-3xl font-bold text-card-foreground mb-2">
                       {data.ph > 0 && data.hn > 0 && data.gh > 0 ? '🚀 Cross-Platform' :
                        data.ph > 0 && data.hn > 0 ? '🔥 Launch + Buzz' :
                        data.ph > 0 && data.gh > 0 ? '📈 Launch + OSS' :
@@ -793,7 +793,7 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
                        data.hn > 0 ? '💬 Buzz Only' :
                        data.gh > 0 ? '📈 OSS Only' : '💤 No Activity'}
                     </div>
-                    <div className="text-sm text-slate-600 dark:text-slate-400 font-medium">
+                    <div className="text-sm text-muted-foreground font-medium">
                       {data.ph > 0 && data.hn > 0 && data.gh > 0 ? 'All Platforms Active' :
                        (data.ph > 0 && data.hn > 0) || (data.ph > 0 && data.gh > 0) || (data.hn > 0 && data.gh > 0) ? 'Multi-Platform' :
                        data.ph > 0 || data.hn > 0 || data.gh > 0 ? 'Single Platform' : 'No Activity'}
@@ -804,11 +804,11 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
             </div>
           ) : (
             <div className="text-center py-16">
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-full mb-6">
-                <TrendingUp className="h-10 w-10 text-purple-600 dark:text-purple-400" />
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-secondary rounded-full mb-6">
+                <TrendingUp className="h-10 w-10 text-secondary-foreground" />
               </div>
-              <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-2">No Cross-Platform Trends Found</h3>
-              <p className="text-slate-600 dark:text-slate-300 max-w-md mx-auto">
+              <h3 className="text-xl font-semibold text-card-foreground mb-2">No Cross-Platform Trends Found</h3>
+              <p className="text-muted-foreground max-w-md mx-auto">
                 Try adjusting the timeframe, changing the filter, or check back later for new trends.
               </p>
             </div>
@@ -820,25 +820,25 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
       {showDetailsModal && selectedTrend && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-card rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between p-6 border-b border-gray-200 border-gray-700">
-              <h2 className="text-2xl font-bold text-foreground">
+            <div className="flex items-center justify-between p-6 border-b">
+              <h2 className="text-2xl font-bold text-card-foreground">
                 {selectedTrend.topic} - Trend Analysis
               </h2>
               <button
                 onClick={() => setShowDetailsModal(false)}
-                className="p-2 hover:bg-gray-100 hover:bg-gray-700 rounded-full transition-colors"
+                className="p-2 hover:bg-accent rounded-full transition-colors"
               >
-                <X className="h-5 w-5 text-foreground" />
+                <X className="h-5 w-5 text-card-foreground" />
               </button>
             </div>
             
             <div className="p-6 space-y-6">
               {/* Signal Overview */}
               <div>
-                <h3 className="text-2xl font-bold text-foreground mb-4">
+                <h3 className="text-2xl font-bold text-card-foreground mb-4">
                   {selectedTrend.topic}
                 </h3>
-                <p className="text-lg text-foreground mb-6">
+                <p className="text-lg text-card-foreground mb-6">
                   {selectedTrend.topic.includes('Trending Technologies') 
                     ? 'Comprehensive analysis of trending technologies across all platforms with momentum scoring'
                     : selectedTrend.topic.includes('High GitHub Activity')
@@ -852,22 +852,22 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
               {selectedTrend.topic.includes('Trending Technologies') && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="bg-blue-50 bg-blue-900/20 p-6 rounded-lg">
-                    <h4 className="text-lg font-semibold text-foreground mb-4">Momentum Analysis</h4>
+                    <h4 className="text-lg font-semibold text-card-foreground mb-4">Momentum Analysis</h4>
                     <div className="space-y-3">
                       <div className="flex justify-between items-center">
-                        <span className="text-foreground">Total Momentum:</span>
+                        <span className="text-card-foreground">Total Momentum:</span>
                         <span className="text-2xl font-bold text-blue-600">
                           {selectedTrend.data?.totalMomentum ? selectedTrend.data.totalMomentum.toLocaleString() : 'N/A'}
                         </span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-foreground">Average Momentum:</span>
+                        <span className="text-card-foreground">Average Momentum:</span>
                         <span className="text-xl font-bold text-blue-600">
                           {selectedTrend.data?.avgMomentum ? selectedTrend.data.avgMomentum.toLocaleString() : 'N/A'}
                         </span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-foreground">Cross-Platform Count:</span>
+                        <span className="text-card-foreground">Cross-Platform Count:</span>
                         <span className="text-lg font-bold text-blue-600">
                           {selectedTrend.data?.crossPlatformCount || 'N/A'}
                         </span>
@@ -876,14 +876,14 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
                   </div>
                   
                   <div className="bg-green-50 bg-green-900/20 p-6 rounded-lg">
-                    <h4 className="text-lg font-semibold text-foreground mb-4">Technology Categories</h4>
+                    <h4 className="text-lg font-semibold text-card-foreground mb-4">Technology Categories</h4>
                     <div className="space-y-2">
-                      <div className="text-sm text-foreground">• Education & Learning</div>
-                      <div className="text-sm text-foreground">• Web Development</div>
-                      <div className="text-sm text-foreground">• AI & Machine Learning</div>
-                      <div className="text-sm text-foreground">• Developer Tools</div>
-                      <div className="text-sm text-foreground">• Data & Analytics</div>
-                      <div className="text-sm text-foreground">• Mobile Development</div>
+                      <div className="text-sm text-card-foreground">• Education & Learning</div>
+                      <div className="text-sm text-card-foreground">• Web Development</div>
+                      <div className="text-sm text-card-foreground">• AI & Machine Learning</div>
+                      <div className="text-sm text-card-foreground">• Developer Tools</div>
+                      <div className="text-sm text-card-foreground">• Data & Analytics</div>
+                      <div className="text-sm text-card-foreground">• Mobile Development</div>
                     </div>
                   </div>
                 </div>
@@ -892,22 +892,22 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
               {selectedTrend.topic.includes('High GitHub Activity') && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="bg-yellow-50 bg-yellow-900/20 p-6 rounded-lg">
-                    <h4 className="text-lg font-semibold text-foreground mb-4">GitHub Metrics</h4>
+                    <h4 className="text-lg font-semibold text-card-foreground mb-4">GitHub Metrics</h4>
                     <div className="space-y-3">
                       <div className="flex justify-between items-center">
-                        <span className="text-foreground">Total Stars:</span>
+                        <span className="text-card-foreground">Total Stars:</span>
                         <span className="text-2xl font-bold text-yellow-600">
                           {selectedTrend.data?.totalStars ? Math.round(selectedTrend.data.totalStars / 1000) + 'k' : 'N/A'}
                         </span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-foreground">Average Stars:</span>
+                        <span className="text-card-foreground">Average Stars:</span>
                         <span className="text-xl font-bold text-yellow-600">
                           {selectedTrend.data?.avgStars ? Math.round(selectedTrend.data.avgStars / 1000) + 'k' : 'N/A'}
                         </span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-foreground">High Rated Count:</span>
+                        <span className="text-card-foreground">High Rated Count:</span>
                         <span className="text-lg font-bold text-yellow-600">
                           {selectedTrend.data?.highRatedCount || 'N/A'}
                         </span>
@@ -916,13 +916,13 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
                   </div>
                   
                   <div className="bg-purple-50 bg-purple-900/20 p-6 rounded-lg">
-                    <h4 className="text-lg font-semibold text-foreground mb-4">Top Repositories</h4>
+                    <h4 className="text-lg font-semibold text-card-foreground mb-4">Top Repositories</h4>
                     <div className="space-y-2">
-                      <div className="text-sm text-foreground">• freeCodeCamp</div>
-                      <div className="text-sm text-foreground">• free-programming-books</div>
-                      <div className="text-sm text-foreground">• public-apis</div>
-                      <div className="text-sm text-foreground">• developer-roadmap</div>
-                      <div className="text-sm text-foreground">• system-design-primer</div>
+                      <div className="text-sm text-card-foreground">• freeCodeCamp</div>
+                      <div className="text-sm text-card-foreground">• free-programming-books</div>
+                      <div className="text-sm text-card-foreground">• public-apis</div>
+                      <div className="text-sm text-card-foreground">• developer-roadmap</div>
+                      <div className="text-sm text-card-foreground">• system-design-primer</div>
                     </div>
                   </div>
                 </div>
@@ -934,14 +934,14 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
                   <div className="bg-blue-50 bg-blue-900/20 p-6 rounded-lg">
                     <div className="flex items-center gap-3 mb-4">
                       <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                      <h4 className="text-lg font-semibold text-foreground">Product Hunt</h4>
+                      <h4 className="text-lg font-semibold text-card-foreground">Product Hunt</h4>
                     </div>
                     <div className="space-y-2">
                       <div className="text-3xl font-bold text-blue-600">
                         {selectedTrend.data?.ph ? selectedTrend.data.ph.toLocaleString() : 'N/A'}
                       </div>
-                      <div className="text-sm text-foreground">Total Votes</div>
-                      <div className="text-sm text-foreground">
+                      <div className="text-sm text-card-foreground">Total Votes</div>
+                      <div className="text-sm text-card-foreground">
                         {selectedTrend.data?.ph > 0 ? 'Active on Product Hunt' : 'No Product Hunt activity'}
                       </div>
                     </div>
@@ -950,14 +950,14 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
                   <div className="bg-green-50 bg-green-900/20 p-6 rounded-lg">
                     <div className="flex items-center gap-3 mb-4">
                       <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                      <h4 className="text-lg font-semibold text-foreground">Hacker News</h4>
+                      <h4 className="text-lg font-semibold text-card-foreground">Hacker News</h4>
                     </div>
                     <div className="space-y-2">
                       <div className="text-3xl font-bold text-green-600">
                         {selectedTrend.data?.hn ? selectedTrend.data.hn.toLocaleString() : 'N/A'}
                       </div>
-                      <div className="text-sm text-foreground">Total Score</div>
-                      <div className="text-sm text-foreground">
+                      <div className="text-sm text-card-foreground">Total Score</div>
+                      <div className="text-sm text-card-foreground">
                         {selectedTrend.data?.hn > 0 ? 'Active on Hacker News' : 'No Hacker News activity'}
                       </div>
                     </div>
@@ -966,14 +966,14 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
                   <div className="bg-purple-50 bg-purple-900/20 p-6 rounded-lg">
                     <div className="flex items-center gap-3 mb-4">
                       <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
-                      <h4 className="text-lg font-semibold text-foreground">GitHub</h4>
+                      <h4 className="text-lg font-semibold text-card-foreground">GitHub</h4>
                     </div>
                     <div className="space-y-2">
                       <div className="text-3xl font-bold text-purple-600">
                         {selectedTrend.data?.gh ? Math.round(selectedTrend.data.gh / 1000) + 'k' : 'N/A'}
                       </div>
-                      <div className="text-sm text-foreground">Total Stars</div>
-                      <div className="text-sm text-foreground">
+                      <div className="text-sm text-card-foreground">Total Stars</div>
+                      <div className="text-sm text-card-foreground">
                         {selectedTrend.data?.gh > 0 ? 'Active on GitHub' : 'No GitHub activity'}
                       </div>
                     </div>
@@ -983,67 +983,67 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
 
               {/* Advanced Metrics */}
               <div>
-                <h4 className="text-lg font-semibold text-foreground mb-4">Advanced Metrics</h4>
+                <h4 className="text-lg font-semibold text-card-foreground mb-4">Advanced Metrics</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="bg-orange-50 bg-orange-900/20 p-4 rounded-lg">
-                    <h5 className="font-medium text-foreground mb-2">Growth Momentum</h5>
+                    <h5 className="font-medium text-card-foreground mb-2">Growth Momentum</h5>
                     <div className="text-2xl font-bold text-orange-600">
                       {selectedTrend.data?.momentum ? formatNumber(selectedTrend.data.momentum) : 'N/A'}
                     </div>
-                    <div className="text-sm text-foreground">
+                    <div className="text-sm text-card-foreground">
                       {selectedTrend.data?.momentum > 50 ? '🔥 Hot Growth' : 
                        selectedTrend.data?.momentum > 20 ? '📈 Rising' : 
                        selectedTrend.data?.momentum > 5 ? '📊 Steady' : '📉 Declining'}
                     </div>
-                    <div className="text-xs text-foreground mt-1">
+                    <div className="text-xs text-card-foreground mt-1">
                       Engagement velocity across platforms
                     </div>
                   </div>
                   
                   <div className="bg-pink-50 bg-pink-900/20 p-4 rounded-lg">
-                    <h5 className="font-medium text-foreground mb-2">Viral Coefficient</h5>
+                    <h5 className="font-medium text-card-foreground mb-2">Viral Coefficient</h5>
                     <div className="text-2xl font-bold text-pink-600">
                       {selectedTrend.data?.viral ? formatNumber(selectedTrend.data.viral * 100) + '%' : 'N/A'}
                     </div>
-                    <div className="text-sm text-foreground">
+                    <div className="text-sm text-card-foreground">
                       {selectedTrend.data?.viral > 0.5 ? '💬 High Engagement' : 
                        selectedTrend.data?.viral > 0.2 ? '💭 Medium Engagement' : '🔇 Low Engagement'}
                     </div>
-                    <div className="text-xs text-foreground mt-1">
+                    <div className="text-xs text-card-foreground mt-1">
                       Comments-to-votes ratio
                     </div>
                   </div>
                   
                   <div className="bg-indigo-50 bg-indigo-900/20 p-4 rounded-lg">
-                    <h5 className="font-medium text-foreground mb-2">Market Opportunity</h5>
+                    <h5 className="font-medium text-card-foreground mb-2">Market Opportunity</h5>
                     <div className="text-2xl font-bold text-indigo-600">
                       {selectedTrend.data?.gap ? formatNumber(selectedTrend.data.gap * 100) + '%' : 'N/A'}
                     </div>
-                    <div className="text-sm text-foreground">
+                    <div className="text-sm text-card-foreground">
                       {selectedTrend.data?.gap > 0.8 ? '🎯 High Opportunity' : 
                        selectedTrend.data?.gap > 0.5 ? '⚡ Growing Market' : 
                        selectedTrend.data?.gap > 0.2 ? '📈 Mature Market' : '🔴 Saturated Market'}
                     </div>
-                    <div className="text-xs text-foreground mt-1">
+                    <div className="text-xs text-card-foreground mt-1">
                       Market saturation level
                     </div>
                   </div>
                   
                   <div className="bg-emerald-50 bg-emerald-900/20 p-4 rounded-lg">
-                    <h5 className="font-medium text-foreground mb-2">Cross-Platform Reach</h5>
+                    <h5 className="font-medium text-card-foreground mb-2">Cross-Platform Reach</h5>
                     <div className="text-2xl font-bold text-emerald-600">
                       {selectedTrend.data?.ph > 0 && selectedTrend.data?.hn > 0 && selectedTrend.data?.gh > 0 ? '3' :
                        (selectedTrend.data?.ph > 0 && selectedTrend.data?.hn > 0) || 
                        (selectedTrend.data?.ph > 0 && selectedTrend.data?.gh > 0) || 
                        (selectedTrend.data?.hn > 0 && selectedTrend.data?.gh > 0) ? '2' : '1'}
                     </div>
-                    <div className="text-sm text-foreground">
+                    <div className="text-sm text-card-foreground">
                       {selectedTrend.data?.ph > 0 && selectedTrend.data?.hn > 0 && selectedTrend.data?.gh > 0 ? '🚀 All Platforms' :
                        (selectedTrend.data?.ph > 0 && selectedTrend.data?.hn > 0) || 
                        (selectedTrend.data?.ph > 0 && selectedTrend.data?.gh > 0) || 
                        (selectedTrend.data?.hn > 0 && selectedTrend.data?.gh > 0) ? '🔥 Multi-Platform' : '📱 Single Platform'}
                     </div>
-                    <div className="text-xs text-foreground mt-1">
+                    <div className="text-xs text-card-foreground mt-1">
                       Platform presence
                     </div>
                   </div>
@@ -1052,18 +1052,18 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
 
               {/* Platform Breakdown */}
               <div>
-                <h4 className="text-lg font-semibold text-foreground mb-4">Platform Breakdown</h4>
+                <h4 className="text-lg font-semibold text-card-foreground mb-4">Platform Breakdown</h4>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between p-4 bg-gray-50 bg-gray-700 rounded-lg">
                     <div className="flex items-center gap-3">
                       <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                      <span className="font-medium text-foreground">Product Hunt</span>
+                      <span className="font-medium text-card-foreground">Product Hunt</span>
                     </div>
                     <div className="text-right">
-                      <div className="text-lg font-bold text-foreground">
+                      <div className="text-lg font-bold text-card-foreground">
                         {selectedTrend.data?.ph ? selectedTrend.data.ph.toLocaleString() : 'N/A'} votes
                       </div>
-                      <div className="text-sm text-foreground">
+                      <div className="text-sm text-card-foreground">
                         {selectedTrend.data?.ph > 0 ? 'Active' : 'Inactive'}
                       </div>
                     </div>
@@ -1072,13 +1072,13 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
                   <div className="flex items-center justify-between p-4 bg-gray-50 bg-gray-700 rounded-lg">
                     <div className="flex items-center gap-3">
                       <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                      <span className="font-medium text-foreground">Hacker News</span>
+                      <span className="font-medium text-card-foreground">Hacker News</span>
                     </div>
                     <div className="text-right">
-                      <div className="text-lg font-bold text-foreground">
+                      <div className="text-lg font-bold text-card-foreground">
                         {selectedTrend.data?.hn ? selectedTrend.data.hn.toLocaleString() : 'N/A'} score
                       </div>
-                      <div className="text-sm text-foreground">
+                      <div className="text-sm text-card-foreground">
                         {selectedTrend.data?.hn > 0 ? 'Active' : 'Inactive'}
                       </div>
                     </div>
@@ -1087,13 +1087,13 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
                   <div className="flex items-center justify-between p-4 bg-gray-50 bg-gray-700 rounded-lg">
                     <div className="flex items-center gap-3">
                       <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
-                      <span className="font-medium text-foreground">GitHub</span>
+                      <span className="font-medium text-card-foreground">GitHub</span>
                     </div>
                     <div className="text-right">
-                      <div className="text-lg font-bold text-foreground">
+                      <div className="text-lg font-bold text-card-foreground">
                         {Math.round(selectedTrend.data.gh / 1000)}k stars
                       </div>
-                      <div className="text-sm text-foreground">
+                      <div className="text-sm text-card-foreground">
                         {selectedTrend.data.gh > 0 ? 'Active' : 'Inactive'}
                       </div>
                     </div>
@@ -1103,27 +1103,27 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
 
               {/* Trend Insights */}
               <div>
-                <h4 className="text-lg font-semibold text-foreground mb-4">Trend Insights</h4>
+                <h4 className="text-lg font-semibold text-card-foreground mb-4">Trend Insights</h4>
                 <div className="bg-gray-50 bg-gray-700 p-4 rounded-lg">
                   <div className="space-y-3">
                     <div>
-                      <div className="font-medium text-foreground">Total Cross-Platform Activity</div>
+                      <div className="font-medium text-card-foreground">Total Cross-Platform Activity</div>
                       <div className="text-2xl font-bold text-blue-600">
                         {selectedTrend.data?.total ? selectedTrend.data.total.toLocaleString() : 'N/A'}
                       </div>
-                      <div className="text-sm text-foreground">
+                      <div className="text-sm text-card-foreground">
                         Combined engagement across all platforms
                       </div>
                     </div>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-200 border-gray-600">
                       <div>
-                        <div className="text-sm text-foreground">Time Filter</div>
-                        <div className="font-medium text-foreground">{timeFilter}</div>
+                        <div className="text-sm text-card-foreground">Time Filter</div>
+                        <div className="font-medium text-card-foreground">{timeFilter}</div>
                       </div>
                       <div>
-                        <div className="text-sm text-foreground">Analysis Date</div>
-                        <div className="font-medium text-foreground">
+                        <div className="text-sm text-card-foreground">Analysis Date</div>
+                        <div className="font-medium text-card-foreground">
                           {new Date().toLocaleDateString()}
                         </div>
                       </div>

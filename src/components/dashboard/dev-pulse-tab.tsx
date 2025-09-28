@@ -546,8 +546,8 @@ export function DevPulseTab({ productHuntData, hackerNewsData, saaSHubData }: De
     <div className="space-y-6">
       {/* Header */}
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-foreground">DevPulse</h2>
-        <p className="text-foreground">Developer career intelligence and skill market analysis</p>
+        <h2 className="text-2xl font-bold text-card-foreground">DevPulse</h2>
+        <p className="text-muted-foreground">Developer career intelligence and skill market analysis</p>
       </div>
 
       {/* Market Overview Dashboard */}
@@ -560,60 +560,60 @@ export function DevPulseTab({ productHuntData, hackerNewsData, saaSHubData }: De
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="text-center p-3 bg-blue-50 bg-blue-900/20 rounded-lg relative">
+            <div className="text-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg relative">
               <div className="text-2xl font-bold text-blue-600">{careerInsights.marketInsights.totalSkills}</div>
-              <div className="text-sm text-foreground">Skills Tracked</div>
-              <div className="text-xs text-foreground">
+              <div className="text-sm text-card-foreground">Skills Tracked</div>
+              <div className="text-xs text-card-foreground">
                 {careerInsights.marketInsights.crossPlatformSkills} cross-platform
               </div>
               <button
                 onClick={() => setSelectedCardModal('skills')}
-                className="absolute top-2 right-2 p-1 hover:bg-blue-100 hover:bg-blue-800 rounded-full transition-colors"
+                className="absolute top-2 right-2 p-1 hover:bg-accent rounded-full transition-colors"
                 title="View all tracked skills"
               >
-                <Info className="h-3 w-3 text-blue-500" />
+                <Info className="h-3 w-3 text-muted-foreground" />
               </button>
             </div>
-            <div className="text-center p-3 bg-green-50 bg-green-900/20 rounded-lg relative">
+            <div className="text-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg relative">
               <div className="text-2xl font-bold text-green-600">{careerInsights.marketInsights.hotSkillsCount}</div>
-              <div className="text-sm text-foreground">Hot Skills</div>
-              <div className="text-xs text-foreground">
+              <div className="text-sm text-card-foreground">Hot Skills</div>
+              <div className="text-xs text-card-foreground">
                 {formatNumber(careerInsights.marketInsights.hotSkillsCount / careerInsights.marketInsights.totalSkills * 100)}% of total
               </div>
               <button
                 onClick={() => setSelectedCardModal('hot')}
-                className="absolute top-2 right-2 p-1 hover:bg-green-100 hover:bg-green-800 rounded-full transition-colors"
+                className="absolute top-2 right-2 p-1 hover:bg-accent rounded-full transition-colors"
                 title="View hot skills details"
               >
-                <Info className="h-3 w-3 text-green-500" />
+                <Info className="h-3 w-3 text-muted-foreground" />
               </button>
             </div>
-            <div className="text-center p-3 bg-yellow-50 bg-yellow-900/20 rounded-lg relative">
+            <div className="text-center p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg relative">
               <div className="text-2xl font-bold text-yellow-600">${formatNumber(careerInsights.marketInsights.avgSalary/1000)}k</div>
-              <div className="text-sm text-foreground">Avg Salary</div>
-              <div className="text-xs text-foreground">
+              <div className="text-sm text-card-foreground">Avg Salary</div>
+              <div className="text-xs text-card-foreground">
                 {careerInsights.marketInsights.highSalaryCount} high-salary skills
               </div>
               <button
                 onClick={() => setSelectedCardModal('salary')}
-                className="absolute top-2 right-2 p-1 hover:bg-yellow-100 hover:bg-yellow-800 rounded-full transition-colors"
+                className="absolute top-2 right-2 p-1 hover:bg-accent rounded-full transition-colors"
                 title="View salary details"
               >
-                <Info className="h-3 w-3 text-yellow-500" />
+                <Info className="h-3 w-3 text-muted-foreground" />
               </button>
             </div>
-            <div className="text-center p-3 bg-purple-50 bg-purple-900/20 rounded-lg relative">
+            <div className="text-center p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg relative">
               <div className="text-2xl font-bold text-purple-600">{careerInsights.marketInsights.avgDifficulty}/10</div>
-              <div className="text-sm text-foreground">Avg Difficulty</div>
-              <div className="text-xs text-foreground">
+              <div className="text-sm text-card-foreground">Avg Difficulty</div>
+              <div className="text-xs text-card-foreground">
                 {formatNumber(careerInsights.marketInsights.totalDemand/1000000)}M total demand
               </div>
               <button
                 onClick={() => setSelectedCardModal('difficulty')}
-                className="absolute top-2 right-2 p-1 hover:bg-purple-100 hover:bg-purple-800 rounded-full transition-colors"
+                className="absolute top-2 right-2 p-1 hover:bg-accent rounded-full transition-colors"
                 title="View difficulty details"
               >
-                <Info className="h-3 w-3 text-purple-500" />
+                <Info className="h-3 w-3 text-muted-foreground" />
               </button>
             </div>
           </div>
@@ -635,8 +635,8 @@ export function DevPulseTab({ productHuntData, hackerNewsData, saaSHubData }: De
                 <div className="text-2xl font-bold text-blue-600">
                   {formatNumber(analyticsData.performance.engagementMetrics.avgEngagement)}
                 </div>
-                <div className="text-sm text-foreground">Avg Engagement</div>
-                <div className="text-xs text-foreground mt-1">
+                <div className="text-sm text-card-foreground">Avg Engagement</div>
+                <div className="text-xs text-card-foreground mt-1">
                   {analyticsData.performance.engagementMetrics.highEngagement} high engagement items
                 </div>
               </div>
@@ -645,8 +645,8 @@ export function DevPulseTab({ productHuntData, hackerNewsData, saaSHubData }: De
                 <div className="text-2xl font-bold text-green-600">
                   {analyticsData.performance.engagementMetrics.viralPosts}
                 </div>
-                <div className="text-sm text-foreground">Viral Posts</div>
-                <div className="text-xs text-foreground mt-1">
+                <div className="text-sm text-card-foreground">Viral Posts</div>
+                <div className="text-xs text-card-foreground mt-1">
                   {formatNumber(analyticsData.performance.engagementMetrics.avgScore)} avg score
                 </div>
               </div>
@@ -655,8 +655,8 @@ export function DevPulseTab({ productHuntData, hackerNewsData, saaSHubData }: De
                 <div className="text-2xl font-bold text-purple-600">
                   +{analyticsData.performance.growthRates.phGrowth}%
                 </div>
-                <div className="text-sm text-foreground">Growth Rate</div>
-                <div className="text-xs text-foreground mt-1">
+                <div className="text-sm text-card-foreground">Growth Rate</div>
+                <div className="text-xs text-card-foreground mt-1">
                   Product Hunt momentum
                 </div>
               </div>
@@ -664,15 +664,15 @@ export function DevPulseTab({ productHuntData, hackerNewsData, saaSHubData }: De
             
             {/* Success Factors */}
             <div className="mt-4 p-4 bg-card rounded-lg border">
-              <h4 className="font-semibold text-foreground mb-2">Success Factors</h4>
+              <h4 className="font-semibold text-card-foreground mb-2">Success Factors</h4>
               <div className="grid gap-2 md:grid-cols-2 text-sm">
                 <div>
-                  <span className="text-foreground">Optimal Timing: </span>
-                  <span className="font-medium text-foreground">{analyticsData.performance.successFactors.timing}</span>
+                  <span className="text-card-foreground">Optimal Timing: </span>
+                  <span className="font-medium text-card-foreground">{analyticsData.performance.successFactors.timing}</span>
                 </div>
                 <div>
-                  <span className="text-foreground">Top Categories: </span>
-                  <span className="font-medium text-foreground">{analyticsData.performance.successFactors.categories.join(', ')}</span>
+                  <span className="text-card-foreground">Top Categories: </span>
+                  <span className="font-medium text-card-foreground">{analyticsData.performance.successFactors.categories.join(', ')}</span>
                 </div>
               </div>
             </div>
@@ -780,10 +780,10 @@ export function DevPulseTab({ productHuntData, hackerNewsData, saaSHubData }: De
             {learningPaths.map((path, index) => (
               <div key={path.name} className="p-4 border rounded-lg hover:shadow-md transition-shadow">
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="font-semibold text-foreground">{path.name}</h3>
+                  <h3 className="font-semibold text-card-foreground">{path.name}</h3>
                   <Badge variant="outline" className="text-xs">{path.difficulty}</Badge>
                 </div>
-                <div className="space-y-2 text-sm text-foreground">
+                <div className="space-y-2 text-sm text-card-foreground">
                   <div className="flex justify-between">
                     <span>Demand Score:</span>
                     <span className="font-medium">{path.demandScore}k</span>
@@ -809,7 +809,7 @@ export function DevPulseTab({ productHuntData, hackerNewsData, saaSHubData }: De
                     <span className="font-medium">{path.skillCount}/{path.skills.length}</span>
                   </div>
                   <div className="mt-3">
-                    <div className="text-xs text-foreground mb-1">Key Skills:</div>
+                    <div className="text-xs text-card-foreground mb-1">Key Skills:</div>
                     <div className="flex flex-wrap gap-1">
                       {path.skills.slice(0, 4).map(skill => (
                         <Badge key={skill} variant="secondary" className="text-xs">{skill}</Badge>
@@ -836,68 +836,68 @@ export function DevPulseTab({ productHuntData, hackerNewsData, saaSHubData }: De
         </CardHeader>
         <CardContent>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              <div className="p-4 border rounded-lg bg-green-50 bg-green-900/20">
+              <div className="p-4 border rounded-lg bg-green-50 dark:bg-green-900/20">
                 <h3 className="font-semibold text-green-600 mb-2 flex items-center gap-2">
                   🌱 Emerging ({techLifecycle.emerging.length})
                 </h3>
                 <div className="space-y-2">
                   {techLifecycle.emerging.slice(0, 4).map(tech => (
                     <div key={tech.name} className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-foreground">⚠️ {tech.name}</span>
-                      <div className="text-xs text-foreground">
+                      <span className="text-sm font-medium text-card-foreground">⚠️ {tech.name}</span>
+                      <div className="text-xs text-card-foreground">
                         {tech.demand.toLocaleString()} demand
                       </div>
                     </div>
                   ))}
                   {techLifecycle.emerging.length === 0 && (
-                    <div className="text-sm text-foreground">No emerging technologies</div>
+                    <div className="text-sm text-card-foreground">No emerging technologies</div>
                   )}
                   {techLifecycle.emerging.length > 4 && (
-                    <div className="text-xs text-foreground">+{techLifecycle.emerging.length - 4} more</div>
+                    <div className="text-xs text-card-foreground">+{techLifecycle.emerging.length - 4} more</div>
                   )}
                 </div>
               </div>
 
-              <div className="p-4 border rounded-lg bg-blue-50 bg-blue-900/20">
+              <div className="p-4 border rounded-lg bg-blue-50 dark:bg-blue-900/20">
                 <h3 className="font-semibold text-blue-600 mb-2 flex items-center gap-2">
                   📈 Growing ({techLifecycle.growing.length})
                 </h3>
                 <div className="space-y-2">
                   {techLifecycle.growing.slice(0, 4).map(tech => (
                     <div key={tech.name} className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-foreground">⚠️ {tech.name}</span>
-                      <div className="text-xs text-foreground">
+                      <span className="text-sm font-medium text-card-foreground">⚠️ {tech.name}</span>
+                      <div className="text-xs text-card-foreground">
                         {tech.demand.toLocaleString()} demand
                       </div>
                     </div>
                   ))}
                   {techLifecycle.growing.length === 0 && (
-                    <div className="text-sm text-foreground">No growing technologies</div>
+                    <div className="text-sm text-card-foreground">No growing technologies</div>
                   )}
                   {techLifecycle.growing.length > 4 && (
-                    <div className="text-xs text-foreground">+{techLifecycle.growing.length - 4} more</div>
+                    <div className="text-xs text-card-foreground">+{techLifecycle.growing.length - 4} more</div>
                   )}
                 </div>
               </div>
 
-              <div className="p-4 border rounded-lg bg-purple-50 bg-purple-900/20">
+              <div className="p-4 border rounded-lg bg-purple-50 dark:bg-purple-900/20">
                 <h3 className="font-semibold text-purple-600 mb-2 flex items-center gap-2">
                   🏢 Mature ({techLifecycle.mature.length})
                 </h3>
                 <div className="space-y-2">
                   {techLifecycle.mature.slice(0, 4).map(tech => (
                     <div key={tech.name} className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-foreground">⚠️ {tech.name}</span>
-                      <div className="text-xs text-foreground">
+                      <span className="text-sm font-medium text-card-foreground">⚠️ {tech.name}</span>
+                      <div className="text-xs text-card-foreground">
                         {tech.demand.toLocaleString()} demand
                       </div>
                     </div>
                   ))}
                   {techLifecycle.mature.length === 0 && (
-                    <div className="text-sm text-foreground">No mature technologies</div>
+                    <div className="text-sm text-card-foreground">No mature technologies</div>
                   )}
                   {techLifecycle.mature.length > 4 && (
-                    <div className="text-xs text-foreground">+{techLifecycle.mature.length - 4} more</div>
+                    <div className="text-xs text-card-foreground">+{techLifecycle.mature.length - 4} more</div>
                   )}
                 </div>
               </div>
@@ -909,17 +909,17 @@ export function DevPulseTab({ productHuntData, hackerNewsData, saaSHubData }: De
                 <div className="space-y-2">
                   {techLifecycle.declining.slice(0, 4).map(tech => (
                     <div key={tech.name} className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-foreground">⚠️ {tech.name}</span>
-                      <div className="text-xs text-foreground">
+                      <span className="text-sm font-medium text-card-foreground">⚠️ {tech.name}</span>
+                      <div className="text-xs text-card-foreground">
                         {tech.demand.toLocaleString()} demand
                       </div>
                     </div>
                   ))}
                   {techLifecycle.declining.length === 0 && (
-                    <div className="text-sm text-foreground">No declining technologies</div>
+                    <div className="text-sm text-card-foreground">No declining technologies</div>
                   )}
                   {techLifecycle.declining.length > 4 && (
-                    <div className="text-xs text-foreground">+{techLifecycle.declining.length - 4} more</div>
+                    <div className="text-xs text-card-foreground">+{techLifecycle.declining.length - 4} more</div>
                   )}
                 </div>
               </div>
@@ -945,10 +945,10 @@ export function DevPulseTab({ productHuntData, hackerNewsData, saaSHubData }: De
                     setSelectedSkill(skill.name);
                     setShowSkillDetailsModal(true);
                   }}
-                  className="absolute top-2 right-2 p-1 hover:bg-gray-100 hover:bg-gray-700 rounded-full transition-colors z-10"
+                  className="absolute top-2 right-2 p-1 hover:bg-accent rounded-full transition-colors z-10"
                   title="View detailed skill information"
                 >
-                  <Info className="h-3 w-3 text-foreground hover:text-foreground" />
+                  <Info className="h-3 w-3 text-muted-foreground" />
                 </button>
                 
                 <div className="flex items-center gap-3 pr-6">
@@ -956,8 +956,8 @@ export function DevPulseTab({ productHuntData, hackerNewsData, saaSHubData }: De
                     {index + 1}
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-semibold text-foreground">{skill.name}</h3>
-                    <div className="flex items-center gap-3 text-sm text-foreground">
+                    <h3 className="font-semibold text-card-foreground">{skill.name}</h3>
+                    <div className="flex items-center gap-3 text-sm text-card-foreground">
                       <span>Demand: {skill.demand.toLocaleString()}</span>
                       <span>•</span>
                       <span>Salary: ${Math.round(skill.salary/1000)}k</span>
@@ -981,7 +981,7 @@ export function DevPulseTab({ productHuntData, hackerNewsData, saaSHubData }: De
                       {skill.recommendation}
                     </Badge>
                   </div>
-                  <div className="text-xs text-foreground">
+                  <div className="text-xs text-card-foreground">
                     Score: {Math.round(skill.score)}
                   </div>
                 </div>
@@ -994,9 +994,9 @@ export function DevPulseTab({ productHuntData, hackerNewsData, saaSHubData }: De
       {/* Individual Card Modals */}
       {selectedCardModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-card rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto">
-            <div className="flex items-center justify-between p-6 border-b border-gray-200 border-gray-700">
-              <h2 className="text-xl font-bold text-foreground">
+          <div className="bg-white text-gray-900 rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto border border-gray-200">
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h2 className="text-xl font-bold text-gray-900">
                 {selectedCardModal === 'skills' && 'Skills Tracked Details'}
                 {selectedCardModal === 'hot' && 'Hot Skills Details'}
                 {selectedCardModal === 'salary' && 'Salary Analysis'}
@@ -1004,37 +1004,37 @@ export function DevPulseTab({ productHuntData, hackerNewsData, saaSHubData }: De
               </h2>
               <button
                 onClick={() => setSelectedCardModal(null)}
-                className="p-2 hover:bg-gray-100 hover:bg-gray-700 rounded-full transition-colors"
+                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
               >
-                <X className="h-5 w-5 text-foreground" />
+                <X className="h-5 w-5 text-gray-600" />
               </button>
             </div>
             
             <div className="p-6">
               {selectedCardModal === 'skills' && (
                 <div className="space-y-4">
-                  <div className="bg-blue-50 bg-blue-900/20 p-4 rounded-lg">
+                  <div className="bg-blue-50 p-4 rounded-lg">
                     <h3 className="font-semibold text-blue-600 mb-2">All Tracked Skills</h3>
                     <div className="grid grid-cols-2 gap-2 text-sm">
                       {skillDemand.slice(0, 20).map((skill, index) => (
-                        <div key={skill.name} className="flex items-center justify-between p-2 bg-card bg-gray-700 rounded">
-                          <span className="font-medium">{skill.name}</span>
-                          <span className="text-xs text-foreground">{skill.demand.toLocaleString()}</span>
+                        <div key={skill.name} className="flex items-center justify-between p-2 bg-white border border-gray-200 rounded">
+                          <span className="font-medium text-gray-900">{skill.name}</span>
+                          <span className="text-xs text-gray-600">{skill.demand.toLocaleString()}</span>
                         </div>
                       ))}
                     </div>
                     {skillDemand.length > 20 && (
-                      <p className="text-xs text-foreground mt-2">+{skillDemand.length - 20} more skills</p>
+                      <p className="text-xs text-gray-700 mt-2">+{skillDemand.length - 20} more skills</p>
                     )}
                   </div>
                   
-                  <div className="bg-green-50 bg-green-900/20 p-4 rounded-lg">
+                  <div className="bg-green-50 p-4 rounded-lg">
                     <h3 className="font-semibold text-green-600 mb-2">Cross-Platform Skills</h3>
                     <div className="space-y-1 text-sm">
                       {skillDemand.filter(skill => skill.community > 2 && skill.demand > 50000).slice(0, 10).map(skill => (
-                        <div key={skill.name} className="flex items-center justify-between p-2 bg-card bg-gray-700 rounded">
-                          <span>{skill.name}</span>
-                          <span className="text-xs text-foreground">{skill.community} communities</span>
+                        <div key={skill.name} className="flex items-center justify-between p-2 bg-white border border-gray-200 rounded">
+                          <span className="text-gray-900">{skill.name}</span>
+                          <span className="text-xs text-gray-600">{skill.community} communities</span>
                         </div>
                       ))}
                     </div>
@@ -1044,29 +1044,29 @@ export function DevPulseTab({ productHuntData, hackerNewsData, saaSHubData }: De
 
               {selectedCardModal === 'hot' && (
                 <div className="space-y-4">
-                  <div className="bg-green-50 bg-green-900/20 p-4 rounded-lg">
+                  <div className="bg-green-50 p-4 rounded-lg">
                     <h3 className="font-semibold text-green-600 mb-2">Hot Skills List</h3>
                     <div className="space-y-2">
                       {careerInsights.hotSkills.map((skill, index) => (
-                        <div key={skill.name} className="flex items-center justify-between p-3 bg-card bg-gray-700 rounded-lg">
+                        <div key={skill.name} className="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-lg">
                           <div className="flex items-center gap-3">
-                            <div className="w-6 h-6 bg-green-100 bg-green-900 rounded-full flex items-center justify-center text-xs font-bold">
+                            <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center text-xs font-bold text-green-800">
                               {index + 1}
                             </div>
-                            <span className="font-medium">{skill.name}</span>
+                            <span className="font-medium text-gray-900">{skill.name}</span>
                           </div>
                           <div className="text-right">
                             <div className="text-sm font-bold text-green-600">{skill.demand.toLocaleString()}</div>
-                            <div className="text-xs text-foreground">demand</div>
+                            <div className="text-xs text-gray-600">demand</div>
                           </div>
                         </div>
                       ))}
                     </div>
                   </div>
                   
-                  <div className="bg-orange-50 bg-orange-900/20 p-4 rounded-lg">
+                  <div className="bg-orange-50 p-4 rounded-lg">
                     <h3 className="font-semibold text-orange-600 mb-2">Hot Skills Criteria</h3>
-                    <ul className="text-sm space-y-1 text-foreground">
+                    <ul className="text-sm space-y-1 text-gray-900">
                       <li>• Demand &gt; 1M points</li>
                       <li>• Trending status (🔥 Hot)</li>
                       <li>• Strong community engagement</li>
@@ -1078,29 +1078,29 @@ export function DevPulseTab({ productHuntData, hackerNewsData, saaSHubData }: De
 
               {selectedCardModal === 'salary' && (
                 <div className="space-y-4">
-                  <div className="bg-yellow-50 bg-yellow-900/20 p-4 rounded-lg">
+                  <div className="bg-yellow-50 p-4 rounded-lg">
                     <h3 className="font-semibold text-yellow-600 mb-2">High-Salary Skills</h3>
                     <div className="space-y-2">
                       {careerInsights.highSalary.map((skill, index) => (
-                        <div key={skill.name} className="flex items-center justify-between p-3 bg-card bg-gray-700 rounded-lg">
+                        <div key={skill.name} className="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-lg">
                           <div className="flex items-center gap-3">
-                            <div className="w-6 h-6 bg-yellow-100 bg-yellow-900 rounded-full flex items-center justify-center text-xs font-bold">
+                            <div className="w-6 h-6 bg-yellow-100 rounded-full flex items-center justify-center text-xs font-bold text-yellow-800">
                               {index + 1}
                             </div>
-                            <span className="font-medium">{skill.name}</span>
+                            <span className="font-medium text-gray-900">{skill.name}</span>
                           </div>
                           <div className="text-right">
                             <div className="text-sm font-bold text-yellow-600">${Math.round(skill.salary/1000)}k</div>
-                            <div className="text-xs text-foreground">salary</div>
+                            <div className="text-xs text-gray-600">salary</div>
                           </div>
                         </div>
                       ))}
                     </div>
                   </div>
                   
-                  <div className="bg-blue-50 bg-blue-900/20 p-4 rounded-lg">
+                  <div className="bg-blue-50 p-4 rounded-lg">
                     <h3 className="font-semibold text-blue-600 mb-2">Salary Calculation</h3>
-                    <ul className="text-sm space-y-1 text-foreground">
+                    <ul className="text-sm space-y-1 text-gray-900">
                       <li>• Base salary: $70k</li>
                       <li>• Demand bonus: Up to $50k</li>
                       <li>• Difficulty bonus: Up to $21k</li>
@@ -1113,29 +1113,29 @@ export function DevPulseTab({ productHuntData, hackerNewsData, saaSHubData }: De
 
               {selectedCardModal === 'difficulty' && (
                 <div className="space-y-4">
-                  <div className="bg-purple-50 bg-purple-900/20 p-4 rounded-lg">
+                  <div className="bg-purple-50 p-4 rounded-lg">
                     <h3 className="font-semibold text-purple-600 mb-2">Difficulty Distribution</h3>
                     <div className="space-y-2">
                       {skillDemand.slice(0, 15).map((skill, index) => (
-                        <div key={skill.name} className="flex items-center justify-between p-3 bg-card bg-gray-700 rounded-lg">
+                        <div key={skill.name} className="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-lg">
                           <div className="flex items-center gap-3">
-                            <div className="w-6 h-6 bg-purple-100 bg-purple-900 rounded-full flex items-center justify-center text-xs font-bold">
+                            <div className="w-6 h-6 bg-purple-100 rounded-full flex items-center justify-center text-xs font-bold text-purple-800">
                               {index + 1}
                             </div>
-                            <span className="font-medium">{skill.name}</span>
+                            <span className="font-medium text-gray-900">{skill.name}</span>
                           </div>
                           <div className="text-right">
                             <div className="text-sm font-bold text-purple-600">{skill.difficulty}/10</div>
-                            <div className="text-xs text-foreground">difficulty</div>
+                            <div className="text-xs text-gray-600">difficulty</div>
                           </div>
                         </div>
                       ))}
                     </div>
                   </div>
                   
-                  <div className="bg-gray-50 bg-gray-800 p-4 rounded-lg">
-                    <h3 className="font-semibold text-foreground mb-2">Difficulty Factors</h3>
-                    <ul className="text-sm space-y-1 text-foreground">
+                  <div className="bg-gray-50 p-4 rounded-lg">
+                    <h3 className="font-semibold text-gray-900 mb-2">Difficulty Factors</h3>
+                    <ul className="text-sm space-y-1 text-gray-900">
                       <li>• Learning curve complexity</li>
                       <li>• Community support availability</li>
                       <li>• Documentation quality</li>
@@ -1153,13 +1153,13 @@ export function DevPulseTab({ productHuntData, hackerNewsData, saaSHubData }: De
       {/* Community Modal */}
       {showCommunityModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-card rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto">
-            <div className="flex items-center justify-between p-6 border-b border-gray-200 border-gray-700">
+          <div className="bg-card text-card-foreground rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+            <div className="flex items-center justify-between p-6 border-b border-border">
               <div>
-                <h2 className="text-xl font-bold text-foreground">
+                <h2 className="text-xl font-bold text-card-foreground">
                   {selectedSkill} Communities
                 </h2>
-                <p className="text-sm text-foreground mt-1">
+                <p className="text-sm text-card-foreground mt-1">
                   {(() => {
                     // Get the actual skill data from the dynamic data
                     const skillData = skillDemand.find(skill => 
@@ -1176,9 +1176,9 @@ export function DevPulseTab({ productHuntData, hackerNewsData, saaSHubData }: De
               </div>
               <button
                 onClick={() => setShowCommunityModal(false)}
-                className="p-2 hover:bg-gray-100 hover:bg-gray-700 rounded-full transition-colors"
+                className="p-2 hover:bg-accent rounded-full transition-colors"
               >
-                <X className="h-5 w-5 text-foreground" />
+                <X className="h-5 w-5 text-card-foreground" />
               </button>
             </div>
             
@@ -1192,7 +1192,7 @@ export function DevPulseTab({ productHuntData, hackerNewsData, saaSHubData }: De
                   
                   if (!skillData) {
                     return (
-                      <div className="text-center text-foreground py-8">
+                      <div className="text-center text-card-foreground py-8">
                         No community data available for {selectedSkill}
                       </div>
                     );
@@ -1267,11 +1267,11 @@ export function DevPulseTab({ productHuntData, hackerNewsData, saaSHubData }: De
                           href={link.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center p-3 bg-blue-50 bg-blue-900/20 rounded-lg hover:bg-blue-100 hover:bg-blue-900/30 transition-colors"
+                          className="flex items-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors"
                         >
                           <div className="flex-1 min-w-0">
-                            <div className="font-medium text-blue-900 text-blue-100 truncate">{link.name}</div>
-                            <div className="text-xs text-blue-600 text-blue-300 truncate">{link.url}</div>
+                            <div className="font-medium text-blue-900 dark:text-blue-100 truncate">{link.name}</div>
+                            <div className="text-xs text-blue-600 dark:text-blue-300 truncate">{link.url}</div>
                           </div>
                           <div className="ml-2 flex-shrink-0 text-blue-500">
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1292,16 +1292,16 @@ export function DevPulseTab({ productHuntData, hackerNewsData, saaSHubData }: De
       {/* Skill Details Modal */}
       {showSkillDetailsModal && selectedSkill && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-card rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between p-6 border-b border-gray-200 border-gray-700">
-              <h2 className="text-2xl font-bold text-foreground">
+          <div className="bg-card text-card-foreground rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between p-6 border-b border-border">
+              <h2 className="text-2xl font-bold text-card-foreground">
                 {selectedSkill} - Skill Analysis
               </h2>
               <button
                 onClick={() => setShowSkillDetailsModal(false)}
-                className="p-2 hover:bg-gray-100 hover:bg-gray-700 rounded-full transition-colors"
+                className="p-2 hover:bg-accent rounded-full transition-colors"
               >
-                <X className="h-5 w-5 text-foreground" />
+                <X className="h-5 w-5 text-card-foreground" />
               </button>
             </div>
             
@@ -1312,8 +1312,8 @@ export function DevPulseTab({ productHuntData, hackerNewsData, saaSHubData }: De
                 if (!skillData) {
                   return (
                     <div className="text-center py-8">
-                      <Code className="h-12 w-12 text-foreground mx-auto mb-4" />
-                      <p className="text-foreground">Skill data not found</p>
+                      <Code className="h-12 w-12 text-card-foreground mx-auto mb-4" />
+                      <p className="text-card-foreground">Skill data not found</p>
                     </div>
                   );
                 }
@@ -1322,57 +1322,57 @@ export function DevPulseTab({ productHuntData, hackerNewsData, saaSHubData }: De
                   <>
                     {/* Skill Overview */}
                     <div>
-                      <h3 className="text-2xl font-bold text-foreground mb-4">
+                      <h3 className="text-2xl font-bold text-card-foreground mb-4">
                         {skillData.name}
                       </h3>
-                      <p className="text-lg text-foreground mb-6">
+                      <p className="text-lg text-card-foreground mb-6">
                         Comprehensive skill analysis including demand, salary, difficulty, and community metrics
                       </p>
                     </div>
 
                     {/* Key Metrics */}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                      <div className="bg-blue-50 bg-blue-900/20 p-4 rounded-lg text-center">
+                      <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg text-center">
                         <TrendingUp className="h-8 w-8 text-blue-600 mx-auto mb-2" />
                         <div className="text-2xl font-bold text-blue-600">{skillData.demand.toLocaleString()}</div>
-                        <div className="text-sm text-foreground">Demand Score</div>
+                        <div className="text-sm text-card-foreground">Demand Score</div>
                       </div>
-                      <div className="bg-green-50 bg-green-900/20 p-4 rounded-lg text-center">
+                      <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg text-center">
                         <Zap className="h-8 w-8 text-green-600 mx-auto mb-2" />
                         <div className="text-2xl font-bold text-green-600">${skillData.salary.toLocaleString()}</div>
-                        <div className="text-sm text-foreground">Avg Salary</div>
+                        <div className="text-sm text-card-foreground">Avg Salary</div>
                       </div>
-                      <div className="bg-purple-50 bg-purple-900/20 p-4 rounded-lg text-center">
+                      <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg text-center">
                         <Target className="h-8 w-8 text-purple-600 mx-auto mb-2" />
                         <div className="text-2xl font-bold text-purple-600">{skillData.difficulty}/10</div>
-                        <div className="text-sm text-foreground">Difficulty</div>
+                        <div className="text-sm text-card-foreground">Difficulty</div>
                       </div>
-                      <div className="bg-orange-50 bg-orange-900/20 p-4 rounded-lg text-center">
+                      <div className="bg-orange-50 dark:bg-orange-900/20 p-4 rounded-lg text-center">
                         <Users className="h-8 w-8 text-orange-600 mx-auto mb-2" />
                         <div className="text-2xl font-bold text-orange-600">{skillData.community}</div>
-                        <div className="text-sm text-foreground">Communities</div>
+                        <div className="text-sm text-card-foreground">Communities</div>
                       </div>
                     </div>
 
                     {/* Detailed Analysis */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="bg-gray-50 bg-gray-700 p-4 rounded-lg">
-                        <h4 className="font-semibold text-foreground mb-3">Demand Analysis</h4>
+                        <h4 className="font-semibold text-card-foreground mb-3">Demand Analysis</h4>
                         <div className="space-y-2">
                           <div className="flex justify-between">
-                            <span className="text-foreground">Total Demand:</span>
-                            <span className="font-medium">{skillData.demand.toLocaleString()}</span>
+                            <span className="text-card-foreground">Total Demand:</span>
+                            <span className="font-medium text-card-foreground">{skillData.demand.toLocaleString()}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-foreground">Job Posts:</span>
-                            <span className="font-medium">{skillData.jobPosts}</span>
+                            <span className="text-card-foreground">Job Posts:</span>
+                            <span className="font-medium text-card-foreground">{skillData.jobPosts}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-foreground">Learning Resources:</span>
-                            <span className="font-medium">{skillData.learningResources}</span>
+                            <span className="text-card-foreground">Learning Resources:</span>
+                            <span className="font-medium text-card-foreground">{skillData.learningResources}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-foreground">Trend:</span>
+                            <span className="text-card-foreground">Trend:</span>
                             <span className={`font-medium ${
                               skillData.trend === '📈 Rising' ? 'text-green-600' : 
                               skillData.trend === '📊 Stable' ? 'text-blue-600' : 'text-red-600'
@@ -1385,14 +1385,14 @@ export function DevPulseTab({ productHuntData, hackerNewsData, saaSHubData }: De
                       </div>
 
                       <div className="bg-gray-50 bg-gray-700 p-4 rounded-lg">
-                        <h4 className="font-semibold text-foreground mb-3">Career Insights</h4>
+                        <h4 className="font-semibold text-card-foreground mb-3">Career Insights</h4>
                         <div className="space-y-2">
                           <div className="flex justify-between">
-                            <span className="text-foreground">Salary Range:</span>
+                            <span className="text-card-foreground">Salary Range:</span>
                             <span className="font-medium">${Math.round(skillData.salary * 0.8).toLocaleString()} - ${Math.round(skillData.salary * 1.2).toLocaleString()}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-foreground">Learning Time:</span>
+                            <span className="text-card-foreground">Learning Time:</span>
                             <span className="font-medium">
                               {skillData.difficulty <= 3 ? '1-3 months' : 
                                skillData.difficulty <= 6 ? '3-6 months' : 
@@ -1400,7 +1400,7 @@ export function DevPulseTab({ productHuntData, hackerNewsData, saaSHubData }: De
                             </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-foreground">Market Status:</span>
+                            <span className="text-card-foreground">Market Status:</span>
                             <span className={`font-medium ${
                               skillData.demand > 100000 ? 'text-green-600' : 
                               skillData.demand > 50000 ? 'text-blue-600' : 'text-orange-600'
@@ -1410,10 +1410,10 @@ export function DevPulseTab({ productHuntData, hackerNewsData, saaSHubData }: De
                             </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-foreground">Community Strength:</span>
+                            <span className="text-card-foreground">Community Strength:</span>
                             <span className={`font-medium ${
                               skillData.community > 3 ? 'text-green-600' : 
-                              skillData.community > 1 ? 'text-blue-600' : 'text-foreground'
+                              skillData.community > 1 ? 'text-blue-600' : 'text-card-foreground'
                             }`}>
                               {skillData.community > 3 ? 'Strong' : 
                                skillData.community > 1 ? 'Moderate' : 'Limited'}
@@ -1425,24 +1425,24 @@ export function DevPulseTab({ productHuntData, hackerNewsData, saaSHubData }: De
 
                     {/* Skill Comparison */}
                     <div>
-                      <h4 className="text-lg font-semibold text-foreground mb-4">Skill Comparison</h4>
+                      <h4 className="text-lg font-semibold text-card-foreground mb-4">Skill Comparison</h4>
                       <div className="bg-gray-50 bg-gray-700 p-4 rounded-lg">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                           <div>
-                            <div className="text-sm text-foreground mb-1">Demand vs Average</div>
-                            <div className="text-lg font-bold text-foreground">
+                            <div className="text-sm text-card-foreground mb-1">Demand vs Average</div>
+                            <div className="text-lg font-bold text-card-foreground">
                               {skillData.demand > skillDemand.reduce((sum, s) => sum + s.demand, 0) / skillDemand.length ? 'Above' : 'Below'} Average
                             </div>
                           </div>
                           <div>
-                            <div className="text-sm text-foreground mb-1">Salary vs Average</div>
-                            <div className="text-lg font-bold text-foreground">
+                            <div className="text-sm text-card-foreground mb-1">Salary vs Average</div>
+                            <div className="text-lg font-bold text-card-foreground">
                               {skillData.salary > skillDemand.reduce((sum, s) => sum + s.salary, 0) / skillDemand.length ? 'Above' : 'Below'} Average
                             </div>
                           </div>
                           <div>
-                            <div className="text-sm text-foreground mb-1">Difficulty vs Average</div>
-                            <div className="text-lg font-bold text-foreground">
+                            <div className="text-sm text-card-foreground mb-1">Difficulty vs Average</div>
+                            <div className="text-lg font-bold text-card-foreground">
                               {skillData.difficulty > skillDemand.reduce((sum, s) => sum + s.difficulty, 0) / skillDemand.length ? 'Above' : 'Below'} Average
                             </div>
                           </div>
@@ -1452,24 +1452,24 @@ export function DevPulseTab({ productHuntData, hackerNewsData, saaSHubData }: De
 
                     {/* Learning Path */}
                     <div>
-                      <h4 className="text-lg font-semibold text-foreground mb-4">Learning Path</h4>
+                      <h4 className="text-lg font-semibold text-card-foreground mb-4">Learning Path</h4>
                       <div className="bg-gray-50 bg-gray-700 p-4 rounded-lg">
                         <div className="space-y-3">
                           <div className="flex items-center gap-3">
                             <div className="w-6 h-6 bg-blue-100 bg-blue-900 rounded-full flex items-center justify-center text-xs font-bold">1</div>
-                            <span className="text-foreground">Start with fundamentals and basic concepts</span>
+                            <span className="text-card-foreground">Start with fundamentals and basic concepts</span>
                           </div>
                           <div className="flex items-center gap-3">
                             <div className="w-6 h-6 bg-blue-100 bg-blue-900 rounded-full flex items-center justify-center text-xs font-bold">2</div>
-                            <span className="text-foreground">Practice with small projects and exercises</span>
+                            <span className="text-card-foreground">Practice with small projects and exercises</span>
                           </div>
                           <div className="flex items-center gap-3">
                             <div className="w-6 h-6 bg-blue-100 bg-blue-900 rounded-full flex items-center justify-center text-xs font-bold">3</div>
-                            <span className="text-foreground">Build real-world applications and contribute to open source</span>
+                            <span className="text-card-foreground">Build real-world applications and contribute to open source</span>
                           </div>
                           <div className="flex items-center gap-3">
                             <div className="w-6 h-6 bg-blue-100 bg-blue-900 rounded-full flex items-center justify-center text-xs font-bold">4</div>
-                            <span className="text-foreground">Join communities and network with other developers</span>
+                            <span className="text-card-foreground">Join communities and network with other developers</span>
                           </div>
                         </div>
                       </div>

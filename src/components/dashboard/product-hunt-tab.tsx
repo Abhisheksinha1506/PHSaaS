@@ -102,8 +102,8 @@ export function ProductHuntTab({ data }: ProductHuntTabProps) {
             <div className="flex items-center">
               <TrendingUp className="h-8 w-8 text-blue-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-foreground">Total Products</p>
-                <p className="text-2xl font-bold text-foreground">{filteredData.length}</p>
+                <p className="text-sm font-medium text-card-foreground">Total Products</p>
+                <p className="text-2xl font-bold text-card-foreground">{filteredData.length}</p>
               </div>
             </div>
           </CardContent>
@@ -113,8 +113,8 @@ export function ProductHuntTab({ data }: ProductHuntTabProps) {
             <div className="flex items-center">
               <MessageCircle className="h-8 w-8 text-green-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-foreground">Total Votes</p>
-                <p className="text-2xl font-bold text-foreground">
+                <p className="text-sm font-medium text-card-foreground">Total Votes</p>
+                <p className="text-2xl font-bold text-card-foreground">
                   {filteredData.reduce((sum, item) => sum + item.votes_count, 0)}
                 </p>
               </div>
@@ -126,8 +126,8 @@ export function ProductHuntTab({ data }: ProductHuntTabProps) {
             <div className="flex items-center">
               <Calendar className="h-8 w-8 text-purple-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-foreground">Total Comments</p>
-                <p className="text-2xl font-bold text-foreground">
+                <p className="text-sm font-medium text-card-foreground">Total Comments</p>
+                <p className="text-2xl font-bold text-card-foreground">
                   {filteredData.reduce((sum, item) => sum + item.comments_count, 0)}
                 </p>
               </div>
@@ -147,10 +147,10 @@ export function ProductHuntTab({ data }: ProductHuntTabProps) {
                   setSelectedProduct(product);
                   setShowDetailsModal(true);
                 }}
-                className="absolute top-4 right-4 p-2 hover:bg-gray-100 hover:bg-gray-700 rounded-full transition-colors z-10"
+                className="absolute top-4 right-4 p-2 hover:bg-accent rounded-full transition-colors z-10"
                 title="View detailed information"
               >
-                <Info className="h-4 w-4 text-foreground hover:text-foreground" />
+                <Info className="h-4 w-4 text-muted-foreground" />
               </button>
               
               <div className="flex flex-col sm:flex-row gap-4">
@@ -167,10 +167,10 @@ export function ProductHuntTab({ data }: ProductHuntTabProps) {
                 <div className="flex-1">
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between">
                     <div>
-                      <h3 className="text-xl font-semibold text-foreground mb-2">
+                      <h3 className="text-xl font-semibold text-card-foreground mb-2">
                         {product.name}
                       </h3>
-                      <p className="text-foreground mb-3">
+                      <p className="text-card-foreground mb-3">
                         {product.tagline}
                       </p>
                       <div className="flex flex-wrap gap-2 mb-3">
@@ -185,7 +185,7 @@ export function ProductHuntTab({ data }: ProductHuntTabProps) {
                       </div>
                     </div>
                     <div className="flex flex-col sm:items-end gap-2">
-                      <div className="flex items-center gap-4 text-sm text-foreground">
+                      <div className="flex items-center gap-4 text-sm text-card-foreground">
                         <div className="flex items-center gap-1">
                           <TrendingUp className="h-4 w-4" />
                           {product.votes_count}
@@ -195,11 +195,11 @@ export function ProductHuntTab({ data }: ProductHuntTabProps) {
                           {product.comments_count}
                         </div>
                       </div>
-                      <div className="flex items-center gap-1 text-sm text-foreground">
+                      <div className="flex items-center gap-1 text-sm text-card-foreground">
                         <User className="h-4 w-4" />
                         {product.user.name}
                       </div>
-                      <div className="text-sm text-foreground">
+                      <div className="text-sm text-card-foreground">
                         {new Date(product.created_at).toLocaleDateString()}
                       </div>
                     </div>
@@ -215,15 +215,15 @@ export function ProductHuntTab({ data }: ProductHuntTabProps) {
       {showDetailsModal && selectedProduct && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-card rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between p-6 border-b border-gray-200 border-gray-700">
-              <h2 className="text-2xl font-bold text-foreground">
+            <div className="flex items-center justify-between p-6 border-b">
+              <h2 className="text-2xl font-bold text-card-foreground">
                 {selectedProduct.name} - Detailed Information
               </h2>
               <button
                 onClick={() => setShowDetailsModal(false)}
-                className="p-2 hover:bg-gray-100 hover:bg-gray-700 rounded-full transition-colors"
+                className="p-2 hover:bg-accent rounded-full transition-colors"
               >
-                <X className="h-5 w-5 text-foreground" />
+                <X className="h-5 w-5 text-card-foreground" />
               </button>
             </div>
             
@@ -241,13 +241,13 @@ export function ProductHuntTab({ data }: ProductHuntTabProps) {
                   />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-2xl font-bold text-foreground mb-2">
+                  <h3 className="text-2xl font-bold text-card-foreground mb-2">
                     {selectedProduct.name}
                   </h3>
-                  <p className="text-lg text-foreground mb-4">
+                  <p className="text-lg text-card-foreground mb-4">
                     {selectedProduct.tagline}
                   </p>
-                  <p className="text-foreground mb-4">
+                  <p className="text-card-foreground mb-4">
                     {selectedProduct.description}
                   </p>
                 </div>
@@ -258,30 +258,30 @@ export function ProductHuntTab({ data }: ProductHuntTabProps) {
                 <div className="bg-blue-50 bg-blue-900/20 p-4 rounded-lg text-center">
                   <TrendingUp className="h-8 w-8 text-blue-600 mx-auto mb-2" />
                   <div className="text-2xl font-bold text-blue-600">{selectedProduct.votes_count}</div>
-                  <div className="text-sm text-foreground">Total Votes</div>
+                  <div className="text-sm text-card-foreground">Total Votes</div>
                 </div>
                 <div className="bg-green-50 bg-green-900/20 p-4 rounded-lg text-center">
                   <MessageCircle className="h-8 w-8 text-green-600 mx-auto mb-2" />
                   <div className="text-2xl font-bold text-green-600">{selectedProduct.comments_count}</div>
-                  <div className="text-sm text-foreground">Comments</div>
+                  <div className="text-sm text-card-foreground">Comments</div>
                 </div>
                 <div className="bg-purple-50 bg-purple-900/20 p-4 rounded-lg text-center">
                   <Calendar className="h-8 w-8 text-purple-600 mx-auto mb-2" />
                   <div className="text-lg font-bold text-purple-600">
                     {new Date(selectedProduct.created_at).toLocaleDateString()}
                   </div>
-                  <div className="text-sm text-foreground">Launch Date</div>
+                  <div className="text-sm text-card-foreground">Launch Date</div>
                 </div>
                 <div className="bg-orange-50 bg-orange-900/20 p-4 rounded-lg text-center">
                   <User className="h-8 w-8 text-orange-600 mx-auto mb-2" />
                   <div className="text-lg font-bold text-orange-600">{selectedProduct.user.name}</div>
-                  <div className="text-sm text-foreground">Maker</div>
+                  <div className="text-sm text-card-foreground">Maker</div>
                 </div>
               </div>
 
               {/* Topics */}
               <div>
-                <h4 className="text-lg font-semibold text-foreground mb-3">Categories & Topics</h4>
+                <h4 className="text-lg font-semibold text-card-foreground mb-3">Categories & Topics</h4>
                 <div className="flex flex-wrap gap-2">
                   {selectedProduct.topics.map((topic, index) => (
                     <span
@@ -296,17 +296,17 @@ export function ProductHuntTab({ data }: ProductHuntTabProps) {
 
               {/* Engagement Analysis */}
               <div>
-                <h4 className="text-lg font-semibold text-foreground mb-3">Engagement Analysis</h4>
+                <h4 className="text-lg font-semibold text-card-foreground mb-3">Engagement Analysis</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="bg-gray-50 bg-gray-700 p-4 rounded-lg">
-                    <h5 className="font-medium text-foreground mb-2">Vote-to-Comment Ratio</h5>
+                    <h5 className="font-medium text-card-foreground mb-2">Vote-to-Comment Ratio</h5>
                     <div className="text-2xl font-bold text-blue-600">
                       {selectedProduct.comments_count > 0 
                         ? formatNumber(selectedProduct.votes_count / selectedProduct.comments_count)
                         : 'N/A'
                       }
                     </div>
-                    <div className="text-sm text-foreground">
+                    <div className="text-sm text-card-foreground">
                       {selectedProduct.comments_count > 0 
                         ? `${selectedProduct.comments_count} comments per ${formatNumber(selectedProduct.votes_count / selectedProduct.comments_count)} votes`
                         : 'No comments yet'
@@ -314,11 +314,11 @@ export function ProductHuntTab({ data }: ProductHuntTabProps) {
                     </div>
                   </div>
                   <div className="bg-gray-50 bg-gray-700 p-4 rounded-lg">
-                    <h5 className="font-medium text-foreground mb-2">Total Engagement</h5>
+                    <h5 className="font-medium text-card-foreground mb-2">Total Engagement</h5>
                     <div className="text-2xl font-bold text-green-600">
                       {selectedProduct.votes_count + selectedProduct.comments_count}
                     </div>
-                    <div className="text-sm text-foreground">
+                    <div className="text-sm text-card-foreground">
                       Combined votes and comments
                     </div>
                   </div>
@@ -327,12 +327,12 @@ export function ProductHuntTab({ data }: ProductHuntTabProps) {
 
               {/* Launch Timing */}
               <div>
-                <h4 className="text-lg font-semibold text-foreground mb-3">Launch Information</h4>
+                <h4 className="text-lg font-semibold text-card-foreground mb-3">Launch Information</h4>
                 <div className="bg-gray-50 bg-gray-700 p-4 rounded-lg">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <div className="text-sm text-foreground">Launch Date</div>
-                      <div className="font-medium text-foreground">
+                      <div className="text-sm text-card-foreground">Launch Date</div>
+                      <div className="font-medium text-card-foreground">
                         {new Date(selectedProduct.created_at).toLocaleDateString('en-US', {
                           weekday: 'long',
                           year: 'numeric',
@@ -342,8 +342,8 @@ export function ProductHuntTab({ data }: ProductHuntTabProps) {
                       </div>
                     </div>
                     <div>
-                      <div className="text-sm text-foreground">Launch Time</div>
-                      <div className="font-medium text-foreground">
+                      <div className="text-sm text-card-foreground">Launch Time</div>
+                      <div className="font-medium text-card-foreground">
                         {new Date(selectedProduct.created_at).toLocaleTimeString('en-US', {
                           hour: '2-digit',
                           minute: '2-digit',
@@ -352,14 +352,14 @@ export function ProductHuntTab({ data }: ProductHuntTabProps) {
                       </div>
                     </div>
                     <div>
-                      <div className="text-sm text-foreground">Days Since Launch</div>
-                      <div className="font-medium text-foreground">
+                      <div className="text-sm text-card-foreground">Days Since Launch</div>
+                      <div className="font-medium text-card-foreground">
                         {Math.floor((Date.now() - new Date(selectedProduct.created_at).getTime()) / (1000 * 60 * 60 * 24))} days
                       </div>
                     </div>
                     <div>
-                      <div className="text-sm text-foreground">Maker Username</div>
-                      <div className="font-medium text-foreground">
+                      <div className="text-sm text-card-foreground">Maker Username</div>
+                      <div className="font-medium text-card-foreground">
                         @{selectedProduct.user.username}
                       </div>
                     </div>
