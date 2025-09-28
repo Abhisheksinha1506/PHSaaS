@@ -15,19 +15,19 @@ export async function GET() {
       result: {
         productHunt: {
           success: result.productHunt.success,
-          dataLength: result.productHunt.data?.length || 0,
+          dataLength: Array.isArray(result.productHunt.data) ? result.productHunt.data.length : 0,
           responseTime: result.productHunt.responseTime,
           fromCache: result.productHunt.fromCache
         },
         hackerNews: {
           success: result.hackerNews.success,
-          dataLength: result.hackerNews.data?.length || 0,
+          dataLength: Array.isArray(result.hackerNews.data) ? result.hackerNews.data.length : 0,
           responseTime: result.hackerNews.responseTime,
           fromCache: result.hackerNews.fromCache
         },
         github: {
           success: result.github.success,
-          dataLength: result.github.data?.length || 0,
+          dataLength: Array.isArray(result.github.data) ? result.github.data.length : 0,
           responseTime: result.github.responseTime,
           fromCache: result.github.fromCache
         }

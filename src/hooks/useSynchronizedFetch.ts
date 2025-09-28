@@ -7,9 +7,9 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 
 interface SynchronizedFetchState {
   data: {
-    productHunt: any[];
-    hackerNews: any[];
-    github: any[];
+    productHunt: unknown[];
+    hackerNews: unknown[];
+    github: unknown[];
   };
   loading: boolean;
   error: string | null;
@@ -27,7 +27,7 @@ interface SynchronizedFetchOptions {
   autoRefresh?: boolean;
   refreshInterval?: number;
   forceRefresh?: boolean;
-  onSuccess?: (data: any) => void;
+  onSuccess?: (data: unknown) => void;
   onError?: (error: string) => void;
 }
 
@@ -62,7 +62,7 @@ export function useSynchronizedFetch(options: SynchronizedFetchOptions = {}) {
   const isMountedRef = useRef(true);
 
   // Fetch data function
-  const fetchData = useCallback(async (isRefresh = false) => {
+  const fetchData = useCallback(async (_isRefresh = false) => {
     if (!isMountedRef.current) return;
 
     setState(prev => ({
@@ -180,12 +180,12 @@ export function useSynchronizedFetch(options: SynchronizedFetchOptions = {}) {
   }, [fetchData]);
 
   // Get loading status for specific platforms
-  const getLoadingStatus = useCallback((platform: string) => {
+  const getLoadingStatus = useCallback((_platform: string) => {
     return state.loading;
   }, [state.loading]);
 
   // Get error status for specific platforms
-  const getErrorStatus = useCallback((platform: string) => {
+  const getErrorStatus = useCallback((_platform: string) => {
     return state.error;
   }, [state.error]);
 

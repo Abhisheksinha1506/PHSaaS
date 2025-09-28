@@ -107,7 +107,10 @@ class PerformanceMonitor {
     ].sort((a, b) => b.time - a.time);
 
     const slowestOperation = bottlenecks[0].operation;
-    const recommendations = this.generateRecommendations(bottlenecks, avgTotal);
+    const recommendations = this.generateRecommendations(
+      bottlenecks.map(b => ({ name: b.operation, avgTime: b.time, percentage: b.percentage })),
+      avgTotal
+    );
 
     return {
       slowestOperation,
@@ -117,7 +120,7 @@ class PerformanceMonitor {
     };
   }
 
-  private generateRecommendations(bottlenecks: any[], avgTotal: number): string[] {
+  private generateRecommendations(bottlenecks: Array<{name: string; avgTime: number; percentage: number}>, avgTotal: number): string[] {
     const recommendations: string[] = [];
     
     if (avgTotal > 5000) {
@@ -128,7 +131,15 @@ class PerformanceMonitor {
 
     bottlenecks.forEach(bottleneck => {
       if (bottleneck.percentage > 60) {
-        recommendations.push(`🔍 Focus on ${bottleneck.operation}: ${bottleneck.recommendation}`);
+        let recommendation = '';
+        if (bottleneck.name === 'API Calls') {
+          recommendation = bottleneck.avgTime > 2000 ? 'Consider API caching or parallel requests' : 'Good';
+        } else if (bottleneck.name === 'Data Processing') {
+          recommendation = bottleneck.avgTime > 500 ? 'Optimize data filtering and transformation' : 'Good';
+        } else if (bottleneck.name === 'Analytics Calculation') {
+          recommendation = bottleneck.avgTime > 300 ? 'Consider caching analytics results' : 'Good';
+        }
+        recommendations.push(`🔍 Focus on ${bottleneck.name}: ${recommendation}`);
       }
     });
 

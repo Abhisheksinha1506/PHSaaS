@@ -20,7 +20,7 @@ interface TrendTrackerTabProps {
 
 export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, timeFilter, setTimeFilter }: TrendTrackerTabProps) {
   const [trendFilter, setTrendFilter] = useState<'all' | 'hot' | 'high-engagement' | 'saturated' | 'single-platform' | 'multi-platform'>('all');
-  const [selectedTrend, setSelectedTrend] = useState<{topic: string, data: any} | null>(null);
+  const [selectedTrend, setSelectedTrend] = useState<{topic: string, data: Record<string, unknown>} | null>(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   
   // Analytics integration
@@ -345,7 +345,7 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
     }
 
     // Dynamic GitHub activity analysis
-    const getDynamicGitHubThresholds = (data: any[], timeFilter: string) => {
+    const getDynamicGitHubThresholds = (data: SaaSHubAlternative[], timeFilter: string) => {
       if (data.length === 0) return { stars: 0, label: '0' };
       
       const stars = data.map(item => item.reviews_count).sort((a, b) => b - a);
@@ -693,7 +693,7 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
             <div className="flex gap-2">
               <select
                 value={trendFilter}
-                onChange={(e) => setTrendFilter(e.target.value as any)}
+                onChange={(e) => setTrendFilter(e.target.value as 'all' | 'hot' | 'high-engagement' | 'saturated' | 'single-platform' | 'multi-platform')}
                 className="px-4 py-3 text-sm border border-input rounded-xl bg-background/70 backdrop-blur-sm text-card-foreground focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-300 shadow-lg"
               >
                 <option value="all">All Trends</option>
@@ -869,7 +869,7 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
                       <div className="flex justify-between items-center">
                         <span className="text-card-foreground">Cross-Platform Count:</span>
                         <span className="text-lg font-bold text-blue-600">
-                          {selectedTrend.data?.crossPlatformCount || 'N/A'}
+                          {String(selectedTrend.data?.crossPlatformCount || 'N/A')}
                         </span>
                       </div>
                     </div>
@@ -897,19 +897,19 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
                       <div className="flex justify-between items-center">
                         <span className="text-card-foreground">Total Stars:</span>
                         <span className="text-2xl font-bold text-yellow-600">
-                          {selectedTrend.data?.totalStars ? Math.round(selectedTrend.data.totalStars / 1000) + 'k' : 'N/A'}
+                          {selectedTrend.data?.totalStars ? Math.round((selectedTrend.data.totalStars as number) / 1000) + 'k' : 'N/A'}
                         </span>
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-card-foreground">Average Stars:</span>
                         <span className="text-xl font-bold text-yellow-600">
-                          {selectedTrend.data?.avgStars ? Math.round(selectedTrend.data.avgStars / 1000) + 'k' : 'N/A'}
+                          {selectedTrend.data?.avgStars ? Math.round((selectedTrend.data.avgStars as number) / 1000) + 'k' : 'N/A'}
                         </span>
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-card-foreground">High Rated Count:</span>
                         <span className="text-lg font-bold text-yellow-600">
-                          {selectedTrend.data?.highRatedCount || 'N/A'}
+                          {String(selectedTrend.data?.highRatedCount || 'N/A')}
                         </span>
                       </div>
                     </div>
@@ -942,7 +942,7 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
                       </div>
                       <div className="text-sm text-card-foreground">Total Votes</div>
                       <div className="text-sm text-card-foreground">
-                        {selectedTrend.data?.ph > 0 ? 'Active on Product Hunt' : 'No Product Hunt activity'}
+                        {(selectedTrend.data?.ph as number) > 0 ? 'Active on Product Hunt' : 'No Product Hunt activity'}
                       </div>
                     </div>
                   </div>
@@ -958,7 +958,7 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
                       </div>
                       <div className="text-sm text-card-foreground">Total Score</div>
                       <div className="text-sm text-card-foreground">
-                        {selectedTrend.data?.hn > 0 ? 'Active on Hacker News' : 'No Hacker News activity'}
+                        {(selectedTrend.data?.hn as number) > 0 ? 'Active on Hacker News' : 'No Hacker News activity'}
                       </div>
                     </div>
                   </div>
@@ -970,11 +970,11 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
                     </div>
                     <div className="space-y-2">
                       <div className="text-3xl font-bold text-purple-600">
-                        {selectedTrend.data?.gh ? Math.round(selectedTrend.data.gh / 1000) + 'k' : 'N/A'}
+                        {selectedTrend.data?.gh ? Math.round((selectedTrend.data.gh as number) / 1000) + 'k' : 'N/A'}
                       </div>
                       <div className="text-sm text-card-foreground">Total Stars</div>
                       <div className="text-sm text-card-foreground">
-                        {selectedTrend.data?.gh > 0 ? 'Active on GitHub' : 'No GitHub activity'}
+                        {(selectedTrend.data?.gh as number) > 0 ? 'Active on GitHub' : 'No GitHub activity'}
                       </div>
                     </div>
                   </div>
@@ -988,12 +988,12 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
                   <div className="bg-orange-50 bg-orange-900/20 p-4 rounded-lg">
                     <h5 className="font-medium text-card-foreground mb-2">Growth Momentum</h5>
                     <div className="text-2xl font-bold text-orange-600">
-                      {selectedTrend.data?.momentum ? formatNumber(selectedTrend.data.momentum) : 'N/A'}
+                      {selectedTrend.data?.momentum ? formatNumber(selectedTrend.data.momentum as number) : 'N/A'}
                     </div>
                     <div className="text-sm text-card-foreground">
-                      {selectedTrend.data?.momentum > 50 ? '🔥 Hot Growth' : 
-                       selectedTrend.data?.momentum > 20 ? '📈 Rising' : 
-                       selectedTrend.data?.momentum > 5 ? '📊 Steady' : '📉 Declining'}
+                      {(selectedTrend.data?.momentum as number) > 50 ? '🔥 Hot Growth' : 
+                       (selectedTrend.data?.momentum as number) > 20 ? '📈 Rising' : 
+                       (selectedTrend.data?.momentum as number) > 5 ? '📊 Steady' : '📉 Declining'}
                     </div>
                     <div className="text-xs text-card-foreground mt-1">
                       Engagement velocity across platforms
@@ -1003,11 +1003,11 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
                   <div className="bg-pink-50 bg-pink-900/20 p-4 rounded-lg">
                     <h5 className="font-medium text-card-foreground mb-2">Viral Coefficient</h5>
                     <div className="text-2xl font-bold text-pink-600">
-                      {selectedTrend.data?.viral ? formatNumber(selectedTrend.data.viral * 100) + '%' : 'N/A'}
+                      {selectedTrend.data?.viral ? formatNumber((selectedTrend.data.viral as number) * 100) + '%' : 'N/A'}
                     </div>
                     <div className="text-sm text-card-foreground">
-                      {selectedTrend.data?.viral > 0.5 ? '💬 High Engagement' : 
-                       selectedTrend.data?.viral > 0.2 ? '💭 Medium Engagement' : '🔇 Low Engagement'}
+                      {(selectedTrend.data?.viral as number) > 0.5 ? '💬 High Engagement' : 
+                       (selectedTrend.data?.viral as number) > 0.2 ? '💭 Medium Engagement' : '🔇 Low Engagement'}
                     </div>
                     <div className="text-xs text-card-foreground mt-1">
                       Comments-to-votes ratio
@@ -1017,12 +1017,12 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
                   <div className="bg-indigo-50 bg-indigo-900/20 p-4 rounded-lg">
                     <h5 className="font-medium text-card-foreground mb-2">Market Opportunity</h5>
                     <div className="text-2xl font-bold text-indigo-600">
-                      {selectedTrend.data?.gap ? formatNumber(selectedTrend.data.gap * 100) + '%' : 'N/A'}
+                      {selectedTrend.data?.gap ? formatNumber((selectedTrend.data.gap as number) * 100) + '%' : 'N/A'}
                     </div>
                     <div className="text-sm text-card-foreground">
-                      {selectedTrend.data?.gap > 0.8 ? '🎯 High Opportunity' : 
-                       selectedTrend.data?.gap > 0.5 ? '⚡ Growing Market' : 
-                       selectedTrend.data?.gap > 0.2 ? '📈 Mature Market' : '🔴 Saturated Market'}
+                      {(selectedTrend.data?.gap as number) > 0.8 ? '🎯 High Opportunity' : 
+                       (selectedTrend.data?.gap as number) > 0.5 ? '⚡ Growing Market' : 
+                       (selectedTrend.data?.gap as number) > 0.2 ? '📈 Mature Market' : '🔴 Saturated Market'}
                     </div>
                     <div className="text-xs text-card-foreground mt-1">
                       Market saturation level
@@ -1032,16 +1032,16 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
                   <div className="bg-emerald-50 bg-emerald-900/20 p-4 rounded-lg">
                     <h5 className="font-medium text-card-foreground mb-2">Cross-Platform Reach</h5>
                     <div className="text-2xl font-bold text-emerald-600">
-                      {selectedTrend.data?.ph > 0 && selectedTrend.data?.hn > 0 && selectedTrend.data?.gh > 0 ? '3' :
-                       (selectedTrend.data?.ph > 0 && selectedTrend.data?.hn > 0) || 
-                       (selectedTrend.data?.ph > 0 && selectedTrend.data?.gh > 0) || 
-                       (selectedTrend.data?.hn > 0 && selectedTrend.data?.gh > 0) ? '2' : '1'}
+                      {(selectedTrend.data?.ph as number) > 0 && (selectedTrend.data?.hn as number) > 0 && (selectedTrend.data?.gh as number) > 0 ? '3' :
+                       ((selectedTrend.data?.ph as number) > 0 && (selectedTrend.data?.hn as number) > 0) || 
+                       ((selectedTrend.data?.ph as number) > 0 && (selectedTrend.data?.gh as number) > 0) || 
+                       ((selectedTrend.data?.hn as number) > 0 && (selectedTrend.data?.gh as number) > 0) ? '2' : '1'}
                     </div>
                     <div className="text-sm text-card-foreground">
-                      {selectedTrend.data?.ph > 0 && selectedTrend.data?.hn > 0 && selectedTrend.data?.gh > 0 ? '🚀 All Platforms' :
-                       (selectedTrend.data?.ph > 0 && selectedTrend.data?.hn > 0) || 
-                       (selectedTrend.data?.ph > 0 && selectedTrend.data?.gh > 0) || 
-                       (selectedTrend.data?.hn > 0 && selectedTrend.data?.gh > 0) ? '🔥 Multi-Platform' : '📱 Single Platform'}
+                      {(selectedTrend.data?.ph as number) > 0 && (selectedTrend.data?.hn as number) > 0 && (selectedTrend.data?.gh as number) > 0 ? '🚀 All Platforms' :
+                       ((selectedTrend.data?.ph as number) > 0 && (selectedTrend.data?.hn as number) > 0) || 
+                       ((selectedTrend.data?.ph as number) > 0 && (selectedTrend.data?.gh as number) > 0) || 
+                       ((selectedTrend.data?.hn as number) > 0 && (selectedTrend.data?.gh as number) > 0) ? '🔥 Multi-Platform' : '📱 Single Platform'}
                     </div>
                     <div className="text-xs text-card-foreground mt-1">
                       Platform presence
@@ -1064,7 +1064,7 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
                         {selectedTrend.data?.ph ? selectedTrend.data.ph.toLocaleString() : 'N/A'} votes
                       </div>
                       <div className="text-sm text-card-foreground">
-                        {selectedTrend.data?.ph > 0 ? 'Active' : 'Inactive'}
+                        {(selectedTrend.data?.ph as number) > 0 ? 'Active' : 'Inactive'}
                       </div>
                     </div>
                   </div>
@@ -1079,7 +1079,7 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
                         {selectedTrend.data?.hn ? selectedTrend.data.hn.toLocaleString() : 'N/A'} score
                       </div>
                       <div className="text-sm text-card-foreground">
-                        {selectedTrend.data?.hn > 0 ? 'Active' : 'Inactive'}
+                        {(selectedTrend.data?.hn as number) > 0 ? 'Active' : 'Inactive'}
                       </div>
                     </div>
                   </div>
@@ -1091,10 +1091,10 @@ export function TrendTrackerTab({ productHuntData, hackerNewsData, saaSHubData, 
                     </div>
                     <div className="text-right">
                       <div className="text-lg font-bold text-card-foreground">
-                        {Math.round(selectedTrend.data.gh / 1000)}k stars
+                        {Math.round((selectedTrend.data.gh as number) / 1000)}k stars
                       </div>
                       <div className="text-sm text-card-foreground">
-                        {selectedTrend.data.gh > 0 ? 'Active' : 'Inactive'}
+                        {(selectedTrend.data.gh as number) > 0 ? 'Active' : 'Inactive'}
                       </div>
                     </div>
                   </div>

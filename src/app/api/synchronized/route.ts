@@ -3,6 +3,11 @@ import { synchronizedFetcher } from '@/lib/synchronized-fetcher';
 import { rateLimiter } from '@/lib/rate-limiter';
 import { cacheManager } from '@/lib/cache-manager';
 
+interface CachedData {
+  timestamp: number;
+  [key: string]: unknown;
+}
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -23,13 +28,13 @@ export async function GET(request: Request) {
     // Check if we should use cached data
     const cacheKey = `sync:${platforms.join(',')}:${JSON.stringify(filters)}`;
     if (!forceRefresh) {
-      const cached = cacheManager.get(cacheKey);
+      const cached = cacheManager.get(cacheKey) as CachedData | null;
       if (cached) {
         console.log('📦 Returning cached synchronized data');
         return NextResponse.json({
           ...cached,
           fromCache: true,
-          cacheAge: Date.now() - cached.timestamp
+          cacheAge: Date.now() - (cached.timestamp || 0)
         });
       }
     }

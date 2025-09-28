@@ -47,18 +47,22 @@ export default function DashboardPage() {
     }
 
     return data.filter(item => {
-      if (!item || !item[dateField]) {
-        return false; // Skip items without the required date field
+      if (!item) {
+        return false;
       }
 
       let itemDate: Date;
       
       if (dateField === 'time') {
         // Hacker News uses Unix timestamp (seconds)
-        itemDate = new Date(item[dateField] * 1000);
+        const hnItem = item as HackerNewsPost;
+        if (!hnItem.time) return false;
+        itemDate = new Date(hnItem.time * 1000);
       } else {
         // Product Hunt uses ISO date string
-        itemDate = new Date(item[dateField]);
+        const phItem = item as ProductHuntPost;
+        if (!phItem.created_at) return false;
+        itemDate = new Date(phItem.created_at);
       }
       
       return itemDate >= cutoffDate;
@@ -97,8 +101,8 @@ export default function DashboardPage() {
       
       
       // Apply additional client-side filtering if needed
-      const filteredPH = filterDataByTime(safePhData, timeFilter, 'created_at');
-      const filteredHN = filterDataByTime(safeHnData, timeFilter, 'time');
+      const filteredPH = filterDataByTime(safePhData as ProductHuntPost[], timeFilter, 'created_at') as ProductHuntPost[];
+      const filteredHN = filterDataByTime(safeHnData as HackerNewsPost[], timeFilter, 'time') as HackerNewsPost[];
       const filteredSH = timeFilter === '24h' ? safeShData.slice(0, 5) : 
                         timeFilter === '7d' ? safeShData.slice(0, 10) : 
                         safeShData; // 30d shows all data

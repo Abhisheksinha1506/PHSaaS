@@ -1,6 +1,34 @@
 import { NextResponse } from 'next/server';
 import { ProductHuntPost, HackerNewsPost, SaaSHubAlternative } from '@/types';
 
+// Define types for realtime updates
+interface RealtimeProductHuntUpdate {
+  id: number;
+  name: string;
+  votes: number;
+  comments: number;
+  createdAt: string;
+  type: string;
+}
+
+interface RealtimeHackerNewsUpdate {
+  id: number;
+  title: string;
+  score: number;
+  descendants: number;
+  createdAt: string;
+  type: string;
+}
+
+interface RealtimeGitHubUpdate {
+  id: string;
+  name: string;
+  rating: number;
+  reviews: number;
+  createdAt: string;
+  type: string;
+}
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -10,9 +38,9 @@ export async function GET(request: Request) {
     console.log(`🔄 Real-time API called since: ${lastUpdate}`);
     
     const updates = {
-      productHunt: { new: [] as ProductHuntPost[], updated: [] as ProductHuntPost[], deleted: [] as ProductHuntPost[] },
-      hackerNews: { new: [] as HackerNewsPost[], updated: [] as HackerNewsPost[], deleted: [] as HackerNewsPost[] },
-      github: { new: [] as SaaSHubAlternative[], updated: [] as SaaSHubAlternative[], deleted: [] as SaaSHubAlternative[] },
+      productHunt: { new: [] as RealtimeProductHuntUpdate[], updated: [] as RealtimeProductHuntUpdate[], deleted: [] as RealtimeProductHuntUpdate[] },
+      hackerNews: { new: [] as RealtimeHackerNewsUpdate[], updated: [] as RealtimeHackerNewsUpdate[], deleted: [] as RealtimeHackerNewsUpdate[] },
+      github: { new: [] as RealtimeGitHubUpdate[], updated: [] as RealtimeGitHubUpdate[], deleted: [] as RealtimeGitHubUpdate[] },
       timestamp: new Date().toISOString()
     };
     
@@ -29,8 +57,8 @@ export async function GET(request: Request) {
     
     // Product Hunt updates
     if (platforms.includes('producthunt')) {
-      const recentPH = phData.filter(item => new Date(item.created_at) > cutoffTime);
-      updates.productHunt.new = recentPH.map(item => ({
+      const recentPH = (phData as ProductHuntPost[]).filter((item: ProductHuntPost) => new Date(item.created_at) > cutoffTime);
+      updates.productHunt.new = recentPH.map((item: ProductHuntPost) => ({
         id: item.id,
         name: item.name,
         votes: item.votes_count,
@@ -42,20 +70,20 @@ export async function GET(request: Request) {
     
     // Hacker News updates
     if (platforms.includes('hackernews')) {
-      const recentHN = hnData.filter(item => new Date(item.time * 1000) > cutoffTime);
-      updates.hackerNews.new = recentHN.map(item => ({
+      const recentHN = (hnData as HackerNewsPost[]).filter((item: HackerNewsPost) => new Date(item.time * 1000) > cutoffTime);
+      updates.hackerNews.new = recentHN.map((item: HackerNewsPost) => ({
         id: item.id,
         title: item.title,
         score: item.score,
         descendants: item.descendants,
-        time: item.time,
+        createdAt: new Date(item.time * 1000).toISOString(),
         type: 'new'
       }));
     }
     
     // GitHub updates
     if (platforms.includes('github')) {
-      const recentGH = ghData.filter(item => {
+      const recentGH = (ghData as SaaSHubAlternative[]).filter(_item => {
         // GitHub doesn't have creation dates in our current data structure
         // This is a simplified approach - in reality, you'd need to track repository creation dates
         return true; // For demo purposes, return all items
@@ -64,8 +92,9 @@ export async function GET(request: Request) {
       updates.github.new = recentGH.map((item: SaaSHubAlternative) => ({
         id: item.id,
         name: item.name,
-        stars: item.reviews_count,
-        description: item.description,
+        rating: item.rating,
+        reviews: item.reviews_count,
+        createdAt: new Date().toISOString(), // Use current time as fallback
         type: 'new'
       }));
     }

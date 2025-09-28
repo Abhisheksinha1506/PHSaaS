@@ -11,7 +11,7 @@ interface CacheOptions {
 
 class APICache {
   private static instance: APICache;
-  private cache = new Map<string, CacheEntry<any>>();
+  private cache = new Map<string, CacheEntry<unknown>>();
   private defaultTTL = 5 * 60 * 1000; // 5 minutes
   private maxSize = 100;
 
@@ -28,7 +28,7 @@ class APICache {
     // Remove oldest entries if cache is full
     if (this.cache.size >= (options.maxSize || this.maxSize)) {
       const oldestKey = this.cache.keys().next().value;
-      this.cache.delete(oldestKey);
+      this.cache.delete(oldestKey!);
     }
 
     this.cache.set(key, {
@@ -58,7 +58,7 @@ class APICache {
     }
 
     console.log(`✅ Cache hit: ${key} (age: ${now - entry.timestamp}ms)`);
-    return entry.data;
+    return entry.data as T;
   }
 
   has(key: string): boolean {

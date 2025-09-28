@@ -5,7 +5,6 @@
 
 import { apiManager } from './api-manager';
 import { rateLimiter } from './rate-limiter';
-import { cacheManager } from './cache-manager';
 
 interface FetchConfig {
   timeout: number;
@@ -23,13 +22,13 @@ interface SynchronizedResult<T> {
   responseTime: number;
   apiName: string;
   error?: string;
-  rateLimitStatus?: any;
+  rateLimitStatus?: Record<string, unknown>;
 }
 
 interface BatchFetchResult {
-  productHunt: SynchronizedResult<any[]>;
-  hackerNews: SynchronizedResult<any[]>;
-  github: SynchronizedResult<any[]>;
+  productHunt: SynchronizedResult<unknown>;
+  hackerNews: SynchronizedResult<unknown>;
+  github: SynchronizedResult<unknown>;
   totalTime: number;
   successCount: number;
   errorCount: number;
@@ -39,7 +38,7 @@ interface BatchFetchResult {
 
 class SynchronizedFetcher {
   private config: FetchConfig;
-  private activeFetches = new Map<string, Promise<any>>();
+  private activeFetches = new Map<string, Promise<SynchronizedResult<unknown>>>();
 
   constructor(config: Partial<FetchConfig> = {}) {
     this.config = {
@@ -56,7 +55,7 @@ class SynchronizedFetcher {
   /**
    * Fetch all APIs simultaneously with synchronization
    */
-  async fetchAllAPIs(filters: any = {}): Promise<BatchFetchResult> {
+  async fetchAllAPIs(filters: Record<string, unknown> = {}): Promise<BatchFetchResult> {
     const startTime = Date.now();
     const timestamp = new Date().toISOString();
     
@@ -112,13 +111,13 @@ class SynchronizedFetcher {
   /**
    * Fetch specific APIs with synchronization
    */
-  async fetchSpecificAPIs(apis: string[], filters: any = {}): Promise<Partial<BatchFetchResult>> {
+  async fetchSpecificAPIs(apis: string[], filters: Record<string, unknown> = {}): Promise<Partial<BatchFetchResult>> {
     const startTime = Date.now();
     const timestamp = new Date().toISOString();
     
     console.log(`🎯 Fetching specific APIs: ${apis.join(', ')}`);
     
-    const fetchPromises: Record<string, Promise<any>> = {};
+    const fetchPromises: Record<string, Promise<SynchronizedResult<unknown>>> = {};
     
     if (apis.includes('producthunt')) {
       fetchPromises.productHunt = this.fetchWithSynchronization('producthunt', () => 
@@ -141,7 +140,7 @@ class SynchronizedFetcher {
     // Wait for all specified APIs
     const results = await Promise.allSettled(Object.values(fetchPromises));
     
-    const processedResults: any = {};
+    const processedResults: Record<string, SynchronizedResult<unknown>> = {};
     let resultIndex = 0;
     
     if (apis.includes('producthunt')) {
@@ -157,9 +156,9 @@ class SynchronizedFetcher {
     }
 
     const totalTime = Date.now() - startTime;
-    const successCount = Object.values(processedResults).filter((r: any) => r.success).length;
-    const errorCount = Object.values(processedResults).filter((r: any) => !r.success).length;
-    const fromCacheCount = Object.values(processedResults).filter((r: any) => r.fromCache).length;
+    const successCount = Object.values(processedResults).filter((r: SynchronizedResult<unknown>) => r.success).length;
+    const errorCount = Object.values(processedResults).filter((r: SynchronizedResult<unknown>) => !r.success).length;
+    const fromCacheCount = Object.values(processedResults).filter((r: SynchronizedResult<unknown>) => r.fromCache).length;
 
     return {
       ...processedResults,
@@ -178,12 +177,12 @@ class SynchronizedFetcher {
     apiName: string, 
     fetcher: () => Promise<T>
   ): Promise<SynchronizedResult<T>> {
-    const cacheKey = `sync:${apiName}:${JSON.stringify(arguments)}`;
+    const cacheKey = `sync:${apiName}:${JSON.stringify([apiName, fetcher])}`;
     
     // Check if there's already an active fetch for this API
     if (this.activeFetches.has(cacheKey)) {
       console.log(`⏳ Waiting for existing ${apiName} fetch...`);
-      return this.activeFetches.get(cacheKey)!;
+      return this.activeFetches.get(cacheKey)! as Promise<SynchronizedResult<T>>;
     }
 
     // Create new fetch promise
@@ -274,7 +273,7 @@ class SynchronizedFetcher {
    * Process Promise.allSettled result
    */
   private processResult<T>(
-    result: PromiseSettledResult<any>,
+    result: PromiseSettledResult<SynchronizedResult<T>>,
     apiName: string
   ): SynchronizedResult<T> {
     if (result.status === 'fulfilled') {
@@ -342,7 +341,7 @@ export const synchronizedFetcher = new SynchronizedFetcher();
 /**
  * Utility function for easy usage
  */
-export async function fetchAllAPIsSynchronized(filters: any = {}): Promise<BatchFetchResult> {
+export async function fetchAllAPIsSynchronized(filters: Record<string, unknown> = {}): Promise<BatchFetchResult> {
   return synchronizedFetcher.fetchAllAPIs(filters);
 }
 
@@ -351,7 +350,7 @@ export async function fetchAllAPIsSynchronized(filters: any = {}): Promise<Batch
  */
 export async function fetchSpecificAPIsSynchronized(
   apis: string[], 
-  filters: any = {}
+  filters: Record<string, unknown> = {}
 ): Promise<Partial<BatchFetchResult>> {
   return synchronizedFetcher.fetchSpecificAPIs(apis, filters);
 }

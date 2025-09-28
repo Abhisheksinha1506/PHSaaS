@@ -78,7 +78,7 @@ export function SearchBar({ onSearch, onClear, loading = false }: SearchBarProps
     onClear();
   };
 
-  const handleFilterChange = (key: keyof SearchFilters, value: any) => {
+  const handleFilterChange = (key: keyof SearchFilters, value: string | number | boolean | string[]) => {
     setFilters(prev => ({ ...prev, [key]: value }));
   };
 

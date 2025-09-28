@@ -211,7 +211,7 @@ export const rateLimiter = new RateLimiter();
 /**
  * Decorator function to wrap API calls with rate limiting
  */
-export function withRateLimit<T extends any[], R>(
+export function withRateLimit<T extends unknown[], R>(
   apiName: string,
   apiFunction: (...args: T) => Promise<R>
 ) {

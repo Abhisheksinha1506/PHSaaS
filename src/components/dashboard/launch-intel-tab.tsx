@@ -17,7 +17,7 @@ interface LaunchIntelTabProps {
 
 export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }: LaunchIntelTabProps) {
   const [selectedMetric, setSelectedMetric] = useState<'engagement' | 'timing'>('engagement');
-  const [selectedTimingData, setSelectedTimingData] = useState<{type: string, data: any} | null>(null);
+  const [selectedTimingData, setSelectedTimingData] = useState<{type: string, data: Record<string, unknown>} | null>(null);
   const [showTimingDetailsModal, setShowTimingDetailsModal] = useState(false);
 
   // Show skeleton loading if data is still loading
@@ -467,7 +467,7 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
         {metrics.map((metric) => (
           <button
             key={metric.id}
-            onClick={() => setSelectedMetric(metric.id as any)}
+            onClick={() => setSelectedMetric(metric.id as 'engagement' | 'timing')}
             className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
               selectedMetric === metric.id
                 ? 'bg-blue-600 text-white'
@@ -933,7 +933,7 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
               {/* Timing Overview */}
               <div>
                 <h3 className="text-2xl font-bold text-card-foreground mb-4">
-                  {selectedTimingData.type === 'day' ? selectedTimingData.data.day : selectedTimingData.data.time}
+                  {selectedTimingData.type === 'day' ? String(selectedTimingData.data.day) : String(selectedTimingData.data.time)}
                 </h3>
                 <p className="text-lg text-card-foreground mb-6">
                   {selectedTimingData.type === 'day' 
@@ -947,23 +947,23 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="bg-blue-50 bg-blue-900/20 p-4 rounded-lg text-center">
                   <Calendar className="h-8 w-8 text-blue-600 mx-auto mb-2" />
-                  <div className="text-2xl font-bold text-blue-600">{selectedTimingData.data.count}</div>
+                  <div className="text-2xl font-bold text-blue-600">{String(selectedTimingData.data.count)}</div>
                   <div className="text-sm text-card-foreground">Total Launches</div>
                 </div>
                 <div className="bg-green-50 bg-green-900/20 p-4 rounded-lg text-center">
                   <TrendingUp className="h-8 w-8 text-green-600 mx-auto mb-2" />
-                  <div className="text-2xl font-bold text-green-600">{selectedTimingData.data.score}</div>
+                  <div className="text-2xl font-bold text-green-600">{String(selectedTimingData.data.score)}</div>
                   <div className="text-sm text-card-foreground">Total Engagement</div>
                 </div>
                 <div className="bg-purple-50 bg-purple-900/20 p-4 rounded-lg text-center">
                   <Star className="h-8 w-8 text-purple-600 mx-auto mb-2" />
-                  <div className="text-2xl font-bold text-purple-600">{selectedTimingData.data.avgVotes || Math.round(selectedTimingData.data.score / selectedTimingData.data.count)}</div>
+                  <div className="text-2xl font-bold text-purple-600">{String(selectedTimingData.data.avgVotes || Math.round((selectedTimingData.data.score as number) / (selectedTimingData.data.count as number)))}</div>
                   <div className="text-sm text-card-foreground">Avg Votes</div>
                 </div>
                 <div className="bg-orange-50 bg-orange-900/20 p-4 rounded-lg text-center">
                   <Target className="h-8 w-8 text-orange-600 mx-auto mb-2" />
                   <div className="text-2xl font-bold text-orange-600">
-                    {selectedTimingData.data.count > 0 ? formatNumber(selectedTimingData.data.score / selectedTimingData.data.count) : 0}
+                    {String((selectedTimingData.data.count as number) > 0 ? formatNumber((selectedTimingData.data.score as number) / (selectedTimingData.data.count as number)) : 0)}
                   </div>
                   <div className="text-sm text-card-foreground">Engagement/Launch</div>
                 </div>
@@ -976,21 +976,21 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
                   <div className="space-y-2">
                     <div className="flex justify-between">
                       <span className="text-card-foreground">Launch Count:</span>
-                      <span className="font-medium">{selectedTimingData.data.count} launches</span>
+                      <span className="font-medium">{String(selectedTimingData.data.count)} launches</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-card-foreground">Total Engagement:</span>
-                      <span className="font-medium">{selectedTimingData.data.score.toLocaleString()}</span>
+                      <span className="font-medium">{(selectedTimingData.data.score as number).toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-card-foreground">Average Votes:</span>
-                      <span className="font-medium">{selectedTimingData.data.avgVotes || formatNumber(selectedTimingData.data.score / selectedTimingData.data.count)}</span>
+                      <span className="font-medium">{String(selectedTimingData.data.avgVotes || formatNumber((selectedTimingData.data.score as number) / (selectedTimingData.data.count as number)))}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-card-foreground">Success Rate:</span>
                       <span className="font-medium">
-                        {selectedTimingData.data.count > 0 
-                          ? `${Math.round((selectedTimingData.data.count / productHuntData.length) * 100)}%`
+                        {(selectedTimingData.data.count as number) > 0 
+                          ? `${Math.round(((selectedTimingData.data.count as number) / productHuntData.length) * 100)}%`
                           : '0%'
                         }
                       </span>
@@ -1004,15 +1004,15 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
                     <div className="flex justify-between">
                       <span className="text-card-foreground">Optimal Status:</span>
                       <span className="font-medium text-green-600">
-                        {selectedTimingData.data.count > 0 ? '✅ Optimal' : '⚠️ Limited Data'}
+                        {(selectedTimingData.data.count as number) > 0 ? '✅ Optimal' : '⚠️ Limited Data'}
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-card-foreground">Engagement Quality:</span>
                       <span className="font-medium">
-                        {selectedTimingData.data.count > 0 && (selectedTimingData.data.avgVotes || Math.round(selectedTimingData.data.score / selectedTimingData.data.count)) > 100 
+                        {(selectedTimingData.data.count as number) > 0 && ((selectedTimingData.data.avgVotes as number) || Math.round((selectedTimingData.data.score as number) / (selectedTimingData.data.count as number))) > 100 
                           ? '🔥 High Quality' 
-                          : selectedTimingData.data.count > 0 
+                          : (selectedTimingData.data.count as number) > 0 
                             ? '📈 Good Quality' 
                             : '📊 Unknown'
                         }
@@ -1021,7 +1021,7 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
                     <div className="flex justify-between">
                       <span className="text-card-foreground">Recommendation:</span>
                       <span className="font-medium">
-                        {selectedTimingData.data.count > 0 
+                        {(selectedTimingData.data.count as number) > 0 
                           ? '✅ Recommended for launches'
                           : '⚠️ Consider other timing'
                         }
@@ -1030,9 +1030,9 @@ export function LaunchIntelTab({ productHuntData, hackerNewsData, saaSHubData }:
                     <div className="flex justify-between">
                       <span className="text-card-foreground">Data Reliability:</span>
                       <span className="font-medium">
-                        {selectedTimingData.data.count >= 5 
+                        {(selectedTimingData.data.count as number) >= 5 
                           ? '🟢 High Reliability' 
-                          : selectedTimingData.data.count >= 2 
+                          : (selectedTimingData.data.count as number) >= 2 
                             ? '🟡 Medium Reliability' 
                             : '🔴 Low Reliability'
                         }

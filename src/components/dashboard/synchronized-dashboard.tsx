@@ -5,9 +5,10 @@
 
 "use client"
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { ProductHuntPost, HackerNewsPost, SaaSHubAlternative } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
@@ -279,25 +280,19 @@ export function SynchronizedDashboard({
 
           <TabsContent value="producthunt">
             <ProductHuntTab 
-              data={data.productHunt} 
-              loading={phLoading}
-              error={phError}
+              data={data.productHunt as ProductHuntPost[]} 
             />
           </TabsContent>
 
           <TabsContent value="hackernews">
             <HackerNewsTab 
-              data={data.hackerNews} 
-              loading={hnLoading}
-              error={hnError}
+              data={data.hackerNews as HackerNewsPost[]} 
             />
           </TabsContent>
 
           <TabsContent value="github">
             <SaaSHubTab 
-              data={data.github} 
-              loading={ghLoading}
-              error={ghError}
+              data={data.github as SaaSHubAlternative[]} 
             />
           </TabsContent>
         </Tabs>

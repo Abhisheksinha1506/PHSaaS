@@ -3,8 +3,8 @@
  * Centralized API management with rate limiting, caching, and intelligent fallbacks
  */
 
-import { rateLimiter, withRateLimit, shouldUseCache } from './rate-limiter';
-import { cacheManager, cacheKeys, cacheTags, withCache } from './cache-manager';
+import { rateLimiter, shouldUseCache } from './rate-limiter';
+import { cacheManager, cacheKeys, cacheTags } from './cache-manager';
 import { ProductHuntPost, HackerNewsPost, SaaSHubAlternative } from '@/types';
 
 interface ApiResponse<T> {
@@ -49,7 +49,7 @@ class ApiManager {
   /**
    * Enhanced Product Hunt API with rate limiting and caching
    */
-  async fetchProductHuntPosts(filters: any = {}): Promise<ApiResponse<ProductHuntPost[]>> {
+  async fetchProductHuntPosts(filters: Record<string, unknown> = {}): Promise<ApiResponse<ProductHuntPost[]>> {
     const apiName = 'producthunt';
     const cacheKey = cacheKeys.productHunt(filters);
     const startTime = Date.now();
@@ -143,7 +143,7 @@ class ApiManager {
   /**
    * Enhanced Hacker News API
    */
-  async fetchHackerNewsPosts(filters: any = {}): Promise<ApiResponse<HackerNewsPost[]>> {
+  async fetchHackerNewsPosts(filters: Record<string, unknown> = {}): Promise<ApiResponse<HackerNewsPost[]>> {
     const apiName = 'hackernews';
     const cacheKey = cacheKeys.hackerNews(filters);
     const startTime = Date.now();
@@ -229,7 +229,7 @@ class ApiManager {
   /**
    * Enhanced GitHub/SaaSHub API
    */
-  async fetchSaaSHubAlternatives(filters: any = {}): Promise<ApiResponse<SaaSHubAlternative[]>> {
+  async fetchSaaSHubAlternatives(filters: Record<string, unknown> = {}): Promise<ApiResponse<SaaSHubAlternative[]>> {
     const apiName = 'github';
     const cacheKey = cacheKeys.github(filters);
     const startTime = Date.now();
@@ -314,10 +314,14 @@ class ApiManager {
    * Get API health status
    */
   getApiHealth(): {
-    producthunt: any;
-    hackernews: any;
-    github: any;
-    cache: any;
+    producthunt: Record<string, unknown>;
+    hackernews: Record<string, unknown>;
+    github: Record<string, unknown>;
+    cache: {
+      hitRate: number;
+      size: number;
+      maxSize: number;
+    };
     recommendations: string[];
   } {
     const recommendations: string[] = [];
@@ -351,7 +355,11 @@ class ApiManager {
       producthunt: phStatus,
       hackernews: hnStatus,
       github: ghStatus,
-      cache: cacheHealth,
+      cache: {
+        hitRate: cacheHealth.hitRate,
+        size: cacheHealth.size,
+        maxSize: 1000
+      },
       recommendations
     };
   }
@@ -421,7 +429,20 @@ class ApiManager {
     }
 
     const posts = data.data?.posts?.edges || [];
-    return posts.map((edge: any) => ({
+    return posts.map((edge: { 
+      node: {
+        id: string;
+        name: string;
+        tagline: string;
+        description: string;
+        votesCount: number;
+        commentsCount: number;
+        createdAt: string;
+        thumbnail?: { url: string };
+        user: { name: string; username: string };
+        topics?: { edges?: Array<{ node: { name: string } }> };
+      }
+    }) => ({
       id: edge.node.id,
       name: edge.node.name,
       tagline: edge.node.tagline,
@@ -434,7 +455,7 @@ class ApiManager {
         name: edge.node.user.name === "[REDACTED]" ? "Anonymous User" : edge.node.user.name,
         username: edge.node.user.username === "[REDACTED]" ? "anonymous" : edge.node.user.username
       },
-      topics: edge.node.topics?.edges?.map((topicEdge: any) => ({ name: topicEdge.node.name })) || []
+      topics: edge.node.topics?.edges?.map((topicEdge: { node: { name: string } }) => ({ name: topicEdge.node.name })) || []
     }));
   }
 
@@ -475,7 +496,14 @@ class ApiManager {
       throw new Error('No repositories returned from GitHub API');
     }
 
-    return repositories.map((repo: any) => ({
+    return repositories.map((repo: {
+      id: number;
+      name: string;
+      description: string | null;
+      html_url: string;
+      stargazers_count: number;
+      owner: { avatar_url: string };
+    }) => ({
       id: repo.id.toString(),
       name: repo.name,
       description: repo.description || 'No description available',
@@ -483,7 +511,7 @@ class ApiManager {
       logo_url: repo.owner.avatar_url,
       pricing: "Open Source",
       category: "Open Source Tools",
-      features: repo.topics || [],
+      features: [],
       pros: ["Open Source", "Active Development", "Community Driven"],
       cons: ["Requires Technical Knowledge", "Self-hosted"],
       rating: Math.min(5, (repo.stargazers_count / 1000) * 0.5 + 3),
@@ -579,6 +607,6 @@ class ApiManager {
 export const apiManager = new ApiManager();
 
 // Export individual methods for backward compatibility
-export const fetchProductHuntPosts = (filters?: any) => apiManager.fetchProductHuntPosts(filters);
-export const fetchHackerNewsPosts = (filters?: any) => apiManager.fetchHackerNewsPosts(filters);
-export const fetchSaaSHubAlternatives = (filters?: any) => apiManager.fetchSaaSHubAlternatives(filters);
+export const fetchProductHuntPosts = (filters?: Record<string, unknown>) => apiManager.fetchProductHuntPosts(filters);
+export const fetchHackerNewsPosts = (filters?: Record<string, unknown>) => apiManager.fetchHackerNewsPosts(filters);
+export const fetchSaaSHubAlternatives = (filters?: Record<string, unknown>) => apiManager.fetchSaaSHubAlternatives(filters);

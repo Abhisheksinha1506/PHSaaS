@@ -29,7 +29,7 @@ interface CacheStats {
 }
 
 class CacheManager {
-  private cache = new Map<string, CacheEntry<any>>();
+  private cache = new Map<string, CacheEntry<unknown>>();
   private config: CacheConfig;
   private stats = {
     hits: 0,
@@ -75,7 +75,7 @@ class CacheManager {
     entry.lastAccessed = now;
     this.stats.hits++;
     
-    return entry.data;
+    return entry.data as T;
   }
 
   /**
@@ -192,8 +192,8 @@ class CacheManager {
   /**
    * Get cache entries by tag
    */
-  getByTag(tag: string): Array<{ key: string; data: any; timestamp: number }> {
-    const results: Array<{ key: string; data: any; timestamp: number }> = [];
+  getByTag(tag: string): Array<{ key: string; data: unknown; timestamp: number }> {
+    const results: Array<{ key: string; data: unknown; timestamp: number }> = [];
     
     for (const [key, entry] of this.cache.entries()) {
       if (entry.tags.includes(tag)) {
@@ -279,10 +279,10 @@ export const cacheManager = new CacheManager({
  * Cache key generators for different data types
  */
 export const cacheKeys = {
-  productHunt: (filters: any = {}) => `ph:${JSON.stringify(filters)}`,
-  hackerNews: (filters: any = {}) => `hn:${JSON.stringify(filters)}`,
-  github: (filters: any = {}) => `gh:${JSON.stringify(filters)}`,
-  search: (query: string, filters: any = {}) => `search:${query}:${JSON.stringify(filters)}`,
+  productHunt: (filters: Record<string, unknown> = {}) => `ph:${JSON.stringify(filters)}`,
+  hackerNews: (filters: Record<string, unknown> = {}) => `hn:${JSON.stringify(filters)}`,
+  github: (filters: Record<string, unknown> = {}) => `gh:${JSON.stringify(filters)}`,
+  search: (query: string, filters: Record<string, unknown> = {}) => `search:${query}:${JSON.stringify(filters)}`,
   analytics: (metric: string, timeFilter: string) => `analytics:${metric}:${timeFilter}`,
   realtime: (platforms: string[], lastUpdate: string) => `realtime:${platforms.join(',')}:${lastUpdate}`
 };
@@ -302,7 +302,7 @@ export const cacheTags = {
 /**
  * Smart cache wrapper for API calls
  */
-export function withCache<T extends any[], R>(
+export function withCache<T extends unknown[], R>(
   keyGenerator: (...args: T) => string,
   fetcher: (...args: T) => Promise<R>,
   ttl?: number,
@@ -328,11 +328,11 @@ export async function warmCache(): Promise<void> {
   
   try {
     // Pre-load common data
-    const commonFilters = [
-      { timeFilter: '24h' },
-      { timeFilter: '7d' },
-      { timeFilter: '30d' }
-    ];
+    // const commonFilters = [
+    //   { timeFilter: '24h' },
+    //   { timeFilter: '7d' },
+    //   { timeFilter: '30d' }
+    // ];
 
     // This would be called by the API endpoints during startup
     console.log('✅ Cache warming completed');

@@ -1,10 +1,10 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { StatsSkeleton, CardSkeleton, ListItemSkeleton } from "@/components/ui/skeleton";
+import { StatsSkeleton, CardSkeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   BarChart3, 
@@ -23,56 +23,13 @@ import {
 } from "lucide-react";
 import { ConnectivityStatus } from "./connectivity-status";
 import { useAnalytics } from "@/hooks/useAnalytics";
-import { formatNumber, formatPercentage, formatCompactNumber } from "@/lib/number-utils";
+import { formatNumber, formatPercentage } from "@/lib/number-utils";
 
 interface AnalyticsTabProps {
   timeFilter: '24h' | '7d' | '30d';
   setTimeFilter: (filter: '24h' | '7d' | '30d') => void;
 }
 
-interface AnalyticsData {
-  overview?: {
-    totalLaunches: number;
-    totalDiscussions: number;
-    totalRepositories: number;
-    avgVotes: number;
-    avgScore: number;
-    avgStars: number;
-    topCategories: Array<{ name: string; count: number }>;
-    trendingTopics: Array<{ name: string; ph: number; hn: number; gh: number; total: number }>;
-    engagementTrends: Array<{ date: string; engagement: number; votes: number; comments: number }>;
-  };
-  trends?: {
-    trendingTechnologies: { [key: string]: { momentum: number; growth: number; crossPlatform: boolean } };
-    marketGaps: Array<{ category: string; opportunity: number; competition: number }>;
-    crossPlatformCorrelations: { correlation: number; sharedTopics: number; crossPlatformTrends: number };
-    momentumAnalysis: { phMomentum: number; hnMomentum: number };
-  };
-  performance?: {
-    topPerformers: {
-      productHunt: Array<any>;
-      hackerNews: Array<any>;
-      github: Array<any>;
-    };
-    engagementMetrics: {
-      avgEngagement: number;
-      avgScore: number;
-      highEngagement: number;
-      viralPosts: number;
-    };
-    growthRates: {
-      phGrowth: number;
-      hnGrowth: number;
-      ghGrowth: number;
-    };
-    successFactors: {
-      timing: string;
-      categories: string[];
-      engagement: string;
-      topics: string;
-    };
-  };
-}
 
 export function AnalyticsTab({ timeFilter, setTimeFilter }: AnalyticsTabProps) {
   const { analyticsData, loading, error } = useAnalytics(timeFilter);
@@ -244,7 +201,7 @@ export function AnalyticsTab({ timeFilter, setTimeFilter }: AnalyticsTabProps) {
       </div>
 
       {/* Enhanced Analytics Tabs */}
-      <Tabs value={activeMetric} onValueChange={(value) => setActiveMetric(value as any)}>
+      <Tabs value={activeMetric} onValueChange={(value) => setActiveMetric(value as 'overview' | 'trends' | 'performance')}>
         <TabsList className="grid w-full grid-cols-3 h-14 bg-card/70 dark:bg-slate-800/70 backdrop-blur-sm p-1 rounded-2xl shadow-lg border border-white/20 dark:border-slate-700/50">
           <TabsTrigger value="overview" className="flex items-center gap-2 h-12 rounded-xl bg-transparent hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600 data-[state=active]:to-cyan-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-blue-500/25 font-medium">
             <BarChart3 className="h-4 w-4" />
@@ -369,7 +326,7 @@ export function AnalyticsTab({ timeFilter, setTimeFilter }: AnalyticsTabProps) {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    {analyticsData.overview.topCategories.map((category, index) => (
+                    {analyticsData.overview.topCategories.map((category, _index) => (
                       <div key={category.name} className="flex items-center justify-between p-4 bg-card/50 dark:bg-slate-800/50 rounded-xl border border-white/20 dark:border-slate-700/50 hover:bg-card/70 dark:hover:bg-slate-700/50 transition-colors">
                         <span className="text-sm font-medium text-slate-500 dark:text-slate-300">{category.name}</span>
                         <Badge variant="secondary" className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white border-0">
@@ -395,7 +352,7 @@ export function AnalyticsTab({ timeFilter, setTimeFilter }: AnalyticsTabProps) {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {analyticsData.overview.trendingTopics.map((topic, index) => (
+                    {analyticsData.overview.trendingTopics.map((topic, _index) => (
                       <div key={topic.name} className="group flex items-center justify-between p-4 bg-card/50 dark:bg-slate-800/50 rounded-xl border border-white/20 dark:border-slate-700/50 hover:bg-card/70 dark:hover:bg-slate-700/50 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
                         <div className="flex-1">
                           <h4 className="font-semibold text-slate-700 dark:text-white mb-2">{topic.name}</h4>
@@ -475,7 +432,7 @@ export function AnalyticsTab({ timeFilter, setTimeFilter }: AnalyticsTabProps) {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    {analyticsData.trends.marketGaps.map((gap, index) => (
+                    {analyticsData.trends.marketGaps.map((gap, _index) => (
                       <div key={gap.category} className="flex items-center justify-between p-3 border rounded-lg">
                         <div>
                           <h4 className="font-medium text-card-foreground">{gap.category}</h4>

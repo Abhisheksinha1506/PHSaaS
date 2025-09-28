@@ -178,7 +178,7 @@ function getTopCategories(data: ProductHuntPost[]) {
     .map(([name, count]) => ({ name, count }));
 }
 
-function getTrendingTopics(phData: ProductHuntPost[], hnData: HackerNewsPost[], ghData: SaaSHubAlternative[]) {
+function getTrendingTopics(phData: ProductHuntPost[], hnData: HackerNewsPost[], _ghData: SaaSHubAlternative[]) {
   const topics: { [key: string]: { ph: number; hn: number; gh: number; total: number } } = {};
   
   // Product Hunt topics
@@ -214,7 +214,7 @@ function getTrendingTopics(phData: ProductHuntPost[], hnData: HackerNewsPost[], 
     .map(([name, data]) => ({ name, ...data }));
 }
 
-function getEngagementTrends(data: ProductHuntPost[], timeFilter: string) {
+function getEngagementTrends(data: ProductHuntPost[], _timeFilter: string) {
   const trends = data.map(item => ({
     date: new Date(item.created_at || new Date()).toISOString().split('T')[0],
     engagement: (item.votes_count || 0) + (item.comments_count || 0),
@@ -225,7 +225,7 @@ function getEngagementTrends(data: ProductHuntPost[], timeFilter: string) {
   return trends.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 }
 
-function getTrendingTechnologies(phData: ProductHuntPost[], hnData: HackerNewsPost[], ghData: SaaSHubAlternative[]) {
+function getTrendingTechnologies(_phData: ProductHuntPost[], _hnData: HackerNewsPost[], _ghData: SaaSHubAlternative[]) {
   // Implementation for trending technologies analysis
   return {
     ai: { momentum: 95, growth: 15.2, crossPlatform: true },
@@ -234,7 +234,7 @@ function getTrendingTechnologies(phData: ProductHuntPost[], hnData: HackerNewsPo
   };
 }
 
-function getMarketGaps(phData: ProductHuntPost[]) {
+function getMarketGaps(_phData: ProductHuntPost[]) {
   // Implementation for market gap analysis
   return [
     { category: 'Healthcare AI', opportunity: 85, competition: 15 },
@@ -243,7 +243,7 @@ function getMarketGaps(phData: ProductHuntPost[]) {
   ];
 }
 
-function getCrossPlatformCorrelations(phData: ProductHuntPost[], hnData: HackerNewsPost[], ghData: SaaSHubAlternative[]) {
+function getCrossPlatformCorrelations(_phData: ProductHuntPost[], _hnData: HackerNewsPost[], _ghData: SaaSHubAlternative[]) {
   // Implementation for cross-platform correlation analysis
   return {
     correlation: 0.73,
@@ -277,7 +277,7 @@ function getEngagementMetrics(phData: ProductHuntPost[], hnData: HackerNewsPost[
   };
 }
 
-function getGrowthRates(phData: ProductHuntPost[], hnData: HackerNewsPost[], ghData: SaaSHubAlternative[]) {
+function getGrowthRates(_phData: ProductHuntPost[], _hnData: HackerNewsPost[], _ghData: SaaSHubAlternative[]) {
   return {
     phGrowth: 12.5,
     hnGrowth: 8.3,
@@ -285,7 +285,7 @@ function getGrowthRates(phData: ProductHuntPost[], hnData: HackerNewsPost[], ghD
   };
 }
 
-function getSuccessFactors(phData: ProductHuntPost[]) {
+function getSuccessFactors(_phData: ProductHuntPost[]) {
   return {
     timing: 'Tuesday-Thursday, 9-11 AM',
     categories: ['AI', 'Developer Tools', 'Productivity'],

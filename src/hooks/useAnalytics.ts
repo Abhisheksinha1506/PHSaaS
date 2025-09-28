@@ -20,9 +20,9 @@ interface AnalyticsData {
   };
   performance?: {
     topPerformers: {
-      productHunt: Array<any>;
-      hackerNews: Array<any>;
-      github: Array<any>;
+      productHunt: Array<Record<string, unknown>>;
+      hackerNews: Array<Record<string, unknown>>;
+      github: Array<Record<string, unknown>>;
     };
     engagementMetrics: {
       avgEngagement: number;

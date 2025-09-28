@@ -63,9 +63,9 @@ export async function GET(request: Request) {
       const { synchronizedFetcher } = await import('@/lib/synchronized-fetcher');
       const result = await synchronizedFetcher.fetchSpecificAPIs(platforms, { timeFilter });
       
-      phData = result.productHunt?.data || [];
-      hnData = result.hackerNews?.data || [];
-      ghData = result.github?.data || [];
+      phData = (result.productHunt?.data as ProductHuntPost[]) || [];
+      hnData = (result.hackerNews?.data as HackerNewsPost[]) || [];
+      ghData = (result.github?.data as SaaSHubAlternative[]) || [];
     } catch (syncError) {
       console.warn('Synchronized fetching failed, falling back to individual calls:', syncError);
       // Fallback to individual API calls
