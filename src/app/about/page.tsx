@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart3, TrendingUp, Users, Zap, Globe, Shield, RefreshCw, Eye, Clock, Target, CheckCircle, ArrowRight, Lightbulb, Search, Filter } from "lucide-react";
+import { BarChart3, TrendingUp, Users, Zap, Globe, Shield, RefreshCw, Eye, Target, CheckCircle, ArrowRight, Lightbulb, Search, Filter } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
@@ -109,7 +109,7 @@ export default function AboutPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-card-foreground mb-4">
-                  See what new apps and tools are being launched, how many votes they're getting, 
+                  See what new apps and tools are being launched, how many votes they&apos;re getting, 
                   and what people are saying about them.
                 </p>
                 <div className="text-sm text-muted-foreground">
@@ -188,7 +188,7 @@ export default function AboutPage() {
               </h3>
               <p className="text-card-foreground text-lg">
                 We sort everything by popularity, engagement, and trends so you can easily 
-                see what's most important.
+                see what&apos;s most important.
               </p>
             </div>
 
@@ -253,7 +253,7 @@ export default function AboutPage() {
               <CardContent>
                 <p className="text-card-foreground">
                   Filter by time period (last 24 hours, week, or month), popularity, or specific topics 
-                  to find exactly what you're looking for.
+                  to find exactly what you&apos;re looking for.
                 </p>
               </CardContent>
             </Card>
@@ -282,7 +282,7 @@ export default function AboutPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-card-foreground">
-                  We don't collect any personal information. No accounts, no tracking, 
+                  We don&apos;t collect any personal information. No accounts, no tracking, 
                   just pure data aggregation.
                 </p>
               </CardContent>
@@ -297,7 +297,7 @@ export default function AboutPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-card-foreground">
-                  See connections between platforms. Understand what's really trending 
+                  See connections between platforms. Understand what&apos;s really trending 
                   across the entire tech ecosystem.
                 </p>
               </CardContent>
@@ -336,7 +336,7 @@ export default function AboutPage() {
               <CardContent>
                 <p className="text-card-foreground text-sm">
                   Stay updated on new technologies, tools, and programming languages. 
-                  See what's popular in the developer community.
+                  See what&apos;s popular in the developer community.
                 </p>
               </CardContent>
             </Card>
@@ -350,7 +350,7 @@ export default function AboutPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-card-foreground text-sm">
-                  Understand what's popular and what people are talking about. 
+                  Understand what&apos;s popular and what people are talking about. 
                   Find trending topics for content and campaigns.
                 </p>
               </CardContent>
@@ -378,10 +378,10 @@ export default function AboutPage() {
           <Card className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
             <CardContent className="p-8">
               <h3 className="text-3xl font-bold mb-4">
-                Ready to See What's Trending?
+                Ready to See What&apos;s Trending?
               </h3>
               <p className="text-lg mb-6 max-w-2xl mx-auto opacity-90">
-                No signup required. No payment needed. Just click and explore what's happening in tech right now.
+                No signup required. No payment needed. Just click and explore what&apos;s happening in tech right now.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="/dashboard">

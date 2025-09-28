@@ -3,8 +3,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ProductHuntPost, HackerNewsPost, SaaSHubAlternative } from "@/types";
-import { Zap, Sparkles, TrendingUp, BarChart3, Settings } from "lucide-react";
-import { TabContentSkeleton, DashboardGridSkeleton } from "@/components/ui/skeleton";
+import { Zap, Sparkles, TrendingUp, BarChart3 } from "lucide-react";
+import { TabContentSkeleton } from "@/components/ui/skeleton";
 
 // Import the dashboard components
 import { TrendTrackerTab } from "@/components/dashboard/trend-tracker-tab";
@@ -20,12 +20,9 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [timeFilter, setTimeFilter] = useState<'24h' | '7d' | '30d'>('7d');
   const [activeTab, setActiveTab] = useState('trend-tracker');
-  const [allProductHuntData, setAllProductHuntData] = useState<ProductHuntPost[]>([]);
-  const [allHackerNewsData, setAllHackerNewsData] = useState<HackerNewsPost[]>([]);
-  const [allSaaSHubData, setAllSaaSHubData] = useState<SaaSHubAlternative[]>([]);
 
   // Function to filter data based on time period
-  const filterDataByTime = (data: any[], timeFilter: string, dateField: string) => {
+  const filterDataByTime = (data: (ProductHuntPost | HackerNewsPost | SaaSHubAlternative)[], timeFilter: string, dateField: string) => {
     // Add safety check for undefined or null data
     if (!data || !Array.isArray(data)) {
       console.warn('filterDataByTime: Invalid data provided', data);
@@ -98,10 +95,6 @@ export default function DashboardPage() {
       const safeHnData = Array.isArray(hnData) ? hnData : [];
       const safeShData = Array.isArray(shData) ? shData : [];
       
-      // Store all data
-      setAllProductHuntData(safePhData);
-      setAllHackerNewsData(safeHnData);
-      setAllSaaSHubData(safeShData);
       
       // Apply additional client-side filtering if needed
       const filteredPH = filterDataByTime(safePhData, timeFilter, 'created_at');
@@ -119,9 +112,6 @@ export default function DashboardPage() {
       setProductHuntData([]);
       setHackerNewsData([]);
       setSaaSHubData([]);
-      setAllProductHuntData([]);
-      setAllHackerNewsData([]);
-      setAllSaaSHubData([]);
     } finally {
       setLoading(false);
     }

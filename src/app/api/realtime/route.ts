@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { fetchProductHuntPosts, fetchHackerNewsPosts, fetchSaaSHubAlternatives } from '@/lib/api';
+import { ProductHuntPost, HackerNewsPost, SaaSHubAlternative } from '@/types';
 
 export async function GET(request: Request) {
   try {
@@ -10,9 +10,9 @@ export async function GET(request: Request) {
     console.log(`🔄 Real-time API called since: ${lastUpdate}`);
     
     const updates = {
-      productHunt: { new: [] as any[], updated: [] as any[], deleted: [] as any[] },
-      hackerNews: { new: [] as any[], updated: [] as any[], deleted: [] as any[] },
-      github: { new: [] as any[], updated: [] as any[], deleted: [] as any[] },
+      productHunt: { new: [] as ProductHuntPost[], updated: [] as ProductHuntPost[], deleted: [] as ProductHuntPost[] },
+      hackerNews: { new: [] as HackerNewsPost[], updated: [] as HackerNewsPost[], deleted: [] as HackerNewsPost[] },
+      github: { new: [] as SaaSHubAlternative[], updated: [] as SaaSHubAlternative[], deleted: [] as SaaSHubAlternative[] },
       timestamp: new Date().toISOString()
     };
     
@@ -61,7 +61,7 @@ export async function GET(request: Request) {
         return true; // For demo purposes, return all items
       }).slice(0, 10); // Limit to 10 most recent
       
-      updates.github.new = recentGH.map(item => ({
+      updates.github.new = recentGH.map((item: SaaSHubAlternative) => ({
         id: item.id,
         name: item.name,
         stars: item.reviews_count,

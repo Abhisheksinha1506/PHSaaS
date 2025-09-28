@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server';
 import { fetchProductHuntPosts, fetchHackerNewsPosts, fetchSaaSHubAlternatives } from '@/lib/api';
 import { roundTo2Decimals } from '@/lib/number-utils';
 import { startTiming, recordMetrics, monitorApiCall } from '@/lib/performance-monitor';
-import { withCache, cacheKeys, cacheTTL } from '@/lib/api-cache';
+import { ProductHuntPost, HackerNewsPost, SaaSHubAlternative } from '@/types';
+// import { withCache, cacheKeys, cacheTTL } from '@/lib/api-cache';
 
 export async function GET(request: Request) {
   const overallTimer = startTiming();
@@ -21,9 +22,9 @@ export async function GET(request: Request) {
     console.log(`📊 Analytics API called: ${metric} for ${timeFilter}`);
     
     // Use synchronized fetching for consistent timing with fallback
-    let phData: any[] = [];
-    let hnData: any[] = [];
-    let ghData: any[] = [];
+    let phData: ProductHuntPost[] = [];
+    let hnData: HackerNewsPost[] = [];
+    let ghData: SaaSHubAlternative[] = [];
     
     const apiTimer = startTiming();
     try {
@@ -159,11 +160,11 @@ export async function GET(request: Request) {
 }
 
 // Helper functions for analytics
-function getTopCategories(data: any[]) {
+function getTopCategories(data: ProductHuntPost[]) {
   const categories: { [key: string]: number } = {};
   data.forEach(item => {
     if (item.topics && Array.isArray(item.topics)) {
-      item.topics.forEach((topic: any) => {
+      item.topics.forEach((topic: { name: string }) => {
         if (topic && topic.name) {
           categories[topic.name] = (categories[topic.name] || 0) + 1;
         }
@@ -177,13 +178,13 @@ function getTopCategories(data: any[]) {
     .map(([name, count]) => ({ name, count }));
 }
 
-function getTrendingTopics(phData: any[], hnData: any[], ghData: any[]) {
+function getTrendingTopics(phData: ProductHuntPost[], hnData: HackerNewsPost[], ghData: SaaSHubAlternative[]) {
   const topics: { [key: string]: { ph: number; hn: number; gh: number; total: number } } = {};
   
   // Product Hunt topics
   phData.forEach(item => {
     if (item.topics && Array.isArray(item.topics)) {
-      item.topics.forEach((topic: any) => {
+      item.topics.forEach((topic: { name: string }) => {
         if (topic && topic.name) {
           if (!topics[topic.name]) topics[topic.name] = { ph: 0, hn: 0, gh: 0, total: 0 };
           topics[topic.name].ph += item.votes_count || 0;
@@ -213,7 +214,7 @@ function getTrendingTopics(phData: any[], hnData: any[], ghData: any[]) {
     .map(([name, data]) => ({ name, ...data }));
 }
 
-function getEngagementTrends(data: any[], timeFilter: string) {
+function getEngagementTrends(data: ProductHuntPost[], timeFilter: string) {
   const trends = data.map(item => ({
     date: new Date(item.created_at || new Date()).toISOString().split('T')[0],
     engagement: (item.votes_count || 0) + (item.comments_count || 0),
@@ -224,7 +225,7 @@ function getEngagementTrends(data: any[], timeFilter: string) {
   return trends.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 }
 
-function getTrendingTechnologies(phData: any[], hnData: any[], ghData: any[]) {
+function getTrendingTechnologies(phData: ProductHuntPost[], hnData: HackerNewsPost[], ghData: SaaSHubAlternative[]) {
   // Implementation for trending technologies analysis
   return {
     ai: { momentum: 95, growth: 15.2, crossPlatform: true },
@@ -233,7 +234,7 @@ function getTrendingTechnologies(phData: any[], hnData: any[], ghData: any[]) {
   };
 }
 
-function getMarketGaps(phData: any[]) {
+function getMarketGaps(phData: ProductHuntPost[]) {
   // Implementation for market gap analysis
   return [
     { category: 'Healthcare AI', opportunity: 85, competition: 15 },
@@ -242,7 +243,7 @@ function getMarketGaps(phData: any[]) {
   ];
 }
 
-function getCrossPlatformCorrelations(phData: any[], hnData: any[], ghData: any[]) {
+function getCrossPlatformCorrelations(phData: ProductHuntPost[], hnData: HackerNewsPost[], ghData: SaaSHubAlternative[]) {
   // Implementation for cross-platform correlation analysis
   return {
     correlation: 0.73,
@@ -251,7 +252,7 @@ function getCrossPlatformCorrelations(phData: any[], hnData: any[], ghData: any[
   };
 }
 
-function getMomentumAnalysis(phData: any[], hnData: any[]) {
+function getMomentumAnalysis(phData: ProductHuntPost[], hnData: HackerNewsPost[]) {
   // Implementation for momentum analysis
   return {
     phMomentum: phData.length > 0 ? phData.reduce((sum, item) => sum + (item.votes_count || 0), 0) / phData.length : 0,
@@ -259,7 +260,7 @@ function getMomentumAnalysis(phData: any[], hnData: any[]) {
   };
 }
 
-function getTopPerformers(phData: any[], hnData: any[], ghData: any[]) {
+function getTopPerformers(phData: ProductHuntPost[], hnData: HackerNewsPost[], ghData: SaaSHubAlternative[]) {
   return {
     productHunt: phData.sort((a, b) => (b.votes_count || 0) - (a.votes_count || 0)).slice(0, 5),
     hackerNews: hnData.sort((a, b) => (b.score || 0) - (a.score || 0)).slice(0, 5),
@@ -267,7 +268,7 @@ function getTopPerformers(phData: any[], hnData: any[], ghData: any[]) {
   };
 }
 
-function getEngagementMetrics(phData: any[], hnData: any[]) {
+function getEngagementMetrics(phData: ProductHuntPost[], hnData: HackerNewsPost[]) {
   return {
     avgEngagement: phData.length > 0 ? phData.reduce((sum, item) => sum + (item.votes_count || 0) + (item.comments_count || 0), 0) / phData.length : 0,
     avgScore: hnData.length > 0 ? hnData.reduce((sum, item) => sum + (item.score || 0), 0) / hnData.length : 0,
@@ -276,7 +277,7 @@ function getEngagementMetrics(phData: any[], hnData: any[]) {
   };
 }
 
-function getGrowthRates(phData: any[], hnData: any[], ghData: any[]) {
+function getGrowthRates(phData: ProductHuntPost[], hnData: HackerNewsPost[], ghData: SaaSHubAlternative[]) {
   return {
     phGrowth: 12.5,
     hnGrowth: 8.3,
@@ -284,7 +285,7 @@ function getGrowthRates(phData: any[], hnData: any[], ghData: any[]) {
   };
 }
 
-function getSuccessFactors(phData: any[]) {
+function getSuccessFactors(phData: ProductHuntPost[]) {
   return {
     timing: 'Tuesday-Thursday, 9-11 AM',
     categories: ['AI', 'Developer Tools', 'Productivity'],

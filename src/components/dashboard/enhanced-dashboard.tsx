@@ -2,18 +2,18 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PaginationControls } from "./pagination-controls";
-import { TrendingUp, RefreshCw, Filter, BarChart3 } from "lucide-react";
-import { StatsSkeleton, CardSkeleton, ListItemSkeleton, ProductCardSkeleton, NewsItemSkeleton, RepositorySkeleton } from "@/components/ui/skeleton";
+import { TrendingUp, RefreshCw, BarChart3 } from "lucide-react";
+import { StatsSkeleton, CardSkeleton } from "@/components/ui/skeleton";
+import { ProductHuntPost, HackerNewsPost, SaaSHubAlternative } from "@/types";
 
 interface EnhancedDashboardProps {
   initialData?: {
-    productHunt: any[];
-    hackerNews: any[];
-    github: any[];
+    productHunt: ProductHuntPost[];
+    hackerNews: HackerNewsPost[];
+    github: SaaSHubAlternative[];
   };
 }
 
@@ -35,7 +35,7 @@ export function EnhancedDashboard({ initialData }: EnhancedDashboardProps) {
   });
 
   // Load data with pagination
-  const loadData = useCallback(async (platform: string, page: number, limit: number, filters: any = {}) => {
+  const loadData = useCallback(async (platform: string, page: number, limit: number, filters: Record<string, unknown> = {}) => {
     setLoading(true);
     try {
       const params = new URLSearchParams({
@@ -70,71 +70,6 @@ export function EnhancedDashboard({ initialData }: EnhancedDashboardProps) {
     }
   }, []);
 
-  // Search functionality
-  const handleSearch = useCallback(async (query: string, filters: any) => {
-    setSearchQuery(query);
-    setLoading(true);
-    
-    try {
-      const params = new URLSearchParams({
-        q: query,
-        platforms: filters.platforms.join(','),
-        categories: filters.categories.join(','),
-        minScore: filters.minScore.toString(),
-        timeFilter: filters.timeFilter
-      });
-      
-      const response = await fetch(`/api/search?${params}`);
-      const results = await response.json();
-      
-      setSearchResults(results);
-      setActiveTab("search");
-    } catch (error) {
-      console.error('Search failed:', error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  const handleClearSearch = useCallback(() => {
-    setSearchQuery("");
-    setSearchResults(null);
-    setActiveTab("overview");
-  }, []);
-
-  // Export functionality
-  const handleExport = useCallback(async (format: string, platforms: string[]) => {
-    try {
-      const params = new URLSearchParams({
-        format,
-        platforms: platforms.join(','),
-        includeMetadata: 'true'
-      });
-      
-      const response = await fetch(`/api/export?${params}`);
-      
-      if (format === 'json') {
-        const data = await response.json();
-        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `saas-dashboard-export-${Date.now()}.json`;
-        a.click();
-        URL.revokeObjectURL(url);
-      } else {
-        const blob = await response.blob();
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `saas-dashboard-export-${Date.now()}.${format}`;
-        a.click();
-        URL.revokeObjectURL(url);
-      }
-    } catch (error) {
-      console.error('Export failed:', error);
-    }
-  }, []);
 
   // Load initial data
   useEffect(() => {

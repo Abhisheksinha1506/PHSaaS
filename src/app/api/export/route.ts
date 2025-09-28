@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { fetchProductHuntPosts, fetchHackerNewsPosts, fetchSaaSHubAlternatives } from '@/lib/api';
+import { ProductHuntPost, HackerNewsPost, SaaSHubAlternative } from '@/types';
 
 export async function GET(request: Request) {
   try {
@@ -11,7 +12,20 @@ export async function GET(request: Request) {
     
     console.log(`📤 Export API called: ${format} format for ${platforms.join(', ')}`);
     
-    const exportData: any = {
+    const exportData: {
+      metadata?: {
+        exportedAt: string;
+        timeFilter: string;
+        platforms: string[];
+        format: string;
+        version: string;
+      };
+      data: {
+        productHunt?: ProductHuntPost[];
+        hackerNews?: HackerNewsPost[];
+        github?: SaaSHubAlternative[];
+      };
+    } = {
       metadata: includeMetadata ? {
         exportedAt: new Date().toISOString(),
         timeFilter,
@@ -41,9 +55,9 @@ export async function GET(request: Request) {
     }
     
     // Use synchronized fetching for consistent timing
-    let phData: any[] = [];
-    let hnData: any[] = [];
-    let ghData: any[] = [];
+    let phData: ProductHuntPost[] = [];
+    let hnData: HackerNewsPost[] = [];
+    let ghData: SaaSHubAlternative[] = [];
     
     try {
       const { synchronizedFetcher } = await import('@/lib/synchronized-fetcher');
@@ -84,7 +98,11 @@ export async function GET(request: Request) {
     // Format response based on requested format
     switch (format.toLowerCase()) {
       case 'csv':
-        return new NextResponse(convertToCSV(exportData.data), {
+        return new NextResponse(convertToCSV({
+          productHunt: exportData.data.productHunt || [],
+          hackerNews: exportData.data.hackerNews || [],
+          github: exportData.data.github || []
+        }), {
           headers: {
             'Content-Type': 'text/csv',
             'Content-Disposition': `attachment; filename="saas-dashboard-export-${Date.now()}.csv"`
@@ -92,7 +110,14 @@ export async function GET(request: Request) {
         });
         
       case 'xml':
-        return new NextResponse(convertToXML(exportData), {
+        return new NextResponse(convertToXML({
+          ...exportData,
+          data: {
+            productHunt: exportData.data.productHunt || [],
+            hackerNews: exportData.data.hackerNews || [],
+            github: exportData.data.github || []
+          }
+        }), {
           headers: {
             'Content-Type': 'application/xml',
             'Content-Disposition': `attachment; filename="saas-dashboard-export-${Date.now()}.xml"`
@@ -114,15 +139,19 @@ export async function GET(request: Request) {
 }
 
 // Helper function to convert data to CSV
-function convertToCSV(data: any): string {
+function convertToCSV(data: {
+  productHunt: ProductHuntPost[];
+  hackerNews: HackerNewsPost[];
+  github: SaaSHubAlternative[];
+}): string {
   const csvRows: string[] = [];
   
   // Product Hunt CSV
   if (data.productHunt && data.productHunt.length > 0) {
     csvRows.push('Product Hunt Data');
     csvRows.push('Name,Tagline,Votes,Comments,Created At,Topics');
-    data.productHunt.forEach((item: any) => {
-      const topics = item.topics.map((t: any) => t.name).join(';');
+    data.productHunt.forEach((item: ProductHuntPost) => {
+      const topics = item.topics.map((t: { name: string }) => t.name).join(';');
       csvRows.push(`"${item.name}","${item.tagline}",${item.votes_count},${item.comments_count},"${item.created_at}","${topics}"`);
     });
     csvRows.push(''); // Empty line separator
@@ -132,7 +161,7 @@ function convertToCSV(data: any): string {
   if (data.hackerNews && data.hackerNews.length > 0) {
     csvRows.push('Hacker News Data');
     csvRows.push('Title,Score,Comments,Author,Time,URL');
-    data.hackerNews.forEach((item: any) => {
+    data.hackerNews.forEach((item: HackerNewsPost) => {
       csvRows.push(`"${item.title}",${item.score},${item.descendants || 0},"${item.by}","${new Date(item.time * 1000).toISOString()}","${item.url || ''}"`);
     });
     csvRows.push(''); // Empty line separator
@@ -142,7 +171,7 @@ function convertToCSV(data: any): string {
   if (data.github && data.github.length > 0) {
     csvRows.push('GitHub Data');
     csvRows.push('Name,Description,Stars,Rating,Category,Website');
-    data.github.forEach((item: any) => {
+    data.github.forEach((item: SaaSHubAlternative) => {
       csvRows.push(`"${item.name}","${item.description}",${item.reviews_count},${item.rating},"${item.category}","${item.website_url}"`);
     });
   }
@@ -151,7 +180,20 @@ function convertToCSV(data: any): string {
 }
 
 // Helper function to convert data to XML
-function convertToXML(data: any): string {
+function convertToXML(data: {
+  metadata?: {
+    exportedAt: string;
+    timeFilter: string;
+    platforms: string[];
+    format: string;
+    version: string;
+  };
+  data: {
+    productHunt: ProductHuntPost[];
+    hackerNews: HackerNewsPost[];
+    github: SaaSHubAlternative[];
+  };
+}): string {
   let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
   xml += '<saas-dashboard-export>\n';
   
@@ -168,7 +210,7 @@ function convertToXML(data: any): string {
   // Product Hunt XML
   if (data.data.productHunt) {
     xml += '    <producthunt>\n';
-    data.data.productHunt.forEach((item: any) => {
+    data.data.productHunt.forEach((item: ProductHuntPost) => {
       xml += '      <item>\n';
       xml += `        <name>${item.name}</name>\n`;
       xml += `        <tagline>${item.tagline}</tagline>\n`;
@@ -176,7 +218,7 @@ function convertToXML(data: any): string {
       xml += `        <comments>${item.comments_count}</comments>\n`;
       xml += `        <createdAt>${item.created_at}</createdAt>\n`;
       xml += '        <topics>\n';
-      item.topics.forEach((topic: any) => {
+      item.topics.forEach((topic: { name: string }) => {
         xml += `          <topic>${topic.name}</topic>\n`;
       });
       xml += '        </topics>\n';
@@ -188,7 +230,7 @@ function convertToXML(data: any): string {
   // Hacker News XML
   if (data.data.hackerNews) {
     xml += '    <hackernews>\n';
-    data.data.hackerNews.forEach((item: any) => {
+    data.data.hackerNews.forEach((item: HackerNewsPost) => {
       xml += '      <item>\n';
       xml += `        <title>${item.title}</title>\n`;
       xml += `        <score>${item.score}</score>\n`;
@@ -206,7 +248,7 @@ function convertToXML(data: any): string {
   // GitHub XML
   if (data.data.github) {
     xml += '    <github>\n';
-    data.data.github.forEach((item: any) => {
+    data.data.github.forEach((item: SaaSHubAlternative) => {
       xml += '      <item>\n';
       xml += `        <name>${item.name}</name>\n`;
       xml += `        <description>${item.description}</description>\n`;

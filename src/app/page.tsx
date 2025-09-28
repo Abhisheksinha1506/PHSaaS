@@ -13,10 +13,10 @@ export default function Home() {
             Free & No Signup Required
           </div>
           <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
-            See What's Trending in Tech
+            See What&apos;s Trending in Tech
           </h1>
           <p className="text-xl md:text-2xl text-foreground mb-8 max-w-3xl mx-auto">
-            One simple dashboard that shows you what's popular on Product Hunt, 
+            One simple dashboard that shows you what&apos;s popular on Product Hunt, 
             what developers are talking about on Hacker News, and what tools are trending on GitHub.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -59,7 +59,7 @@ export default function Home() {
               Find out which ones are getting the most attention.
             </p>
             <div className="text-sm text-muted-foreground">
-              Like: "New AI tool gets 500 votes in 2 hours"
+              Like: &quot;New AI tool gets 500 votes in 2 hours&quot;
             </div>
           </div>
 
@@ -75,7 +75,7 @@ export default function Home() {
               Find the most interesting tech stories and discussions.
             </p>
             <div className="text-sm text-muted-foreground">
-              Like: "New JavaScript framework gets 200 comments"
+              Like: &quot;New JavaScript framework gets 200 comments&quot;
             </div>
           </div>
 
@@ -91,7 +91,7 @@ export default function Home() {
               See what developers are actually using.
             </p>
             <div className="text-sm text-muted-foreground">
-              Like: "React gets 10,000 new stars this week"
+              Like: &quot;React gets 10,000 new stars this week&quot;
             </div>
           </div>
         </div>
@@ -104,7 +104,7 @@ export default function Home() {
             Who Should Use This?
           </h2>
           <p className="text-lg text-foreground max-w-3xl mx-auto">
-            Whether you're a beginner or expert, this dashboard helps you stay informed about what's happening in tech.
+            Whether you&apos;re a beginner or expert, this dashboard helps you stay informed about what&apos;s happening in tech.
           </p>
         </div>
 
@@ -135,7 +135,7 @@ export default function Home() {
             </div>
             <h3 className="font-semibold text-card-foreground mb-2">Marketers</h3>
             <p className="text-sm text-card-foreground">
-              Understand what's popular and what people are talking about
+              Understand what&apos;s popular and what people are talking about
             </p>
           </div>
 
@@ -159,7 +159,7 @@ export default function Home() {
               Why Use This Instead of Checking Each Site?
             </h2>
             <p className="text-lg text-card-foreground max-w-2xl mx-auto">
-              Save time and get a complete picture of what's happening in tech.
+              Save time and get a complete picture of what&apos;s happening in tech.
             </p>
           </div>
 
@@ -235,7 +235,7 @@ export default function Home() {
                 <div>
                   <h3 className="font-semibold text-card-foreground mb-2">Smart Insights</h3>
                   <p className="text-card-foreground">
-                    See connections between platforms. Understand what's really trending.
+                    See connections between platforms. Understand what&apos;s really trending.
                   </p>
                 </div>
               </div>
@@ -248,10 +248,10 @@ export default function Home() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl shadow-xl p-8 md:p-12 text-center text-white">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Ready to See What's Trending?
+            Ready to See What&apos;s Trending?
           </h2>
           <p className="text-lg mb-8 max-w-2xl mx-auto opacity-90">
-            No signup required. No payment needed. Just click and explore what's happening in tech right now.
+            No signup required. No payment needed. Just click and explore what&apos;s happening in tech right now.
           </p>
           <Link href="/dashboard">
             <Button size="lg" className="text-lg px-8 py-3 bg-white text-blue-600 hover:bg-gray-100">

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { fetchProductHuntPosts, fetchHackerNewsPosts, fetchSaaSHubAlternatives } from '@/lib/api';
+import { ProductHuntPost, HackerNewsPost, SaaSHubAlternative } from '@/types';
 
 export async function GET(request: Request) {
   try {
@@ -15,9 +16,9 @@ export async function GET(request: Request) {
     console.log(`🔍 Search API called with query: "${query}"`);
     
     const results = {
-      productHunt: [] as any[],
-      hackerNews: [] as any[],
-      github: [] as any[],
+      productHunt: [] as ProductHuntPost[],
+      hackerNews: [] as HackerNewsPost[],
+      github: [] as SaaSHubAlternative[],
       totalResults: 0,
       searchTime: 0
     };
