@@ -6,12 +6,11 @@ import { ProductHuntPost, HackerNewsPost, SaaSHubAlternative } from "@/types";
 import { Zap, Sparkles, TrendingUp, BarChart3 } from "lucide-react";
 import { TabContentSkeleton } from "@/components/ui/skeleton";
 
-// Import the dashboard components
-import { TrendTrackerTab } from "@/components/dashboard/trend-tracker-tab";
-import { DevPulseTab } from "@/components/dashboard/dev-pulse-tab";
-import { LaunchIntelTab } from "@/components/dashboard/launch-intel-tab";
+// Import the targeted dashboard components
+import { VCIntelligenceTab } from "@/components/dashboard/vc-intelligence-tab";
+import { IndieHackerTab } from "@/components/dashboard/indie-hacker-tab";
+import { DeveloperInspirationTab } from "@/components/dashboard/developer-inspiration-tab";
 import { TimeFilter } from "@/components/dashboard/time-filter";
-import { EnhancedDashboard } from "@/components/dashboard/enhanced-dashboard";
 
 export default function DashboardPage() {
   const [productHuntData, setProductHuntData] = useState<ProductHuntPost[]>([]);
@@ -19,7 +18,7 @@ export default function DashboardPage() {
   const [saaSHubData, setSaaSHubData] = useState<SaaSHubAlternative[]>([]);
   const [loading, setLoading] = useState(true);
   const [timeFilter, setTimeFilter] = useState<'24h' | '7d' | '30d'>('7d');
-  const [activeTab, setActiveTab] = useState('trend-tracker');
+  const [activeTab, setActiveTab] = useState('vc-intelligence');
 
   // Function to filter data based on time period
   const filterDataByTime = (data: (ProductHuntPost | HackerNewsPost | SaaSHubAlternative)[], timeFilter: string, dateField: string) => {
@@ -216,58 +215,45 @@ export default function DashboardPage() {
         <TimeFilter timeFilter={timeFilter} setTimeFilter={setTimeFilter} />
 
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-4 h-14 bg-white dark:bg-slate-800 p-1 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
-                <TabsTrigger value="trend-tracker" className="flex-1 h-12 rounded-xl bg-transparent hover:bg-slate-50 dark:hover:bg-slate-700 transition-all duration-300 data-[state=active]:bg-slate-900 data-[state=active]:text-white dark:data-[state=active]:bg-white dark:data-[state=active]:text-slate-900 font-medium text-slate-500 dark:text-slate-400">
+              <TabsList className="grid w-full grid-cols-3 h-14 bg-white dark:bg-slate-800 p-1 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
+                <TabsTrigger value="vc-intelligence" className="flex-1 h-12 rounded-xl bg-transparent hover:bg-slate-50 dark:hover:bg-slate-700 transition-all duration-300 data-[state=active]:bg-green-600 data-[state=active]:text-white dark:data-[state=active]:bg-green-600 dark:data-[state=active]:text-white font-medium text-slate-500 dark:text-slate-400">
                   <TrendingUp className="h-4 w-4 mr-2" />
-                  TrendTracker Pro
+                  VC Intelligence
                 </TabsTrigger>
-                <TabsTrigger value="dev-pulse" className="flex-1 h-12 rounded-xl bg-transparent hover:bg-slate-50 dark:hover:bg-slate-700 transition-all duration-300 data-[state=active]:bg-slate-900 data-[state=active]:text-white dark:data-[state=active]:bg-white dark:data-[state=active]:text-slate-900 font-medium text-slate-500 dark:text-slate-400">
+                <TabsTrigger value="indie-hacker" className="flex-1 h-12 rounded-xl bg-transparent hover:bg-slate-50 dark:hover:bg-slate-700 transition-all duration-300 data-[state=active]:bg-blue-600 data-[state=active]:text-white dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white font-medium text-slate-500 dark:text-slate-400">
                   <BarChart3 className="h-4 w-4 mr-2" />
-                  DevPulse
+                  Indie Hacker
                 </TabsTrigger>
-                <TabsTrigger value="launch-intel" className="flex-1 h-12 rounded-xl bg-transparent hover:bg-slate-50 dark:hover:bg-slate-700 transition-all duration-300 data-[state=active]:bg-slate-900 data-[state=active]:text-white dark:data-[state=active]:bg-white dark:data-[state=active]:text-slate-900 font-medium text-slate-500 dark:text-slate-400">
+                <TabsTrigger value="developer-inspiration" className="flex-1 h-12 rounded-xl bg-transparent hover:bg-slate-50 dark:hover:bg-slate-700 transition-all duration-300 data-[state=active]:bg-purple-600 data-[state=active]:text-white dark:data-[state=active]:bg-purple-600 dark:data-[state=active]:text-white font-medium text-slate-500 dark:text-slate-400">
                   <Zap className="h-4 w-4 mr-2" />
-                  LaunchIntel
-                </TabsTrigger>
-                <TabsTrigger value="enhanced" className="flex-1 h-12 rounded-xl bg-transparent hover:bg-slate-50 dark:hover:bg-slate-700 transition-all duration-300 data-[state=active]:bg-slate-900 data-[state=active]:text-white dark:data-[state=active]:bg-white dark:data-[state=active]:text-slate-900 font-medium text-slate-500 dark:text-slate-400">
-                  <Sparkles className="h-4 w-4 mr-2" />
-                  Enhanced
+                  Developer
                 </TabsTrigger>
               </TabsList>
 
-              <TabsContent value="trend-tracker" className="mt-6">
-                <TrendTrackerTab 
+              <TabsContent value="vc-intelligence" className="mt-6">
+                <VCIntelligenceTab 
                   productHuntData={productHuntData} 
                   hackerNewsData={hackerNewsData} 
-                  saaSHubData={saaSHubData}
+                  githubData={saaSHubData}
                   timeFilter={timeFilter}
-                  setTimeFilter={setTimeFilter}
                 />
               </TabsContent>
 
-              <TabsContent value="dev-pulse" className="mt-6">
-                <DevPulseTab 
+              <TabsContent value="indie-hacker" className="mt-6">
+                <IndieHackerTab 
                   productHuntData={productHuntData} 
                   hackerNewsData={hackerNewsData} 
-                  saaSHubData={saaSHubData} 
+                  githubData={saaSHubData}
+                  timeFilter={timeFilter}
                 />
               </TabsContent>
 
-              <TabsContent value="launch-intel" className="mt-6">
-                <LaunchIntelTab 
+              <TabsContent value="developer-inspiration" className="mt-6">
+                <DeveloperInspirationTab 
                   productHuntData={productHuntData} 
                   hackerNewsData={hackerNewsData} 
-                  saaSHubData={saaSHubData} 
-                />
-              </TabsContent>
-
-              <TabsContent value="enhanced" className="mt-6">
-                <EnhancedDashboard 
-                  initialData={{
-                    productHunt: productHuntData,
-                    hackerNews: hackerNewsData,
-                    github: saaSHubData
-                  }}
+                  githubData={saaSHubData}
+                  timeFilter={timeFilter}
                 />
               </TabsContent>
 

@@ -128,14 +128,14 @@ async function testApiConnectivity(): Promise<{
 
   // Test Product Hunt API
   try {
-    const response = await fetch('https://api.producthunt.com/v2/api/graphql', {
+    const response = await fetch('https://api.producthunt.com/v2/api/graphql', { 
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer 0VaMMCJ2ILdKkpY52GI7utplq83BtbvzKLDVz_YUHE4',
       },
-      body: JSON.stringify({
+      body: JSON.stringify({ 
         query: 'query { posts(first: 1) { edges { node { id name } } } }'
       })
     });

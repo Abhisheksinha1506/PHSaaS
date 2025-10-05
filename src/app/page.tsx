@@ -13,11 +13,11 @@ export default function Home() {
             Free & No Signup Required
           </div>
           <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
-            See What&apos;s Trending in Tech
+            Intelligence for Tech Leaders
           </h1>
           <p className="text-xl md:text-2xl text-foreground mb-8 max-w-3xl mx-auto">
-            One simple dashboard that shows you what&apos;s popular on Product Hunt, 
-            what developers are talking about on Hacker News, and what tools are trending on GitHub.
+            Targeted dashboards for VCs tracking investments, indie hackers researching markets, 
+            and developers finding their next project. Get insights, not just data.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/dashboard">
@@ -39,43 +39,43 @@ export default function Home() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            What This Dashboard Does
+            Three Targeted Intelligence Dashboards
           </h2>
           <p className="text-lg text-foreground max-w-3xl mx-auto">
-            Instead of checking multiple websites every day, this dashboard brings everything together in one place.
+            Each dashboard is built for a specific user with specific needs. Get actionable insights, not just aggregated data.
           </p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8 mb-16">
           <div className="bg-card p-6 rounded-lg shadow-lg border text-center">
-            <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-              <TrendingUp className="h-8 w-8 text-blue-600" />
+            <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+              <TrendingUp className="h-8 w-8 text-green-600" />
             </div>
             <h3 className="text-xl font-semibold text-card-foreground mb-3">
-              New Product Launches
+              VC Intelligence
             </h3>
             <p className="text-card-foreground mb-4">
-              See what new apps and tools are being launched on Product Hunt. 
-              Find out which ones are getting the most attention.
+              Investment signals, cross-platform correlations, and market opportunities. 
+              Spot the next unicorn before your competitors.
             </p>
             <div className="text-sm text-muted-foreground">
-              Like: &quot;New AI tool gets 500 votes in 2 hours&quot;
+              For: VCs, Investors, Fund Managers
             </div>
           </div>
 
           <div className="bg-card p-6 rounded-lg shadow-lg border text-center">
-            <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-              <BarChart3 className="h-8 w-8 text-green-600" />
+            <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+              <BarChart3 className="h-8 w-8 text-blue-600" />
             </div>
             <h3 className="text-xl font-semibold text-card-foreground mb-3">
-              Developer Discussions
+              Indie Hacker Research
             </h3>
             <p className="text-card-foreground mb-4">
-              See what programmers and tech people are talking about on Hacker News. 
-              Find the most interesting tech stories and discussions.
+              Market gaps, competitor analysis, and launch timing intelligence. 
+              Find your next business opportunity.
             </p>
             <div className="text-sm text-muted-foreground">
-              Like: &quot;New JavaScript framework gets 200 comments&quot;
+              For: Solo Founders, Entrepreneurs, Builders
             </div>
           </div>
 
@@ -84,14 +84,14 @@ export default function Home() {
               <Users className="h-8 w-8 text-purple-600" />
             </div>
             <h3 className="text-xl font-semibold text-card-foreground mb-3">
-              Popular Tools
+              Developer Inspiration
             </h3>
             <p className="text-card-foreground mb-4">
-              Discover what software tools and alternatives are popular on GitHub. 
-              See what developers are actually using.
+              Trending problems to solve, project ideas, and skills to learn. 
+              Find your next side project or career move.
             </p>
             <div className="text-sm text-muted-foreground">
-              Like: &quot;React gets 10,000 new stars this week&quot;
+              For: Developers, Engineers, Students
             </div>
           </div>
         </div>
@@ -101,21 +101,24 @@ export default function Home() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Who Should Use This?
+            Built for Specific Jobs-to-be-Done
           </h2>
           <p className="text-lg text-foreground max-w-3xl mx-auto">
-            Whether you&apos;re a beginner or expert, this dashboard helps you stay informed about what&apos;s happening in tech.
+            Each dashboard solves a specific problem for a specific user. No generic solutions, no wasted features.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid md:grid-cols-3 gap-8">
           <div className="bg-card p-6 rounded-lg border text-center">
-            <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
-              <Lightbulb className="h-6 w-6 text-orange-600" />
+            <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
+              <TrendingUp className="h-6 w-6 text-green-600" />
             </div>
-            <h3 className="font-semibold text-card-foreground mb-2">Entrepreneurs</h3>
-            <p className="text-sm text-card-foreground">
-              Find business opportunities and see what products are trending
+            <h3 className="font-semibold text-card-foreground mb-2">VCs & Investors</h3>
+            <p className="text-sm text-card-foreground mb-3">
+              Job: "Spot the next unicorn before competitors"
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Get investment signals, cross-platform correlations, and market intelligence
             </p>
           </div>
 
@@ -123,19 +126,12 @@ export default function Home() {
             <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
               <Target className="h-6 w-6 text-blue-600" />
             </div>
-            <h3 className="font-semibold text-card-foreground mb-2">Developers</h3>
-            <p className="text-sm text-card-foreground">
-              Stay updated on new technologies and tools
+            <h3 className="font-semibold text-card-foreground mb-2">Indie Hackers</h3>
+            <p className="text-sm text-card-foreground mb-3">
+              Job: "Find my next business opportunity"
             </p>
-          </div>
-
-          <div className="bg-card p-6 rounded-lg border text-center">
-            <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
-              <BarChart3 className="h-6 w-6 text-green-600" />
-            </div>
-            <h3 className="font-semibold text-card-foreground mb-2">Marketers</h3>
-            <p className="text-sm text-card-foreground">
-              Understand what&apos;s popular and what people are talking about
+            <p className="text-sm text-muted-foreground">
+              Discover market gaps, analyze competitors, and optimize launch timing
             </p>
           </div>
 
@@ -143,9 +139,12 @@ export default function Home() {
             <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
               <Users className="h-6 w-6 text-purple-600" />
             </div>
-            <h3 className="font-semibold text-card-foreground mb-2">Students</h3>
-            <p className="text-sm text-card-foreground">
-              Learn about current tech trends and what skills are in demand
+            <h3 className="font-semibold text-card-foreground mb-2">Developers</h3>
+            <p className="text-sm text-card-foreground mb-3">
+              Job: "Find my next project or career move"
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Solve trending problems, get project ideas, and learn in-demand skills
             </p>
           </div>
         </div>
@@ -248,10 +247,11 @@ export default function Home() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl shadow-xl p-8 md:p-12 text-center text-white">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Ready to See What&apos;s Trending?
+            Ready to Get Targeted Intelligence?
           </h2>
           <p className="text-lg mb-8 max-w-2xl mx-auto opacity-90">
-            No signup required. No payment needed. Just click and explore what&apos;s happening in tech right now.
+            Choose your dashboard and get insights that matter to your specific role. 
+            No signup required. No payment needed.
           </p>
           <Link href="/dashboard">
             <Button size="lg" className="text-lg px-8 py-3 bg-white text-blue-600 hover:bg-gray-100">
