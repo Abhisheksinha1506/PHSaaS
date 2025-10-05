@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ProductHuntPost, HackerNewsPost, SaaSHubAlternative } from "@/types";
-import { Zap, Sparkles, TrendingUp, BarChart3 } from "lucide-react";
+import { Zap, TrendingUp, BarChart3 } from "lucide-react";
 import { TabContentSkeleton } from "@/components/ui/skeleton";
 
 // Import the targeted dashboard components

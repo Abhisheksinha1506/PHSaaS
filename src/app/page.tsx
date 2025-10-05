@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { BarChart3, TrendingUp, Users, Zap, Eye, Clock, Target, Lightbulb, ArrowRight, CheckCircle } from "lucide-react";
+import { BarChart3, TrendingUp, Users, Zap, Eye, Clock, Target, ArrowRight, CheckCircle } from "lucide-react";
 
 export default function Home() {
   return (
@@ -115,7 +115,7 @@ export default function Home() {
             </div>
             <h3 className="font-semibold text-card-foreground mb-2">VCs & Investors</h3>
             <p className="text-sm text-card-foreground mb-3">
-              Job: "Spot the next unicorn before competitors"
+              Job: &quot;Spot the next unicorn before competitors&quot;
             </p>
             <p className="text-sm text-muted-foreground">
               Get investment signals, cross-platform correlations, and market intelligence
@@ -128,7 +128,7 @@ export default function Home() {
             </div>
             <h3 className="font-semibold text-card-foreground mb-2">Indie Hackers</h3>
             <p className="text-sm text-card-foreground mb-3">
-              Job: "Find my next business opportunity"
+              Job: &quot;Find my next business opportunity&quot;
             </p>
             <p className="text-sm text-muted-foreground">
               Discover market gaps, analyze competitors, and optimize launch timing
@@ -141,7 +141,7 @@ export default function Home() {
             </div>
             <h3 className="font-semibold text-card-foreground mb-2">Developers</h3>
             <p className="text-sm text-card-foreground mb-3">
-              Job: "Find my next project or career move"
+              Job: &quot;Find my next project or career move&quot;
             </p>
             <p className="text-sm text-muted-foreground">
               Solve trending problems, get project ideas, and learn in-demand skills

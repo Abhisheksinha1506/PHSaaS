@@ -91,6 +91,7 @@ export function IndieHackerTab({ productHuntData, hackerNewsData, githubData, ti
           acc[topic.name].count++;
           acc[topic.name].totalVotes += ph.votes_count;
         });
+        return acc;
       }, {} as Record<string, { count: number; totalVotes: number }>);
 
       Object.entries(categoryAnalysis).forEach(([category, data]) => {

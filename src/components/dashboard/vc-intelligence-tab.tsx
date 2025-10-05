@@ -41,7 +41,13 @@ interface CrossPlatformAlert {
 export function VCIntelligenceTab({ productHuntData, hackerNewsData, githubData, timeFilter }: VCIntelligenceTabProps) {
   const [investmentSignals, setInvestmentSignals] = useState<InvestmentSignal[]>([]);
   const [crossPlatformAlerts, setCrossPlatformAlerts] = useState<CrossPlatformAlert[]>([]);
-  const [marketInsights, setMarketInsights] = useState<any[]>([]);
+  const [marketInsights, setMarketInsights] = useState<Array<{
+    category: string;
+    trend: string;
+    growth: string;
+    opportunities: number;
+    competition: string;
+  }>>([]);
   const [loading, setLoading] = useState(true);
 
   // Generate investment signals based on cross-platform data
