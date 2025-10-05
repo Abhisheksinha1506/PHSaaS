@@ -5,6 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Code, TrendingUp, Lightbulb, Target, Users, Clock, Star, GitBranch, Zap, Search, Filter } from "lucide-react";
+import { SkillDemandTracker } from "./skill-demand-tracker";
+import { ProjectComplexityCalculator } from "./project-complexity-calculator";
+import { LearningPathGenerator } from "./learning-path-generator";
+import { PlatformCorrelationHeatmap } from "./platform-correlation-heatmap";
 import { ProductHuntPost, HackerNewsPost, SaaSHubAlternative } from "@/types";
 
 interface DeveloperInspirationTabProps {
@@ -521,63 +525,26 @@ export function DeveloperInspirationTab({ productHuntData, hackerNewsData, githu
         </CardContent>
       </Card>
 
-      {/* Skills to Learn */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Code className="h-5 w-5" />
-            Trending Skills to Learn
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {skillMatches.map((skill) => (
-              <div key={skill.skill} className="p-4 border rounded-lg">
-                <div className="flex items-center justify-between mb-3">
-                  <h4 className="font-semibold text-card-foreground">{skill.skill}</h4>
-                  <div className="flex gap-1">
-                    {skill.trending && (
-                      <Badge variant="outline" className="text-green-600 border-green-600 text-xs">
-                        Trending
-                      </Badge>
-                    )}
-                    <Badge 
-                      variant="outline" 
-                      className={`text-xs ${
-                        skill.demand === 'high' ? 'border-green-500 text-green-600' :
-                        skill.demand === 'medium' ? 'border-yellow-500 text-yellow-600' :
-                        'border-gray-500 text-gray-600'
-                      }`}
-                    >
-                      {skill.demand} demand
-                    </Badge>
-                  </div>
-                </div>
-                
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Level:</span>
-                    <span className="font-medium">{skill.level}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Projects:</span>
-                    <span className="font-medium">{skill.projects}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Salary:</span>
-                    <span className="font-medium text-green-600">{skill.salary}</span>
-                  </div>
-                </div>
-                
-                <Button variant="outline" size="sm" className="w-full mt-3">
-                  <Code className="h-3 w-3 mr-1" />
-                  Learn {skill.skill}
-                </Button>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      {/* Enhanced Features */}
+      <SkillDemandTracker hackerNewsData={hackerNewsData} />
+      
+      <ProjectComplexityCalculator 
+        productHuntData={productHuntData}
+        hackerNewsData={hackerNewsData}
+        githubData={githubData}
+      />
+      
+      <LearningPathGenerator 
+        productHuntData={productHuntData}
+        hackerNewsData={hackerNewsData}
+        githubData={githubData}
+      />
+      
+      <PlatformCorrelationHeatmap 
+        productHuntData={productHuntData}
+        hackerNewsData={hackerNewsData}
+        githubData={githubData}
+      />
     </div>
   );
 }
