@@ -1,16 +1,20 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
 import { ProductHuntPost, HackerNewsPost, SaaSHubAlternative } from "@/types";
 import { Zap, TrendingUp, BarChart3 } from "lucide-react";
 import { TabContentSkeleton } from "@/components/ui/skeleton";
+import { OnboardingGuide } from "@/components/onboarding-guide";
 
 // Import the targeted dashboard components
 import { VCIntelligenceTab } from "@/components/dashboard/vc-intelligence-tab";
 import { IndieHackerTab } from "@/components/dashboard/indie-hacker-tab";
 import { DeveloperInspirationTab } from "@/components/dashboard/developer-inspiration-tab";
 import { TimeFilter } from "@/components/dashboard/time-filter";
+import { TrendingByCategory } from "@/components/dashboard/trending-by-category";
+import { EnhancedFilter } from "@/components/dashboard/enhanced-filter";
 
 export default function DashboardPage() {
   const [productHuntData, setProductHuntData] = useState<ProductHuntPost[]>([]);
@@ -19,6 +23,11 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [timeFilter, setTimeFilter] = useState<'24h' | '7d' | '30d'>('7d');
   const [activeTab, setActiveTab] = useState('vc-intelligence');
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
+  const [projectType, setProjectType] = useState<string>('All Types');
+  const [useEnhancedFilter, setUseEnhancedFilter] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   // Function to filter data based on time period
   const filterDataByTime = (data: (ProductHuntPost | HackerNewsPost | SaaSHubAlternative)[], timeFilter: string, dateField: string) => {
@@ -74,17 +83,59 @@ export default function DashboardPage() {
     try {
       console.log(`🔄 Auto-refreshing data for ${timeFilter} filter...`);
       
-      // Fetch real data from APIs with time-aware parameters
-      const [phResponse, hnResponse, shResponse] = await Promise.all([
-        fetch(`/api/product-hunt?timeFilter=${timeFilter}`),
+      // Build query parameters
+      const phParams = new URLSearchParams({
+        timeFilter,
+        ...(selectedCategories.length > 0 && { category: selectedCategories[0] }),
+        ...(selectedTopics.length > 0 && { topics: selectedTopics.join(',') })
+      });
+      
+      // Fetch real data from APIs with time-aware parameters using Promise.allSettled for better error handling
+      const [phResult, hnResult, shResult] = await Promise.allSettled([
+        fetch(`/api/product-hunt?${phParams.toString()}`),
         fetch(`/api/hacker-news?timeFilter=${timeFilter}`),
         fetch(`/api/saashub?timeFilter=${timeFilter}`)
       ]);
       
-      // Parse responses with error handling
-      const phResponseData = phResponse.ok ? await phResponse.json() : { data: [] };
-      const hnResponseData = hnResponse.ok ? await hnResponse.json() : { data: [] };
-      const shResponseData = shResponse.ok ? await shResponse.json() : { data: [] };
+      // Parse responses with error handling - each API call is independent
+      let phResponseData = { data: [] };
+      let hnResponseData = { data: [] };
+      let shResponseData = { data: [] };
+      
+      if (phResult.status === 'fulfilled' && phResult.value.ok) {
+        try {
+          phResponseData = await phResult.value.json();
+        } catch (error) {
+          console.error('Failed to parse Product Hunt response:', error);
+        }
+      }
+      
+      if (hnResult.status === 'fulfilled' && hnResult.value.ok) {
+        try {
+          hnResponseData = await hnResult.value.json();
+        } catch (error) {
+          console.error('Failed to parse Hacker News response:', error);
+        }
+      }
+      
+      if (shResult.status === 'fulfilled' && shResult.value.ok) {
+        try {
+          shResponseData = await shResult.value.json();
+        } catch (error) {
+          console.error('Failed to parse SaaSHub response:', error);
+        }
+      }
+      
+      // Log any failures
+      if (phResult.status === 'rejected') {
+        console.error('Product Hunt API call failed:', phResult.reason);
+      }
+      if (hnResult.status === 'rejected') {
+        console.error('Hacker News API call failed:', hnResult.reason);
+      }
+      if (shResult.status === 'rejected') {
+        console.error('SaaSHub API call failed:', shResult.reason);
+      }
       
       // Extract data from responses (handle both old array format and new object format)
       const phData = Array.isArray(phResponseData) ? phResponseData : (phResponseData.data || []);
@@ -98,13 +149,74 @@ export default function DashboardPage() {
       const safeHnData = Array.isArray(hnData) ? hnData : [];
       const safeShData = Array.isArray(shData) ? shData : [];
       
-      
-      // Apply additional client-side filtering if needed
-      const filteredPH = filterDataByTime(safePhData as ProductHuntPost[], timeFilter, 'created_at') as ProductHuntPost[];
-      const filteredHN = filterDataByTime(safeHnData as HackerNewsPost[], timeFilter, 'time') as HackerNewsPost[];
-      const filteredSH = timeFilter === '24h' ? safeShData.slice(0, 5) : 
+      // Apply all filters in a single optimized pass (combining filters to reduce iterations)
+      // Start with time filtering
+      let filteredPH = filterDataByTime(safePhData as ProductHuntPost[], timeFilter, 'created_at') as ProductHuntPost[];
+      let filteredHN = filterDataByTime(safeHnData as HackerNewsPost[], timeFilter, 'time') as HackerNewsPost[];
+      let filteredSH = timeFilter === '24h' ? safeShData.slice(0, 5) : 
                         timeFilter === '7d' ? safeShData.slice(0, 10) : 
                         safeShData; // 30d shows all data
+      
+      // Combine category, topic, and project type filters into single pass for better performance
+      const hasCategoryFilter = selectedCategories.length > 0;
+      const hasTopicFilter = selectedTopics.length > 0;
+      const hasProjectTypeFilter = projectType !== 'All Types';
+      const isOpenSource = projectType === 'Open Source';
+      const isCommercial = projectType === 'Commercial';
+      
+      // Apply all filters in single pass for Product Hunt data
+      if (hasCategoryFilter || hasTopicFilter || (hasProjectTypeFilter && isCommercial)) {
+        filteredPH = filteredPH.filter(item => {
+          // Category filter
+          if (hasCategoryFilter && !item.topics.some(topic => 
+            selectedCategories.some(cat => 
+              topic.name.toLowerCase().includes(cat.toLowerCase()) || 
+              cat.toLowerCase().includes(topic.name.toLowerCase())
+            )
+          )) {
+            return false;
+          }
+          
+          // Topic filter
+          if (hasTopicFilter && !item.topics.some(topic => 
+            selectedTopics.some(t => 
+              topic.name.toLowerCase().includes(t.toLowerCase()) || 
+              t.toLowerCase().includes(topic.name.toLowerCase())
+            )
+          )) {
+            return false;
+          }
+          
+          // Project type filter (Commercial)
+          if (hasProjectTypeFilter && isCommercial && item.topics.some(t => t.name.toLowerCase().includes('open source'))) {
+            return false;
+          }
+          
+          return true;
+        });
+      }
+      
+      // Apply filters for SaaSHub data
+      if (hasTopicFilter || (hasProjectTypeFilter && isOpenSource)) {
+        filteredSH = filteredSH.filter(item => {
+          // Topic filter
+          if (hasTopicFilter && !item.features.some(feature => 
+            selectedTopics.some(t => 
+              feature.toLowerCase().includes(t.toLowerCase()) || 
+              t.toLowerCase().includes(feature.toLowerCase())
+            )
+          )) {
+            return false;
+          }
+          
+          // Project type filter (Open Source)
+          if (hasProjectTypeFilter && isOpenSource && item.pricing !== 'Open Source' && !item.pricing?.includes('Free')) {
+            return false;
+          }
+          
+          return true;
+        });
+      }
       
       setProductHuntData(filteredPH);
       setHackerNewsData(filteredHN);
@@ -118,17 +230,62 @@ export default function DashboardPage() {
     } finally {
       setLoading(false);
     }
-  }, [timeFilter]);
+  }, [timeFilter, selectedCategories, selectedTopics, projectType]);
+
+  // Check if user needs onboarding
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
+      if (!hasSeenOnboarding) {
+        // Show onboarding after a short delay
+        const timer = setTimeout(() => {
+          setShowOnboarding(true);
+        }, 1000);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, []);
 
   // Initial data fetch
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
-  // Auto-refresh every 5 minutes
+  // Auto-refresh every 5 minutes, but pause when tab is inactive
   useEffect(() => {
-    const interval = setInterval(fetchData, 5 * 60 * 1000); // 5 minutes
-    return () => clearInterval(interval);
+    let interval: NodeJS.Timeout | null = null;
+    let isVisible = true;
+
+    const handleVisibilityChange = () => {
+      isVisible = !document.hidden;
+      if (isVisible && !interval) {
+        // Tab became visible, restart interval
+        interval = setInterval(fetchData, 5 * 60 * 1000); // 5 minutes
+      } else if (!isVisible && interval) {
+        // Tab became hidden, clear interval
+        clearInterval(interval);
+        interval = null;
+      }
+    };
+
+    // Set up initial interval if tab is visible
+    if (typeof window !== 'undefined' && !document.hidden) {
+      interval = setInterval(fetchData, 5 * 60 * 1000); // 5 minutes
+    }
+
+    // Listen for visibility changes
+    if (typeof window !== 'undefined') {
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+    }
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+      if (typeof window !== 'undefined') {
+        document.removeEventListener('visibilitychange', handleVisibilityChange);
+      }
+    };
   }, [fetchData]);
 
   // Show skeleton loading if data is still loading
@@ -211,11 +368,37 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Common Time Filter */}
-        <TimeFilter timeFilter={timeFilter} setTimeFilter={setTimeFilter} />
+        {/* Enhanced Filter with Categories */}
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm text-muted-foreground">Filter Options</span>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setUseEnhancedFilter(!useEnhancedFilter)}
+              className="text-xs"
+            >
+              {useEnhancedFilter ? 'Use Simple Filter' : 'Use Advanced Filters'}
+            </Button>
+          </div>
+          {useEnhancedFilter ? (
+            <EnhancedFilter
+              timeFilter={timeFilter}
+              setTimeFilter={setTimeFilter}
+              selectedCategories={selectedCategories}
+              setSelectedCategories={setSelectedCategories}
+              selectedTopics={selectedTopics}
+              setSelectedTopics={setSelectedTopics}
+              projectType={projectType}
+              setProjectType={setProjectType}
+            />
+          ) : (
+            <TimeFilter timeFilter={timeFilter} setTimeFilter={setTimeFilter} />
+          )}
+        </div>
 
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-3 h-14 bg-white dark:bg-slate-800 p-1 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
+              <TabsList className="grid w-full grid-cols-4 h-14 bg-white dark:bg-slate-800 p-1 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
                 <TabsTrigger value="vc-intelligence" className="flex-1 h-12 rounded-xl bg-transparent hover:bg-slate-50 dark:hover:bg-slate-700 transition-all duration-300 data-[state=active]:bg-green-600 data-[state=active]:text-white dark:data-[state=active]:bg-green-600 dark:data-[state=active]:text-white font-medium text-slate-500 dark:text-slate-400">
                   <TrendingUp className="h-4 w-4 mr-2" />
                   VC Intelligence
@@ -227,6 +410,10 @@ export default function DashboardPage() {
                 <TabsTrigger value="developer-inspiration" className="flex-1 h-12 rounded-xl bg-transparent hover:bg-slate-50 dark:hover:bg-slate-700 transition-all duration-300 data-[state=active]:bg-purple-600 data-[state=active]:text-white dark:data-[state=active]:bg-purple-600 dark:data-[state=active]:text-white font-medium text-slate-500 dark:text-slate-400">
                   <Zap className="h-4 w-4 mr-2" />
                   Developer
+                </TabsTrigger>
+                <TabsTrigger value="trending-category" className="flex-1 h-12 rounded-xl bg-transparent hover:bg-slate-50 dark:hover:bg-slate-700 transition-all duration-300 data-[state=active]:bg-orange-600 data-[state=active]:text-white dark:data-[state=active]:bg-orange-600 dark:data-[state=active]:text-white font-medium text-slate-500 dark:text-slate-400">
+                  <TrendingUp className="h-4 w-4 mr-2" />
+                  By Category
                 </TabsTrigger>
               </TabsList>
 
@@ -257,8 +444,24 @@ export default function DashboardPage() {
                 />
               </TabsContent>
 
+              <TabsContent value="trending-category" className="mt-6">
+                <TrendingByCategory 
+                  productHuntData={productHuntData} 
+                  hackerNewsData={hackerNewsData} 
+                  githubData={saaSHubData}
+                  timeFilter={timeFilter}
+                />
+              </TabsContent>
+
             </Tabs>
       </div>
+
+      {showOnboarding && (
+        <OnboardingGuide 
+          onComplete={() => setShowOnboarding(false)}
+          onSkip={() => setShowOnboarding(false)}
+        />
+      )}
     </div>
   );
 }

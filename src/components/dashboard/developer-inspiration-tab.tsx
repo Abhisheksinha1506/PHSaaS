@@ -66,6 +66,8 @@ export function DeveloperInspirationTab({ productHuntData, hackerNewsData, githu
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
   const [difficultyFilter, setDifficultyFilter] = useState<string>('all');
   const [loading, setLoading] = useState(true);
+  const [selectedProblemForGuide, setSelectedProblemForGuide] = useState<TrendingProblem | null>(null);
+  const [selectedProblemForLearn, setSelectedProblemForLearn] = useState<TrendingProblem | null>(null);
 
   // Generate trending problems from cross-platform analysis
   useEffect(() => {
@@ -432,11 +434,19 @@ export function DeveloperInspirationTab({ productHuntData, hackerNewsData, githu
                     ))}
                   </div>
                   <div className="flex gap-2">
-                    <Button variant="outline" size="sm">
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => setSelectedProblemForGuide(problem)}
+                    >
                       <Lightbulb className="h-3 w-3 mr-1" />
                       Get Started
                     </Button>
-                    <Button variant="outline" size="sm">
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => setSelectedProblemForLearn(problem)}
+                    >
                       <Code className="h-3 w-3 mr-1" />
                       Learn More
                     </Button>
@@ -545,6 +555,154 @@ export function DeveloperInspirationTab({ productHuntData, hackerNewsData, githu
         hackerNewsData={hackerNewsData}
         githubData={githubData}
       />
+
+      {/* Get Started Guide Modal */}
+      {selectedProblemForGuide && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setSelectedProblemForGuide(null)}>
+          <div className="bg-card border rounded-lg p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-bold text-card-foreground">Get Started Guide: {selectedProblemForGuide.title}</h3>
+              <Button variant="ghost" size="sm" onClick={() => setSelectedProblemForGuide(null)}>
+                ×
+              </Button>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <h4 className="font-semibold text-card-foreground mb-2">Problem Overview</h4>
+                <p className="text-muted-foreground">{selectedProblemForGuide.problem}</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-card-foreground mb-2">Proposed Solution</h4>
+                <p className="text-muted-foreground">{selectedProblemForGuide.solution}</p>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <h4 className="font-semibold text-card-foreground mb-2">Difficulty</h4>
+                  <Badge variant="outline" className="capitalize">{selectedProblemForGuide.difficulty}</Badge>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-card-foreground mb-2">Time to Build</h4>
+                  <p className="text-muted-foreground">{selectedProblemForGuide.timeToBuild}</p>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-card-foreground mb-2">Market Size</h4>
+                  <Badge variant="outline" className="capitalize">{selectedProblemForGuide.market}</Badge>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-card-foreground mb-2">Engagement</h4>
+                  <p className="text-muted-foreground">{selectedProblemForGuide.engagement} points</p>
+                </div>
+              </div>
+              <div>
+                <h4 className="font-semibold text-card-foreground mb-2">Required Skills</h4>
+                <div className="flex flex-wrap gap-2">
+                  {selectedProblemForGuide.skills.map((skill, idx) => (
+                    <Badge key={idx} variant="secondary">{skill}</Badge>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h4 className="font-semibold text-card-foreground mb-2">Step-by-Step Guide</h4>
+                <ol className="list-decimal list-inside space-y-2 text-muted-foreground">
+                  <li>Set up your development environment with the required technologies</li>
+                  <li>Create a project repository and initialize version control</li>
+                  <li>Design the core architecture and data models</li>
+                  <li>Build the MVP focusing on solving the core problem</li>
+                  <li>Test with real users and gather feedback</li>
+                  <li>Iterate based on feedback and add essential features</li>
+                  <li>Deploy and monitor usage metrics</li>
+                </ol>
+              </div>
+              <div>
+                <h4 className="font-semibold text-card-foreground mb-2">Resources</h4>
+                <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+                  <li>Documentation for {selectedProblemForGuide.skills[0]} and related technologies</li>
+                  <li>Community forums and discussion groups</li>
+                  <li>Similar open-source projects for reference</li>
+                  <li>Tutorial videos and coding bootcamps</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Learn More Modal */}
+      {selectedProblemForLearn && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setSelectedProblemForLearn(null)}>
+          <div className="bg-card border rounded-lg p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-bold text-card-foreground">Learning Resources: {selectedProblemForLearn.title}</h3>
+              <Button variant="ghost" size="sm" onClick={() => setSelectedProblemForLearn(null)}>
+                ×
+              </Button>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <h4 className="font-semibold text-card-foreground mb-2">About This Problem</h4>
+                <p className="text-muted-foreground">{selectedProblemForLearn.description}</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-card-foreground mb-2">Why This Matters</h4>
+                <p className="text-muted-foreground">{selectedProblemForLearn.inspiration}</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-card-foreground mb-2">Skills to Learn</h4>
+                <div className="grid grid-cols-2 gap-4">
+                  {selectedProblemForLearn.skills.map((skill, idx) => (
+                    <div key={idx} className="p-3 bg-slate-50 dark:bg-slate-800 rounded">
+                      <p className="font-medium text-card-foreground">{skill}</p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {skill === 'JavaScript' && 'Learn modern ES6+, async/await, and frameworks'}
+                        {skill === 'React' && 'Component architecture, hooks, and state management'}
+                        {skill === 'Node.js' && 'Server-side JavaScript, APIs, and databases'}
+                        {skill === 'API Development' && 'RESTful APIs, authentication, and best practices'}
+                        {!['JavaScript', 'React', 'Node.js', 'API Development'].includes(skill) && 'Essential skill for this project'}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h4 className="font-semibold text-card-foreground mb-2">Learning Path</h4>
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">1</div>
+                    <div>
+                      <p className="font-medium text-card-foreground">Foundation</p>
+                      <p className="text-sm text-muted-foreground">Master the basics of {selectedProblemForLearn.skills[0]} and core concepts</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">2</div>
+                    <div>
+                      <p className="font-medium text-card-foreground">Practice</p>
+                      <p className="text-sm text-muted-foreground">Build small projects to reinforce your learning</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">3</div>
+                    <div>
+                      <p className="font-medium text-card-foreground">Build</p>
+                      <p className="text-sm text-muted-foreground">Apply your skills to solve this real-world problem</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <h4 className="font-semibold text-card-foreground mb-2">Recommended Resources</h4>
+                <ul className="list-disc list-inside space-y-2 text-muted-foreground">
+                  <li>Official documentation for {selectedProblemForLearn.skills[0]}</li>
+                  <li>Online courses and tutorials (freeCodeCamp, Codecademy, Udemy)</li>
+                  <li>Community forums (Stack Overflow, Reddit, Discord)</li>
+                  <li>Open source projects on GitHub for reference</li>
+                  <li>YouTube channels focused on {selectedProblemForLearn.skills[0]} development</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

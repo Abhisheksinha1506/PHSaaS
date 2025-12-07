@@ -209,6 +209,17 @@ class CacheManager {
   }
 
   /**
+   * Get cache entry age for a specific key (more efficient than getByTag)
+   */
+  getCacheAge(key: string): number | null {
+    const entry = this.cache.get(key);
+    if (!entry) {
+      return null;
+    }
+    return Date.now() - entry.timestamp;
+  }
+
+  /**
    * Evict least recently used entry
    */
   private evictLRU(): void {

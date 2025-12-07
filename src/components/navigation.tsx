@@ -22,7 +22,7 @@ export function Navigation() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center">
-            <Link href="/" className="flex items-center space-x-2 group">
+            <Link href="/" className="flex items-center space-x-2 group cursor-pointer">
               <div className="p-2 bg-slate-900 dark:bg-white rounded-lg group-hover:scale-105 transition-transform duration-300">
                 <Zap className="h-6 w-6 text-white dark:text-slate-900" />
               </div>
@@ -39,7 +39,7 @@ export function Navigation() {
                 key={item.name}
                 href={item.href}
                 className={cn(
-                  "inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300",
+                  "inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 cursor-pointer",
                   pathname === item.href
                     ? "bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-sm"
                     : "text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
@@ -55,7 +55,7 @@ export function Navigation() {
           <div className="md:hidden flex items-center space-x-2">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              className="p-2 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
             >
               {mobileMenuOpen ? (
                 <X className="h-6 w-6" />
@@ -76,7 +76,7 @@ export function Navigation() {
                   href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
                   className={cn(
-                    "flex items-center px-3 py-2 rounded-lg text-base font-medium transition-all duration-300",
+                    "flex items-center px-3 py-2 rounded-lg text-base font-medium transition-all duration-300 cursor-pointer",
                     pathname === item.href
                       ? "bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-sm"
                       : "text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"

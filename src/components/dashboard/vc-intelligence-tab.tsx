@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { TrendingUp, AlertTriangle, Target, DollarSign, Users, Zap, Eye, ArrowUpRight, TrendingDown, Activity } from "lucide-react";
+import { TrendingUp, AlertTriangle, Target, DollarSign, Users, Zap, Eye, ArrowUpRight, TrendingDown, Activity, ChevronDown, ChevronUp, ExternalLink } from "lucide-react";
 import { ProductHuntPost, HackerNewsPost, SaaSHubAlternative } from "@/types";
 
 interface VCIntelligenceTabProps {
@@ -25,6 +25,7 @@ interface InvestmentSignal {
   trend: 'up' | 'down' | 'stable';
   marketSize: 'large' | 'medium' | 'small';
   competition: 'low' | 'medium' | 'high';
+  sourceData?: ProductHuntPost | HackerNewsPost | SaaSHubAlternative;
 }
 
 interface CrossPlatformAlert {
@@ -49,6 +50,11 @@ export function VCIntelligenceTab({ productHuntData, hackerNewsData, githubData,
     competition: string;
   }>>([]);
   const [loading, setLoading] = useState(true);
+  const [expandedSignalId, setExpandedSignalId] = useState<string | null>(null);
+  const [selectedPlatformData, setSelectedPlatformData] = useState<{
+    platform: string;
+    data: ProductHuntPost | HackerNewsPost | SaaSHubAlternative | null;
+  } | null>(null);
 
   // Generate investment signals based on cross-platform data
   useEffect(() => {
@@ -69,8 +75,9 @@ export function VCIntelligenceTab({ productHuntData, hackerNewsData, githubData,
             score: Math.min(100, (engagementScore / 20)),
             trend: 'up',
             marketSize: ph.topics.some(t => ['AI', 'Developer Tools', 'SaaS'].includes(t.name)) ? 'large' : 'medium',
-            competition: 'medium'
-          });
+            competition: 'medium',
+            sourceData: ph
+          } as InvestmentSignal & { sourceData: ProductHuntPost });
         }
       });
 
@@ -87,8 +94,9 @@ export function VCIntelligenceTab({ productHuntData, hackerNewsData, githubData,
             score: Math.min(100, hn.score / 2),
             trend: 'up',
             marketSize: 'large',
-            competition: 'high'
-          });
+            competition: 'high',
+            sourceData: hn
+          } as InvestmentSignal & { sourceData: HackerNewsPost });
         }
       });
 
@@ -105,8 +113,9 @@ export function VCIntelligenceTab({ productHuntData, hackerNewsData, githubData,
             score: Math.min(100, gh.reviews_count / 50),
             trend: 'up',
             marketSize: 'large',
-            competition: 'low'
-          });
+            competition: 'low',
+            sourceData: gh
+          } as InvestmentSignal & { sourceData: SaaSHubAlternative });
         }
       });
 
@@ -286,50 +295,250 @@ export function VCIntelligenceTab({ productHuntData, hackerNewsData, githubData,
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {investmentSignals.map((signal) => (
-              <div key={signal.id} className="flex items-center justify-between p-4 border rounded-lg">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <h3 className="font-semibold text-card-foreground">{signal.title}</h3>
-                    <Badge 
-                      variant={signal.signal === 'strong' ? 'default' : signal.signal === 'medium' ? 'secondary' : 'outline'}
-                      className={signal.signal === 'strong' ? 'bg-green-100 text-green-800' : ''}
-                    >
-                      {signal.signal.toUpperCase()}
-                    </Badge>
+            {investmentSignals.map((signal) => {
+              const isExpanded = expandedSignalId === signal.id;
+              const sourceData = signal.sourceData;
+              
+              return (
+                <div key={signal.id} className="border rounded-lg overflow-hidden">
+                  <div 
+                    className="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                    onClick={() => setExpandedSignalId(isExpanded ? null : signal.id)}
+                  >
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <h3 className="font-semibold text-card-foreground">{signal.title}</h3>
+                        <Badge 
+                          variant={signal.signal === 'strong' ? 'default' : signal.signal === 'medium' ? 'secondary' : 'outline'}
+                          className={signal.signal === 'strong' ? 'bg-green-100 text-green-800' : ''}
+                        >
+                          {signal.signal.toUpperCase()}
+                        </Badge>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-2">{signal.description}</p>
+                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                        <span className="flex items-center gap-1">
+                          <Target className="h-3 w-3" />
+                          {signal.marketSize} market
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Users className="h-3 w-3" />
+                          {signal.competition} competition
+                        </span>
+                        <span className="flex items-center gap-1">
+                          {signal.trend === 'up' ? <TrendingUp className="h-3 w-3 text-green-600" /> : 
+                           signal.trend === 'down' ? <TrendingDown className="h-3 w-3 text-red-600" /> : 
+                           <Activity className="h-3 w-3 text-gray-600" />}
+                          {signal.trend} trend
+                        </span>
+                      </div>
+                    </div>
+                    <div className="text-right flex items-start gap-4">
+                      <div>
+                        <div className="text-2xl font-bold text-card-foreground">{signal.score}</div>
+                        <div className="text-sm text-muted-foreground">signal score</div>
+                        <div className="flex gap-1 mt-2">
+                          {signal.platforms.map(platform => (
+                            <Badge 
+                              key={platform} 
+                              variant="outline" 
+                              className="text-xs cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                if (sourceData) {
+                                  setSelectedPlatformData({ platform, data: sourceData });
+                                }
+                              }}
+                            >
+                              {platform}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                      <Button variant="ghost" size="sm" onClick={(e) => {
+                        e.stopPropagation();
+                        setExpandedSignalId(isExpanded ? null : signal.id);
+                      }}>
+                        {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                      </Button>
+                    </div>
                   </div>
-                  <p className="text-sm text-muted-foreground mb-2">{signal.description}</p>
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                    <span className="flex items-center gap-1">
-                      <Target className="h-3 w-3" />
-                      {signal.marketSize} market
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Users className="h-3 w-3" />
-                      {signal.competition} competition
-                    </span>
-                    <span className="flex items-center gap-1">
-                      {signal.trend === 'up' ? <TrendingUp className="h-3 w-3 text-green-600" /> : 
-                       signal.trend === 'down' ? <TrendingDown className="h-3 w-3 text-red-600" /> : 
-                       <Activity className="h-3 w-3 text-gray-600" />}
-                      {signal.trend} trend
-                    </span>
-                  </div>
+                  
+                  {isExpanded && (
+                    <div className="p-4 bg-slate-50 dark:bg-slate-800 border-t">
+                      <h4 className="font-semibold text-card-foreground mb-3">Detailed Analysis</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <div>
+                          <p className="text-muted-foreground mb-1">Correlation:</p>
+                          <p className="font-medium">{signal.correlation}</p>
+                        </div>
+                        <div>
+                          <p className="text-muted-foreground mb-1">Signal Strength:</p>
+                          <p className="font-medium">{signal.signal.toUpperCase()}</p>
+                        </div>
+                        <div>
+                          <p className="text-muted-foreground mb-1">Market Size:</p>
+                          <p className="font-medium capitalize">{signal.marketSize}</p>
+                        </div>
+                        <div>
+                          <p className="text-muted-foreground mb-1">Competition Level:</p>
+                          <p className="font-medium capitalize">{signal.competition}</p>
+                        </div>
+                        {sourceData && (
+                          <>
+                            {'votes_count' in sourceData && (
+                              <>
+                                <div>
+                                  <p className="text-muted-foreground mb-1">Votes:</p>
+                                  <p className="font-medium">{sourceData.votes_count}</p>
+                                </div>
+                                <div>
+                                  <p className="text-muted-foreground mb-1">Comments:</p>
+                                  <p className="font-medium">{sourceData.comments_count}</p>
+                                </div>
+                                {'topics' in sourceData && sourceData.topics.length > 0 && (
+                                  <div className="md:col-span-2">
+                                    <p className="text-muted-foreground mb-1">Topics:</p>
+                                    <div className="flex flex-wrap gap-1">
+                                      {sourceData.topics.map((topic, idx) => (
+                                        <Badge key={idx} variant="secondary" className="text-xs">
+                                          {topic.name}
+                                        </Badge>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+                              </>
+                            )}
+                            {'score' in sourceData && (
+                              <>
+                                <div>
+                                  <p className="text-muted-foreground mb-1">Score:</p>
+                                  <p className="font-medium">{sourceData.score}</p>
+                                </div>
+                                <div>
+                                  <p className="text-muted-foreground mb-1">Comments:</p>
+                                  <p className="font-medium">{sourceData.descendants || 0}</p>
+                                </div>
+                                {sourceData.url && (
+                                  <div className="md:col-span-2">
+                                    <a 
+                                      href={sourceData.url} 
+                                      target="_blank" 
+                                      rel="noopener noreferrer"
+                                      className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 inline-flex items-center gap-1"
+                                    >
+                                      View on Hacker News <ExternalLink className="h-3 w-3" />
+                                    </a>
+                                  </div>
+                                )}
+                              </>
+                            )}
+                            {'reviews_count' in sourceData && (
+                              <>
+                                <div>
+                                  <p className="text-muted-foreground mb-1">Stars:</p>
+                                  <p className="font-medium">{sourceData.reviews_count}</p>
+                                </div>
+                                <div>
+                                  <p className="text-muted-foreground mb-1">Rating:</p>
+                                  <p className="font-medium">{sourceData.rating?.toFixed(1) || 'N/A'}</p>
+                                </div>
+                                {sourceData.website_url && (
+                                  <div className="md:col-span-2">
+                                    <a 
+                                      href={sourceData.website_url} 
+                                      target="_blank" 
+                                      rel="noopener noreferrer"
+                                      className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 inline-flex items-center gap-1"
+                                    >
+                                      View on GitHub <ExternalLink className="h-3 w-3" />
+                                    </a>
+                                  </div>
+                                )}
+                              </>
+                            )}
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </div>
-                <div className="text-right">
-                  <div className="text-2xl font-bold text-card-foreground">{signal.score}</div>
-                  <div className="text-sm text-muted-foreground">signal score</div>
-                  <div className="flex gap-1 mt-2">
-                    {signal.platforms.map(platform => (
-                      <Badge key={platform} variant="outline" className="text-xs">
-                        {platform}
-                      </Badge>
-                    ))}
-                  </div>
+              );
+            })}
+          </div>
+          
+          {/* Platform Data Modal */}
+          {selectedPlatformData && selectedPlatformData.data && (
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setSelectedPlatformData(null)}>
+              <div className="bg-card border rounded-lg p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-xl font-bold text-card-foreground">Source Data: {selectedPlatformData.platform}</h3>
+                  <Button variant="ghost" size="sm" onClick={() => setSelectedPlatformData(null)}>
+                    ×
+                  </Button>
+                </div>
+                <div className="space-y-4">
+                  {selectedPlatformData.platform === 'Product Hunt' && 'votes_count' in selectedPlatformData.data && (
+                    <div className="space-y-2">
+                      <p><strong>Name:</strong> {(selectedPlatformData.data as ProductHuntPost).name}</p>
+                      <p><strong>Tagline:</strong> {(selectedPlatformData.data as ProductHuntPost).tagline}</p>
+                      <p><strong>Description:</strong> {(selectedPlatformData.data as ProductHuntPost).description}</p>
+                      <p><strong>Votes:</strong> {(selectedPlatformData.data as ProductHuntPost).votes_count}</p>
+                      <p><strong>Comments:</strong> {(selectedPlatformData.data as ProductHuntPost).comments_count}</p>
+                      <p><strong>Created:</strong> {new Date((selectedPlatformData.data as ProductHuntPost).created_at).toLocaleDateString()}</p>
+                      {(selectedPlatformData.data as ProductHuntPost).topics && (
+                        <div>
+                          <strong>Topics:</strong>
+                          <div className="flex flex-wrap gap-1 mt-1">
+                            {(selectedPlatformData.data as ProductHuntPost).topics.map((topic, idx) => (
+                              <Badge key={idx} variant="secondary">{topic.name}</Badge>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  {selectedPlatformData.platform === 'Hacker News' && 'score' in selectedPlatformData.data && (
+                    <div className="space-y-2">
+                      <p><strong>Title:</strong> {(selectedPlatformData.data as HackerNewsPost).title}</p>
+                      <p><strong>Score:</strong> {(selectedPlatformData.data as HackerNewsPost).score}</p>
+                      <p><strong>Comments:</strong> {(selectedPlatformData.data as HackerNewsPost).descendants || 0}</p>
+                      <p><strong>Author:</strong> {(selectedPlatformData.data as HackerNewsPost).by}</p>
+                      {(selectedPlatformData.data as HackerNewsPost).url && (
+                        <a 
+                          href={(selectedPlatformData.data as HackerNewsPost).url} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:text-blue-800 dark:text-blue-400 inline-flex items-center gap-1"
+                        >
+                          View Article <ExternalLink className="h-4 w-4" />
+                        </a>
+                      )}
+                    </div>
+                  )}
+                  {selectedPlatformData.platform === 'GitHub' && 'reviews_count' in selectedPlatformData.data && (
+                    <div className="space-y-2">
+                      <p><strong>Name:</strong> {(selectedPlatformData.data as SaaSHubAlternative).name}</p>
+                      <p><strong>Description:</strong> {(selectedPlatformData.data as SaaSHubAlternative).description}</p>
+                      <p><strong>Stars:</strong> {(selectedPlatformData.data as SaaSHubAlternative).reviews_count}</p>
+                      <p><strong>Rating:</strong> {(selectedPlatformData.data as SaaSHubAlternative).rating?.toFixed(1) || 'N/A'}</p>
+                      {(selectedPlatformData.data as SaaSHubAlternative).website_url && (
+                        <a 
+                          href={(selectedPlatformData.data as SaaSHubAlternative).website_url} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:text-blue-800 dark:text-blue-400 inline-flex items-center gap-1"
+                        >
+                          View Repository <ExternalLink className="h-4 w-4" />
+                        </a>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          )}
         </CardContent>
       </Card>
 

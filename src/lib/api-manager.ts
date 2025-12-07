@@ -58,7 +58,7 @@ class ApiManager {
     if (this.config.enableCaching) {
       const cached = cacheManager.get<ProductHuntPost[]>(cacheKey);
       if (cached) {
-        const cacheAge = Date.now() - (cacheManager.getByTag(cacheTags.productHunt)[0]?.timestamp || 0);
+        const cacheAge = cacheManager.getCacheAge(cacheKey) || 0;
         
         if (shouldUseCache(apiName, cacheAge)) {
           return {
@@ -152,7 +152,7 @@ class ApiManager {
     if (this.config.enableCaching) {
       const cached = cacheManager.get<HackerNewsPost[]>(cacheKey);
       if (cached) {
-        const cacheAge = Date.now() - (cacheManager.getByTag(cacheTags.hackerNews)[0]?.timestamp || 0);
+        const cacheAge = cacheManager.getCacheAge(cacheKey) || 0;
         
         if (shouldUseCache(apiName, cacheAge)) {
           return {
@@ -237,7 +237,7 @@ class ApiManager {
     if (this.config.enableCaching) {
       const cached = cacheManager.get<SaaSHubAlternative[]>(cacheKey);
       if (cached) {
-        const cacheAge = Date.now() - (cacheManager.getByTag(cacheTags.github)[0]?.timestamp || 0);
+        const cacheAge = cacheManager.getCacheAge(cacheKey) || 0;
         
         if (shouldUseCache(apiName, cacheAge)) {
           return {
@@ -382,7 +382,11 @@ class ApiManager {
   // Private helper methods
   private async makeProductHuntCall(): Promise<ProductHuntPost[]> {
     // Implementation from original api.ts
-    const accessToken = '0VaMMCJ2ILdKkpY52GI7utplq83BtbvzKLDVz_YUHE4';
+    const accessToken = process.env.PRODUCT_HUNT_API_TOKEN;
+    
+    if (!accessToken) {
+      throw new Error('PRODUCT_HUNT_API_TOKEN environment variable is not set. Please add it to your .env.local file.');
+    }
     
     const response = await fetch('https://api.producthunt.com/v2/api/graphql', {
       method: 'POST',

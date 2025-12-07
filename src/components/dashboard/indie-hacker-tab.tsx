@@ -55,6 +55,8 @@ export function IndieHackerTab({ productHuntData, hackerNewsData, githubData, ti
   const [launchTiming, setLaunchTiming] = useState<LaunchTiming[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
+  const [selectedGapForResearch, setSelectedGapForResearch] = useState<MarketGap | null>(null);
+  const [selectedGapForAnalysis, setSelectedGapForAnalysis] = useState<MarketGap | null>(null);
 
   // Generate market gaps based on cross-platform analysis
   useEffect(() => {
@@ -342,11 +344,19 @@ export function IndieHackerTab({ productHuntData, hackerNewsData, githubData, ti
                     ))}
                   </div>
                   <div className="flex gap-2">
-                    <Button variant="outline" size="sm">
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => setSelectedGapForResearch(gap)}
+                    >
                       <Lightbulb className="h-3 w-3 mr-1" />
                       Research
                     </Button>
-                    <Button variant="outline" size="sm">
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => setSelectedGapForAnalysis(gap)}
+                    >
                       <BarChart3 className="h-3 w-3 mr-1" />
                       Analyze
                     </Button>
@@ -477,6 +487,131 @@ export function IndieHackerTab({ productHuntData, hackerNewsData, githubData, ti
           </div>
         </CardContent>
       </Card>
+
+      {/* Research Modal */}
+      {selectedGapForResearch && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setSelectedGapForResearch(null)}>
+          <div className="bg-card border rounded-lg p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-bold text-card-foreground">Market Gap Research: {selectedGapForResearch.title}</h3>
+              <Button variant="ghost" size="sm" onClick={() => setSelectedGapForResearch(null)}>
+                ×
+              </Button>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <h4 className="font-semibold text-card-foreground mb-2">Problem Statement</h4>
+                <p className="text-muted-foreground">{selectedGapForResearch.problem}</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-card-foreground mb-2">Market Opportunity</h4>
+                <p className="text-muted-foreground">{selectedGapForResearch.opportunity}</p>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <h4 className="font-semibold text-card-foreground mb-2">Market Size</h4>
+                  <Badge variant="outline" className="capitalize">{selectedGapForResearch.marketSize}</Badge>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-card-foreground mb-2">Competition Level</h4>
+                  <Badge variant="outline" className="capitalize">{selectedGapForResearch.competition}</Badge>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-card-foreground mb-2">Difficulty</h4>
+                  <Badge variant="outline" className="capitalize">{selectedGapForResearch.difficulty}</Badge>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-card-foreground mb-2">Time to Market</h4>
+                  <p className="text-muted-foreground">{selectedGapForResearch.timeToMarket}</p>
+                </div>
+              </div>
+              <div>
+                <h4 className="font-semibold text-card-foreground mb-2">Revenue Potential</h4>
+                <p className="text-green-600 font-medium">{selectedGapForResearch.revenue}</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-card-foreground mb-2">Platforms</h4>
+                <div className="flex flex-wrap gap-2">
+                  {selectedGapForResearch.platforms.map((platform, idx) => (
+                    <Badge key={idx} variant="secondary">{platform}</Badge>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h4 className="font-semibold text-card-foreground mb-2">Research Steps</h4>
+                <ol className="list-decimal list-inside space-y-2 text-muted-foreground">
+                  <li>Analyze competitor solutions in this space</li>
+                  <li>Identify user pain points through surveys and interviews</li>
+                  <li>Research market size and growth trends</li>
+                  <li>Evaluate technical feasibility and required resources</li>
+                  <li>Assess monetization strategies and pricing models</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Analysis Modal */}
+      {selectedGapForAnalysis && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setSelectedGapForAnalysis(null)}>
+          <div className="bg-card border rounded-lg p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-bold text-card-foreground">Competitor Analysis: {selectedGapForAnalysis.title}</h3>
+              <Button variant="ghost" size="sm" onClick={() => setSelectedGapForAnalysis(null)}>
+                ×
+              </Button>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <h4 className="font-semibold text-card-foreground mb-2">Market Overview</h4>
+                <p className="text-muted-foreground">
+                  This market gap represents a {selectedGapForAnalysis.marketSize} opportunity with {selectedGapForAnalysis.competition} competition. 
+                  The estimated time to market is {selectedGapForAnalysis.timeToMarket} with a revenue potential of {selectedGapForAnalysis.revenue}.
+                </p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-card-foreground mb-2">Competitive Landscape</h4>
+                <div className="space-y-2">
+                  <div className="p-3 bg-slate-50 dark:bg-slate-800 rounded">
+                    <p className="text-sm font-medium text-card-foreground">Competition Level: <span className="capitalize">{selectedGapForAnalysis.competition}</span></p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {selectedGapForAnalysis.competition === 'low' 
+                        ? 'Limited competition - first-mover advantage possible'
+                        : selectedGapForAnalysis.competition === 'medium'
+                        ? 'Moderate competition - differentiation is key'
+                        : 'High competition - need strong unique value proposition'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <h4 className="font-semibold text-card-foreground mb-2">Market Analysis</h4>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="p-3 bg-slate-50 dark:bg-slate-800 rounded">
+                    <p className="text-xs text-muted-foreground">Market Size</p>
+                    <p className="text-lg font-semibold capitalize">{selectedGapForAnalysis.marketSize}</p>
+                  </div>
+                  <div className="p-3 bg-slate-50 dark:bg-slate-800 rounded">
+                    <p className="text-xs text-muted-foreground">Difficulty</p>
+                    <p className="text-lg font-semibold capitalize">{selectedGapForAnalysis.difficulty}</p>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <h4 className="font-semibold text-card-foreground mb-2">Recommended Actions</h4>
+                <ul className="list-disc list-inside space-y-2 text-muted-foreground">
+                  <li>Conduct user interviews to validate the problem</li>
+                  <li>Build an MVP focusing on core value proposition</li>
+                  <li>Test pricing models with early adopters</li>
+                  <li>Monitor competitor moves and market trends</li>
+                  <li>Plan for {selectedGapForAnalysis.timeToMarket} development timeline</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

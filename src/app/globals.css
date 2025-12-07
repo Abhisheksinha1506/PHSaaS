@@ -165,6 +165,11 @@ button:active {
   transform: translateY(0);
 }
 
+/* Cursor pointer for all clickable elements */
+a, button, [role="button"], [onclick], .cursor-pointer {
+  cursor: pointer;
+}
+
 /* Card hover effects */
 .card-hover {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);

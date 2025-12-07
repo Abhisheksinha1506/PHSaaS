@@ -15,18 +15,24 @@ export async function testApiConnectivity(): Promise<{
 
   // Test Product Hunt API
   try {
-    const response = await fetch('https://api.producthunt.com/v2/api/graphql', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${process.env.PRODUCT_HUNT_API_TOKEN || '0VaMMCJ2ILdKkpY52GI7utplq83BtbvzKLDVz_YUHE4'}`,
-      },
-      body: JSON.stringify({
-        query: 'query { posts(first: 1) { edges { node { id name } } } }'
-      })
-    });
-    results.productHunt = response.ok;
+    const accessToken = process.env.PRODUCT_HUNT_API_TOKEN;
+    if (!accessToken) {
+      console.warn('PRODUCT_HUNT_API_TOKEN not set, skipping Product Hunt API test');
+      results.productHunt = false;
+    } else {
+      const response = await fetch('https://api.producthunt.com/v2/api/graphql', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
+          query: 'query { posts(first: 1) { edges { node { id name } } } }'
+        })
+      });
+      results.productHunt = response.ok;
+    }
   } catch (error: unknown) {
     console.log('Product Hunt API test failed:', error);
   }

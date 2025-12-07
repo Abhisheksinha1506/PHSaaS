@@ -1,8 +1,14 @@
+"use client"
+
+import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { BarChart3, TrendingUp, Users, Zap, Eye, Clock, Target, ArrowRight, CheckCircle } from "lucide-react";
+import { BarChart3, TrendingUp, Users, Zap, Eye, Clock, Target, ArrowRight, CheckCircle, HelpCircle } from "lucide-react";
+import { OnboardingGuide } from "@/components/onboarding-guide";
 
 export default function Home() {
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-slate-900 dark:to-slate-800">
       {/* Hero Section */}
@@ -26,9 +32,18 @@ export default function Home() {
                 See the Dashboard
               </Button>
             </Link>
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="text-lg px-8 py-3"
+              onClick={() => setShowOnboarding(true)}
+            >
+              <HelpCircle className="mr-2 h-5 w-5" />
+              How to Use
+            </Button>
             <Link href="/about">
               <Button variant="outline" size="lg" className="text-lg px-8 py-3">
-                How It Works
+                About
               </Button>
             </Link>
           </div>
@@ -262,6 +277,13 @@ export default function Home() {
           </Link>
         </div>
       </div>
+
+      {showOnboarding && (
+        <OnboardingGuide 
+          onComplete={() => setShowOnboarding(false)}
+          onSkip={() => setShowOnboarding(false)}
+        />
+      )}
     </div>
   );
 }

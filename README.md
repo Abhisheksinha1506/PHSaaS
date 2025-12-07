@@ -4,6 +4,19 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+### Environment Setup
+
+1. Create a `.env.local` file in the root directory:
+```bash
+# Product Hunt API Token
+# Get your token from: https://api.producthunt.com/v2/oauth/applications
+PRODUCT_HUNT_API_TOKEN=your_product_hunt_api_token_here
+```
+
+2. Replace `your_product_hunt_api_token_here` with your actual Product Hunt API token.
+
+### Running the Development Server
+
 First, run the development server:
 
 ```bash
