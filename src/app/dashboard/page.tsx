@@ -200,7 +200,7 @@ export default function DashboardPage() {
       if (hasTopicFilter || (hasProjectTypeFilter && isOpenSource)) {
         filteredSH = filteredSH.filter(item => {
           // Topic filter
-          if (hasTopicFilter && !item.features.some(feature => 
+          if (hasTopicFilter && !item.features.some((feature: string) => 
             selectedTopics.some(t => 
               feature.toLowerCase().includes(t.toLowerCase()) || 
               t.toLowerCase().includes(feature.toLowerCase())

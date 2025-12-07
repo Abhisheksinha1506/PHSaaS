@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -10,9 +10,9 @@ interface EnhancedFilterProps {
   timeFilter: '24h' | '7d' | '30d';
   setTimeFilter: (filter: '24h' | '7d' | '30d') => void;
   selectedCategories: string[];
-  setSelectedCategories: (categories: string[]) => void;
+  setSelectedCategories: React.Dispatch<React.SetStateAction<string[]>>;
   selectedTopics: string[];
-  setSelectedTopics: (topics: string[]) => void;
+  setSelectedTopics: React.Dispatch<React.SetStateAction<string[]>>;
   projectType: string;
   setProjectType: (type: string) => void;
 }
@@ -104,7 +104,7 @@ export function EnhancedFilter({
   }, [selectedCategories, selectedTopics, projectType]);
 
   const toggleCategory = (category: string) => {
-    setSelectedCategories(prev =>
+    setSelectedCategories((prev: string[]) =>
       prev.includes(category)
         ? prev.filter(c => c !== category)
         : [...prev, category]
@@ -112,7 +112,7 @@ export function EnhancedFilter({
   };
 
   const toggleTopic = (topic: string) => {
-    setSelectedTopics(prev =>
+    setSelectedTopics((prev: string[]) =>
       prev.includes(topic)
         ? prev.filter(t => t !== topic)
         : [...prev, topic]
