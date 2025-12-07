@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { ProductHuntPost, HackerNewsPost, SaaSHubAlternative } from "@/types";
@@ -152,7 +152,7 @@ export default function DashboardPage() {
       // Apply all filters in a single optimized pass (combining filters to reduce iterations)
       // Start with time filtering
       let filteredPH = filterDataByTime(safePhData as ProductHuntPost[], timeFilter, 'created_at') as ProductHuntPost[];
-      let filteredHN = filterDataByTime(safeHnData as HackerNewsPost[], timeFilter, 'time') as HackerNewsPost[];
+      const filteredHN = filterDataByTime(safeHnData as HackerNewsPost[], timeFilter, 'time') as HackerNewsPost[];
       let filteredSH = timeFilter === '24h' ? safeShData.slice(0, 5) : 
                         timeFilter === '7d' ? safeShData.slice(0, 10) : 
                         safeShData; // 30d shows all data

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { X, ArrowRight, ArrowLeft, CheckCircle, TrendingUp, BarChart3, Zap, Target } from "lucide-react";
+import { X, ArrowRight, ArrowLeft, CheckCircle } from "lucide-react";
 
 interface OnboardingStep {
   id: string;
@@ -46,7 +46,7 @@ export function OnboardingGuide({ onComplete, onSkip }: OnboardingGuideProps) {
             This dashboard aggregates data from Product Hunt, Hacker News, and GitHub to provide actionable insights.
           </p>
           <p className="text-sm text-muted-foreground">
-            <strong>No signup required</strong> - just explore and discover what's trending in tech!
+            <strong>No signup required</strong> - just explore and discover what&apos;s trending in tech!
           </p>
         </div>
       )
@@ -107,7 +107,7 @@ export function OnboardingGuide({ onComplete, onSkip }: OnboardingGuideProps) {
             <li>Market gap opportunities</li>
             <li>Competitor analysis</li>
             <li>Launch timing intelligence</li>
-            <li>Use "Research" and "Analyze" buttons for detailed insights</li>
+            <li>Use &quot;Research&quot; and &quot;Analyze&quot; buttons for detailed insights</li>
           </ul>
         </div>
       )
@@ -127,7 +127,7 @@ export function OnboardingGuide({ onComplete, onSkip }: OnboardingGuideProps) {
             <li>Trending problems to solve</li>
             <li>Project ideas with difficulty ratings</li>
             <li>Skill demand tracking</li>
-            <li>Use "Get Started" for project guides and "Learn More" for resources</li>
+            <li>Use &quot;Get Started&quot; for project guides and &quot;Learn More&quot; for resources</li>
           </ul>
         </div>
       )

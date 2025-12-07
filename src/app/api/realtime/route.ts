@@ -83,7 +83,7 @@ export async function GET(request: Request) {
     
     // GitHub updates
     if (platforms.includes('github')) {
-      const recentGH = (ghData as SaaSHubAlternative[]).filter(_item => {
+      const recentGH = (ghData as SaaSHubAlternative[]).filter(() => {
         // GitHub doesn't have creation dates in our current data structure
         // This is a simplified approach - in reality, you'd need to track repository creation dates
         return true; // For demo purposes, return all items
